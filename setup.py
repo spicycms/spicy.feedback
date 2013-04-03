@@ -43,6 +43,7 @@ setup(
     namespace_packages=['spicy', ],
     install_requires=[
         'spicy==1.1',
+        'django-bitfield==1.6.4'
     ],
     dependency_links=[
         'hg+http://hg.bramabrama.com/spicy#egg=spicy-1.1',

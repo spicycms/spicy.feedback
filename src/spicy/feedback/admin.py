@@ -1,11 +1,12 @@
-from . import models
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
+
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
 from spicy.utils import NavigationFilter
 
+from . import models
 
 @is_staff(required_perms='feedback.change_message')
 @render_to('feedback/admin/messages.html')
