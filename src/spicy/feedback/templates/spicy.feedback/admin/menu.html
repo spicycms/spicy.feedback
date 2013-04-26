@@ -1,0 +1,18 @@
+{#{% if perms.feedback %}#}
+{#{% load navigator %}#}
+{#<ul class="admin-menu">#}
+{#  {% menu request "feedback:admin:index" _("All messages") "bold"%}#}
+{#</ul>#}
+{#{% endif %}#}
+
+
+{% if perms.feedback %}
+    {% with perms.feedback as pm %}
+    <li class="active console">
+        <a href="#">{% trans "Feedback profiles" %}</a>
+        <ul>
+            <li><a href="{% url feedback:admin:index %}">{% trans "All messages" %}</a></li>
+        </ul>
+    </li>
+    {% endwith %}
+{% endif %}

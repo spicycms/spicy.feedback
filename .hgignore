@@ -1,6 +1,7 @@
 # use glob syntax.
 syntax: glob
 
+.idea
 build*
 *.egg*
 .DS_Store
