@@ -1,6 +1,10 @@
 from django import http
 from spicy.core.siteskin.decorators import ajax_request
-from . import forms
+from spicy.utils import load_module
+
+from . import defaults
+
+
 
 @ajax_request
 def new_feedback(request):
@@ -8,8 +12,10 @@ def new_feedback(request):
     Render form for adding feedback to consumer with type and id.
     After adding feedback redirects to consumer absolute url
     """
+    FeedbackForm = load_module(defaults.CUSTOM_FEEDBACK_FORM)
+
     if request.method == 'POST':
-        form = forms.MessageForm(request.POST)
+        form = FeedbackForm(request.POST)
 
         if form.is_valid():
             try:

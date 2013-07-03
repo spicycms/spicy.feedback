@@ -1,18 +1,32 @@
-{#{% if perms.feedback %}#}
-{#{% load navigator %}#}
-{#<ul class="admin-menu">#}
-{#  {% menu request "feedback:admin:index" _("All messages") "bold"%}#}
-{#</ul>#}
-{#{% endif %}#}
+{% load url from future %}{% if perms.feedback %}
+{% with perms.feedback as pm %}
+<li class="dark-nav{% if "/admin/feedback" in request.path %} active{% endif %}">
+  <span class="glow"></span>
+  <a class="accordion-toggle collapsed" data-toggle="collapse" href="#feedback">
+    <i class="icon-envelope icon-2x"></i>
+    <span>{% trans "Feedback" %}
+      <i class="icon-caret-down"></i>
+    </span>
+  </a>
 
-
-{% if perms.feedback %}
-    {% with perms.feedback as pm %}
-    <li class="active console">
-        <a href="#">{% trans "Feedback profiles" %}</a>
-        <ul>
-            <li><a href="{% url feedback:admin:index %}">{% trans "All messages" %}</a></li>
-        </ul>
+  <ul id="feedback" class="collapse {% if "/admin/feedback" in request.path %} in{% endif %}">
+    <li>
+      <a href="{% url 'feedback:admin:index' %}">
+        <i class="icon-list-alt"></i> {% trans "All feedbacks" %}
+      </a>
     </li>
-    {% endwith %}
+    <li>
+      <a href="{% url 'feedback:admin:create' %}">
+        <i class="icon-list-alt"></i> {% trans "Create pattern" %}
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'feedback:admin:patterns' %}">
+        <i class="icon-list-alt"></i> {% trans "All patterns" %}
+      </a>
+    </li>
+  </ul>
+</li>
+
+{% endwith %}
 {% endif %}

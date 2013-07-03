@@ -1,0 +1,18 @@
+{% load feedback %}{% blocktrans with site_name=site.name %}New message on {{ site_name }}{% endblocktrans %}
+
+{% trans "Sender name" %}: {{ message.name }}
+
+{% trans "Sender email" %}: {{ message.email }}
+
+{% trans "Sender phone" %}: {{ message.phone }}
+
+{% trans "URL" %}: {{ message.url }}
+
+{% trans "Feedback type" %}: {{ message.get_fb_type_display }}
+
+{% trans "Submit date" %}: {{ message.submit_date }}
+
+{% trans "IP address" %}: {{ message.ip_address }}
+
+{% trans "Message" %}: {{ message.message }}
+

@@ -3,7 +3,7 @@ from importlib import import_module
 from setuptools import setup, find_packages
 
 
-version = import_module('src').__version__
+version = import_module('src.spicy.feedback.version').__version__
 LONG_DESCRIPTION = """
 spicy.feedback package
 """
@@ -28,12 +28,9 @@ setup(
     keywords='django, cms',
     url='',
 
-    packages=[
-        'spicy.feedback'
-    ],
+    packages=find_packages('src'),
     package_dir={
         '': 'src',
-        'spicy.feedback.templatetags': 'src/spicy/feedback/templatetags',
     },
     include_package_data=True,
     zip_safe=False,
@@ -42,11 +39,11 @@ setup(
 
     namespace_packages=['spicy', ],
     install_requires=[
-        'spicy==1.1',
+        'spicy>=1.1',
         'django-bitfield==1.6.4'
     ],
     dependency_links=[
-        'hg+http://hg.bramabrama.com/spicy#egg=spicy-1.1',
+        'hg+http://hg.bramabrama.com/spicy#egg=spicy',
     ],
 
     classifiers=[
