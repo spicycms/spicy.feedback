@@ -56,7 +56,13 @@
                   </td>                  
 		  <td>{{ obj.submit_date|date:"j M" }}</td>                  
 		  <td>{{ obj.processing_status }}</td>
-		  <td>{{ obj.pattern.title }}</td>
+		  <td>
+		    {% if obj.pattern %}
+		    <a href="{% url 'feedback:admin:edit-pattern' obj.pattern.pk %}">{{ obj.pattern.title }}</a>
+		    {% else %}
+		    <i class="icon-remove red"></i>
+		    {% endif %}
+		  </td>
 		  <td class="icon"><i class="{{ obj.email_has_been_sent|yesno:"green icon-ok,icon-remove red" }}"></i></td>
 		</tr>
 		{% endfor %}

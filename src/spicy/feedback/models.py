@@ -10,21 +10,14 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
+from spicy.mediacenter.abs import FatMediaConsumerModel
+from spicy.core.service import api, models as service_models
 from spicy.utils.printing import print_error
 
 from . import defaults
 
 
-class Attachment(models.Model):
-    path = models.CharField(
-        _('Attachment path'), blank=True, default='',
-        max_length=250)
-    
-    class Meta:
-        db_table = 'fb_pattern_attachment'
-
-
-class FeedbackPattern(models.Model):
+class FeedbackPattern(service_models.CustomAbstractModel, FatMediaConsumerModel):
     title = models.CharField(
         _('Feedback pattern title'), max_length=250)
 
@@ -38,15 +31,17 @@ class FeedbackPattern(models.Model):
     email_template = models.CharField(
         _('Template'), max_length=255,
         default='default.html')
-    
+
+    from_email = models.CharField(
+        _('From email'), max_length=255,
+        default=settings.DEFAULT_FROM_EMAIL)
+
     email_subject = models.CharField(
         _('Email subject'), max_length=255, blank=True, default='')
     email_body = models.TextField(
         _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default='')
     
-    attachments = models.ManyToManyField(Attachment)
-
     class Meta:
         db_table = 'fb_pattern'
         
@@ -126,6 +121,29 @@ class BaseFeedbackAbstractModel(models.Model):
             mail.send()
         except Exception, e:
             sys.stdout.write('Error sending email #%s: %s' % (self.id, str(e)))
+
+    def send_using_pattern(self):
+        if self.pattern is None:
+            print_error('This feedback {} has not response pattern'.format(self.pk))
+
+        mail = EmailMessage(
+            subject=self.pattern.email_subject, body=self.pattern.emai_body, 
+            from_email=self.pattern.from_email.split(','),
+            to=self.email)
+
+        if self.pattern.attachments:
+            mail.attach_file(settings.MEDIA_ROOT + '/HiConversion.pdf')
+
+        mail.send()
+
+        try:
+            mail.send()
+        except Exception, e:
+            sys.stdout.write('Error sending email #%s: %s' % (self.id, str(e)))
+            
+        
+        self.email_has_been_sent = True
+        self.save()
 
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)

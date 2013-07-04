@@ -9,6 +9,7 @@ admin_urls = patterns(
     'spicy.feedback.admin',
     url(r'^create/$', 'create', name='create'),
     url(r'^pattern/(?P<pattern_id>\d+)/$', 'edit_pattern', name='edit-pattern'),
+    url(r'^pattern/attach/(?P<pattern_id>\d+)/$', 'pattern_media', name='edit-pattern-media'),
 
     url(r'^patterns/$', 'patterns', name='patterns'),
     url(r'^list/$', 'feedback_list', name='index'),

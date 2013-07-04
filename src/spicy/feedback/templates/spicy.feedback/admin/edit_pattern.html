@@ -13,6 +13,10 @@
       <div class="box">
         <div class="box-header">
           <span class="title">{{ form.instance.title }} [id = {{ form.instance.pk }}]</span>
+	  <ul class="nav nav-tabs nav-tabs-right">
+            <li class="active"><a href="{% url 'feedback:admin:edit-pattern' form.instance.pk %}"><i class="icon-file-alt"></i> <span>{% trans "Edit email pattern" %}</span></a></li>
+	    <li class=""><a href="{% url 'feedback:admin:edit-pattern-media' form.instance.pk %}" ><i class="icon-camera"></i> <span>{% trans "Attachments" %}</span></a></li>
+	  </ul>
         </div>
 	
         <div class="box-content">

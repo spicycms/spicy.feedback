@@ -80,6 +80,17 @@ def edit_pattern(request, pattern_id):
 
     return dict(form=form, message=message)
 
+@is_staff(required_perms='feedback.admin_feedback')
+@render_to('edit_pattern_media.html', use_admin=True)
+def pattern_media(request, pattern_id):
+    status = ''
+    message = ''
+    
+    pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
+    form = forms.PatternForm(instance=pattern)
+
+    return dict(status=status, message=message, form=form)
+
 
 @is_staff(required_perms='feedback.admin_feedback')
 @render_to('list.html', use_admin=True)

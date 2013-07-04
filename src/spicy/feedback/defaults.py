@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 EMAIL_MAX_LENGTH = getattr(settings, 'EMAIL_MAX_LENGTH', 3000)
+MESSAGES_PER_MINUTE = getattr(settings, 'MESSAGES_PER_MINUTE', 10)
 
 IS_PROCESSED, OK, FAIL, BINGO  = range(4)
 STATUS_TYPE_CHOICES = getattr(settings, 'STATUS_TYPE_CHOICES', (
