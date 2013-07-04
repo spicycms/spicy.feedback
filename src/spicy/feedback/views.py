@@ -25,7 +25,9 @@ def new_feedback(request):
             feedback = form.save(commit=False)
             feedback.ip_address = request.META['REMOTE_ADDR']
             feedback.save()
+
             feedback.send_report()
+
             return {'status': 'success'}
         else:
             request.session['feedback_form'] = request.POST

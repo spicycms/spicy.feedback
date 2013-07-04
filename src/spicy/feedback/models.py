@@ -106,7 +106,7 @@ class BaseFeedbackAbstractModel(models.Model):
         Get a URL suitable for redirecting to the content object.
         """
         return "TODO:URL"
-
+    
     def send_report(self):
         context = {'message': self, 'site': Site.objects.get_current()}
 
@@ -114,10 +114,14 @@ class BaseFeedbackAbstractModel(models.Model):
             'spicy.feedback/mail/report_email_subject.txt', context).strip()
         body = render_to_string('spicy.feedback/mail/report_email_body.txt', context)
 
+        send_to = settings.PROJECT_ADMINS
+        if self.pattern:
+            send_to = map(lambda x: x.split(','), self.pattern.managers_emails.split('\n'))
+
         mail = EmailMessage(
             subject=subject, body=body, from_email=settings.DEFAULT_FROM_EMAIL,
-            to=settings.PROJECT_ADMINS)
-
+            to=send_to)
+            
         try:
             mail.send()
         except Exception, e:
@@ -132,4 +136,5 @@ class Feedback(BaseFeedbackAbstractModel):
     class Meta:
         db_table = 'fb_feedback'
         abstract = False
+
 

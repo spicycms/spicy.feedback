@@ -3,7 +3,7 @@ from importlib import import_module
 from setuptools import setup, find_packages
 
 
-version = import_module('src.spicy.feedback.version').__version__
+version = '1.0'
 LONG_DESCRIPTION = """
 spicy.feedback package
 """
