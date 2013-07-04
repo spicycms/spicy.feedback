@@ -109,7 +109,7 @@ class BaseFeedbackAbstractModel(models.Model):
             'spicy.feedback/mail/report_email_subject.txt', context).strip()
         body = render_to_string('spicy.feedback/mail/report_email_body.txt', context)
 
-        send_to = settings.PROJECT_ADMINS
+        send_to = settings.ADMINS
         if self.pattern:
             send_to = map(lambda x: x.split(','), self.pattern.managers_emails.split('\n'))
 
