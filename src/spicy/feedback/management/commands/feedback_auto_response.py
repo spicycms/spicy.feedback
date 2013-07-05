@@ -3,17 +3,20 @@ from datetime import timedelta
 from django.utils.timezone import utc
 from django.core.management.base import BaseCommand, CommandError
 
-from spicy.utils.models import get_custom_model_class
-from spicy.feedback import defaults
-from spicy.utils.printing import print_error, print_info, print_warning
-
-Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
 
 
 class Command(BaseCommand):
     help = 'Processes feedback auto response mailing'
 
     def handle(self, *args, **options):
+
+        from spicy.utils.models import get_custom_model_class
+        from spicy.feedback import defaults
+            
+        Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)            
+        from spicy.utils.printing import print_error, print_info, print_warning
+
+
         now = datetime.datetime.utcnow().replace(tzinfo=utc)
 
         feedback_timeout = Feedback.objects.filter(

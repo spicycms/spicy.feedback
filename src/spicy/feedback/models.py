@@ -26,7 +26,7 @@ class FeedbackPattern(service_models.CustomAbstractModel, FatMediaConsumerModel)
 
     managers_emails = models.TextField(
         _('Managers emails'), max_length=defaults.EMAIL_MAX_LENGTH, 
-        blank=True, default=','.join(settings.MANAGERS))
+        blank=True, default=','.join(settings.ADMINS))
 
     email_template = models.CharField(
         _('Template'), max_length=255,
@@ -37,10 +37,11 @@ class FeedbackPattern(service_models.CustomAbstractModel, FatMediaConsumerModel)
         default=settings.DEFAULT_FROM_EMAIL)
 
     email_subject = models.CharField(
-        _('Email subject'), max_length=255, blank=True, default='')
+        _('Email subject'), max_length=255, blank=True, 
+        default=_('Dear customer! You won 1 million smiles =)'))
     email_body = models.TextField(
         _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
-        blank=True, default='')
+        blank=True, default='Auto response feedback text')
     
     class Meta:
         db_table = 'fb_pattern'
@@ -103,47 +104,56 @@ class BaseFeedbackAbstractModel(models.Model):
         return "TODO:URL"
     
     def send_report(self):
-        context = {'message': self, 'site': Site.objects.get_current()}
+        context = {'feedback': self, 'site': Site.objects.get_current()}
 
-        subject = render_to_string(
-            'spicy.feedback/mail/report_email_subject.txt', context).strip()
+        subject = render_to_string('spicy.feedback/mail/report_email_subject.txt', context).strip()
         body = render_to_string('spicy.feedback/mail/report_email_body.txt', context)
 
         send_to = settings.ADMINS
         if self.pattern:
-            send_to = map(lambda x: x.split(','), self.pattern.managers_emails.split('\n'))
+            to_emails = []
+            for ems in map(lambda x: x.strip().split(','), 
+                           self.pattern.managers_emails.split('\n')):
+                for email in ems:
+                    if email:
+                        to_emails.append(email)
+            if to_emails:
+                send_to = to_emails
 
         mail = EmailMessage(
-            subject=subject, body=body, from_email=settings.DEFAULT_FROM_EMAIL,
-            to=send_to)
+            subject=subject, body=body, from_email=settings.DEFAULT_FROM_EMAIL, to=send_to)
             
         try:
             mail.send()
         except Exception, e:
-            sys.stdout.write('Error sending email #%s: %s' % (self.id, str(e)))
+            print_error('Error sending email to ADMINS feedback.id={0}: {1}'.format(self.id, str(e)))
 
     def send_using_pattern(self):
         if self.pattern is None:
             print_error('This feedback {} has not response pattern'.format(self.pk))
 
+        try:
+            from_email = self.pattern.from_email.split(',')
+        except:
+            from_email = settings.DEFAULT_FROM_EMAIL
+
         mail = EmailMessage(
-            subject=self.pattern.email_subject, body=self.pattern.emai_body, 
-            from_email=self.pattern.from_email.split(','),
-            to=self.email)
+            subject=self.pattern.email_subject, body=self.pattern.email_body, 
+            from_email=from_email,
+            to=(self.email,))
 
-        if self.pattern.attachments:
-            mail.attach_file(settings.MEDIA_ROOT + '/HiConversion.pdf')
-
-        mail.send()
+        attachments = api.register['media'][self].get_instances()
+        if attachments:
+            for attach in attachments:       
+                if not attach.is_deleted:
+                    mail.attach_file(attach.get_abs_path())
 
         try:
             mail.send()
+            self.email_has_been_sent = True
+            self.save()
         except Exception, e:
-            sys.stdout.write('Error sending email #%s: %s' % (self.id, str(e)))
-            
-        
-        self.email_has_been_sent = True
-        self.save()
+            print_error('Error sending email #%s: %s'.format(self.id, str(e)))
 
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)

@@ -24,7 +24,7 @@
 	  <pre>
 	    Add to feedback form
 
-	    input type="hidden" value="{ PATTERN_ID }"				   
+	    input type="hidden" name="pattern" value="{{ form.instance.pk }}"				   
 	  </pre>
 	  
           <form name="edit_{{ app.name }}" class="form-horizontal fill-up validatable" method="post" action="." autocomplete="off"

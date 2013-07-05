@@ -1,18 +1,18 @@
 {% load feedback %}{% blocktrans with site_name=site.name %}New message on {{ site_name }}{% endblocktrans %}
 
-{% trans "Sender name" %}: {{ message.name }}
+{% trans "Sender name" %}: {{ feedback.name }}
 
-{% trans "Sender email" %}: {{ message.email }}
+{% trans "Sender email" %}: {{ feedback.email }}
 
-{% trans "Sender phone" %}: {{ message.phone }}
+{% trans "Sender phone" %}: {{ feedback.phone }}
 
-{% trans "URL" %}: {{ message.url }}
+{% trans "URL" %}: {{ feedback.url }}
 
-{% trans "Feedback type" %}: {{ message.get_fb_type_display }}
+{% trans "Feedback pattern" %}: {{ feedback.pattern }}
 
-{% trans "Submit date" %}: {{ message.submit_date }}
+{% trans "Submit date" %}: {{ feedback.submit_date }}
 
-{% trans "IP address" %}: {{ message.ip_address }}
+{% trans "IP address" %}: {{ feedback.ip_address }}
 
-{% trans "Message" %}: {{ message.message }}
+{% trans "Message" %}: {{ feedback.message }}
 

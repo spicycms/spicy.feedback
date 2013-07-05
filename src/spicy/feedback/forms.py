@@ -21,7 +21,8 @@ class PatternForm(forms.ModelForm):
         model = models.FeedbackPattern
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
-            'email_subject', 'email_body', 'email_template'
+            'email_subject', 'email_body', 'email_template',
+            'from_email',
             )
 
 
@@ -30,5 +31,5 @@ class CreatePatternForm(forms.ModelForm):
         model = models.FeedbackPattern
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
-            'email_subject', 'email_body'
+            'email_subject', 'email_body', 'from_email'
             )

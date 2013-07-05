@@ -27,6 +27,9 @@ def new_feedback(request):
             feedback.save()
 
             feedback.send_report()
+            
+            if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
+                feedback.send_using_pattern()                
 
             return {'status': 'success'}
         else:
