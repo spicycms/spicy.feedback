@@ -147,7 +147,6 @@ class BaseFeedbackAbstractModel(models.Model):
             for attach in attachments:       
                 if not attach.is_deleted:
                     mail.attach_file(attach.get_abs_path())
-
         try:
             mail.send()
             self.email_has_been_sent = True
