@@ -63,8 +63,8 @@ class BaseFeedbackAbstractModel(models.Model):
         choices = defaults.STATUS_TYPE_CHOICES,
         default = defaults.STATUS_DEFAULT)
 
-    name = models.CharField(_('Name'), max_length=50)
-    email = models.EmailField(_('Email'), max_length=75)
+    name = models.CharField(_('Name'), max_length=50, blank=True, default='')
+    email = models.EmailField(_('Email'), max_length=255, blank=True, default='')
     phone = models.CharField(
         _('Phone'), max_length=20, blank=True, default='')
 
@@ -129,8 +129,13 @@ class BaseFeedbackAbstractModel(models.Model):
             print_error('Error sending email to ADMINS feedback.id={0}: {1}'.format(self.id, str(e)))
 
     def send_using_pattern(self):
+        if not self.email:
+            print_info('This feedback {} has not email'.format(self.pk))
+            return
+
         if self.pattern is None:
             print_error('This feedback {} has not response pattern'.format(self.pk))
+            return
 
         try:
             from_email = self.pattern.from_email.split(',')
