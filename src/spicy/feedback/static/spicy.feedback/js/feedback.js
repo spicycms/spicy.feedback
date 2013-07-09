@@ -9,13 +9,12 @@ var feedback = function(form_id, popup_id, callback){
     if(validator.checkValidity()){
 	$.post(form.attr('action'), form.serialize(), function(data){
 		if(data.status == 'success'){
-		    form.fadeOut('fast', function(){
-			    if (callback != undefined){
-				return callback();
-			    } else {
-				$('#' + popup_id).html('<p>Спасибо! С вами свяжутся в кратчайший срок.</p>');
-			    }
-			});
+		    if (callback != undefined){
+			return callback();
+		    } else {
+			$('#' + popup_id).html('<p>Спасибо! С вами свяжутся в кратчайший срок.</p>');
+		    }
+
 		    return true;
 		    // Redirect on submit:                                                                                                                                                  
 		    //window.location = 'http://www.example.com/somePage.html';                                                                                                             

@@ -104,6 +104,9 @@ class BaseFeedbackAbstractModel(models.Model):
         return "TODO:URL"
     
     def send_report(self):
+        if settings.DEBUG:
+            print_info('New feedabck {}. Sending report ot ADMIN'.format(self.pk))
+
         context = {'feedback': self, 'site': Site.objects.get_current()}
 
         subject = render_to_string('spicy.feedback/mail/report_email_subject.txt', context).strip()
