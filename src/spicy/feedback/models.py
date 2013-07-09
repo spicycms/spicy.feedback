@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from spicy.mediacenter.abs import FatMediaConsumerModel
 from spicy.core.service import api, models as service_models
-from spicy.utils.printing import print_error
+from spicy.utils.printing import print_error, print_info
 
 from . import defaults
 
