@@ -146,7 +146,7 @@ class BaseFeedbackAbstractModel(models.Model):
             return
 
         try:
-            from_email = self.pattern.from_email.split(',')
+            from_email = self.pattern.from_email
         except:
             from_email = settings.DEFAULT_FROM_EMAIL
 
