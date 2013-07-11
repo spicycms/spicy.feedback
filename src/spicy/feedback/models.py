@@ -149,7 +149,9 @@ class BaseFeedbackAbstractModel(models.Model):
             from_email=from_email,
             to=(self.email,))
 
-        attachments = api.register['media'][self].get_instances()
+        attachments = api.register['media'][self.pattern].get_instances(
+            consumer=self.pattern)
+
         if attachments:
             for attach in attachments:       
                 if not attach.is_deleted:
