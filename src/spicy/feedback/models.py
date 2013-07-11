@@ -1,5 +1,5 @@
 import sys
-
+import traceback
 from bitfield import BitField
 
 from django.conf import settings
@@ -42,6 +42,10 @@ class FeedbackPattern(service_models.CustomAbstractModel, FatMediaConsumerModel)
     email_body = models.TextField(
         _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default='Auto response feedback text')
+
+    def has_attachments(self):
+        return bool(api.register['media'][self.pattern].get_instances(
+            consumer=self.pattern, is_public=True).count())
     
     class Meta:
         db_table = 'fb_pattern'
@@ -150,7 +154,7 @@ class BaseFeedbackAbstractModel(models.Model):
             to=(self.email,))
 
         attachments = api.register['media'][self.pattern].get_instances(
-            consumer=self.pattern)
+            consumer=self.pattern, is_public=True)
 
         if attachments:
             for attach in attachments:       
@@ -161,7 +165,8 @@ class BaseFeedbackAbstractModel(models.Model):
             self.email_has_been_sent = True
             self.save()
         except Exception, e:
-            print_error('Error sending email #%s: %s'.format(self.id, str(e)))
+            print_error('Error sending email #{0}: {1}'.format(self.id, str(e)))
+            print_text(traceback.format_exc())
 
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)
