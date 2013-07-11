@@ -122,7 +122,6 @@ class BaseFeedbackAbstractModel(models.Model):
                         to_emails.append(email)
             if to_emails:
                 send_to = to_emails
-
         mail = EmailMessage(
             subject=subject, body=body, from_email=settings.DEFAULT_FROM_EMAIL, to=send_to)
             
