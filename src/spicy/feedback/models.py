@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from spicy.mediacenter.abs import FatMediaConsumerModel
 from spicy.core.service import api, models as service_models
-from spicy.utils.printing import print_error, print_info
+from spicy.utils.printing import print_error, print_info, print_text
 
 from . import defaults
 
@@ -26,7 +26,8 @@ class FeedbackPattern(service_models.CustomAbstractModel, FatMediaConsumerModel)
 
     managers_emails = models.TextField(
         _('Managers emails'), max_length=defaults.EMAIL_MAX_LENGTH, 
-        blank=True, default=','.join(settings.ADMINS))
+        blank=True, default=','.join([
+                admin_email for admin_name, admin_email in settings.ADMINS]))
 
     email_template = models.CharField(
         _('Template'), max_length=255,
@@ -109,14 +110,14 @@ class BaseFeedbackAbstractModel(models.Model):
     
     def send_report(self):
         if settings.DEBUG:
-            print_info('New feedabck {}. Sending report ot ADMIN'.format(self.pk))
+            print_info('New feedback {}. Sending report to managers'.format(self.pk))
 
         context = {'feedback': self, 'site': Site.objects.get_current()}
 
         subject = render_to_string('spicy.feedback/mail/report_email_subject.txt', context).strip()
         body = render_to_string('spicy.feedback/mail/report_email_body.txt', context)
 
-        send_to = settings.ADMINS
+        send_to = [admin_email for admin_name, admin_email in settings.ADMINS]
         if self.pattern:
             to_emails = []
             for ems in map(lambda x: x.strip().split(','), 
@@ -133,14 +134,15 @@ class BaseFeedbackAbstractModel(models.Model):
             mail.send()
         except Exception, e:
             print_error('Error sending email to ADMINS feedback.id={0}: {1}'.format(self.id, str(e)))
+            print_text(traceback.format_exc())
 
     def send_using_pattern(self):
         if not self.email:
-            print_info('This feedback {} has not email'.format(self.pk))
+            print_info('This feedback {} has no email for customer response generation'.format(self.pk))
             return
 
         if self.pattern is None:
-            print_error('This feedback {} has not response pattern'.format(self.pk))
+            print_error('This feedback {} has no response pattern'.format(self.pk))
             return
 
         try:
@@ -165,7 +167,7 @@ class BaseFeedbackAbstractModel(models.Model):
             self.email_has_been_sent = True
             self.save()
         except Exception, e:
-            print_error('Error sending email #{0}: {1}'.format(self.id, str(e)))
+            print_error('Error sending email id={0}: {1}'.format(self.id, str(e)))
             print_text(traceback.format_exc())
 
     def __unicode__(self):

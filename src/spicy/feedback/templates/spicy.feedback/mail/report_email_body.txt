@@ -1,4 +1,4 @@
-{% load feedback %}{% blocktrans with site_name=site.name %}[{{ feedback.id }}] New message on {{ site_name }}{% endblocktrans %}
+{% load feedback %}{% blocktrans with site_name=site.name feedback_pk=feedback.pk %}[{{ feedback_pk }}] New message on {{ site_name }}{% endblocktrans %}
 
 {% trans "Sender name" %}: {{ feedback.name }}
 

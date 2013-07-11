@@ -1,1 +1,1 @@
-{% blocktrans with site_name=site.name %}[{{ feedback.id }}] New feedback on {{ site_name }}{% endblocktrans %}
+{% blocktrans with site_name=site.name feedback_pk=feedback.pk %}[{{ feedback_pk }}] New feedback on {{ site_name }}{% endblocktrans %}
