@@ -45,8 +45,8 @@ class FeedbackPattern(service_models.CustomAbstractModel, FatMediaConsumerModel)
         blank=True, default='Auto response feedback text')
 
     def has_attachments(self):
-        return bool(api.register['media'][self.pattern].get_instances(
-            consumer=self.pattern, is_public=True).count())
+        return bool(api.register['media'][self].get_instances(
+            consumer=self, is_public=True).count())
     
     class Meta:
         db_table = 'fb_pattern'
