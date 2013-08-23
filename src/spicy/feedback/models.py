@@ -73,6 +73,12 @@ class BaseFeedbackAbstractModel(models.Model):
     phone = models.CharField(
         _('Phone'), max_length=20, blank=True, default='')
 
+    #var1 = models.CharField(_('Var 1'), max_length=255, blank=True, default='')
+    #var2 = models.CharField(_('Var 2'), max_length=255, blank=True, default='')
+    #var3 = models.CharField(_('Var 3'), max_length=255, blank=True, default='')
+
+    #attachment = 
+
     message = models.TextField(
         _('Message'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default='')
@@ -96,7 +102,6 @@ class BaseFeedbackAbstractModel(models.Model):
         ordering = ['-submit_date']
         permissions = [('admin_feedback', 'Admin feedback')]
         abstract = True
-
 
     @models.permalink
     def get_admin_url(self):
@@ -128,7 +133,7 @@ class BaseFeedbackAbstractModel(models.Model):
             if to_emails:
                 send_to = to_emails
         mail = EmailMessage(
-            subject=subject, body=body, from_email=settings.DEFAULT_FROM_EMAIL, to=send_to)
+            subject=subject, body=body, from_email=self.email or settings.DEFAULT_FROM_EMAIL, to=send_to)
             
         try:
             mail.send()
