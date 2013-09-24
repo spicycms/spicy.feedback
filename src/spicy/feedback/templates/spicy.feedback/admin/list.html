@@ -31,6 +31,7 @@
 		  <td>{% nav_order_url nav 'email' _('Email') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'phone' _('Phone') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'submit_date' _('Submit date') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
+          <td>{% trans 'Messages' %}</td>
 		  <td>{% nav_order_url nav 'processing_status' _('Processing status') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'pattern' _('Pattern') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'email_has_been_sent' _('Email has been sent') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>                 
@@ -54,8 +55,9 @@
 		  <td>
                     <a href="{% url 'feedback:admin:edit' obj.pk %}"> {{ obj.phone }}</a>
                   </td>                  
-		  <td>{{ obj.submit_date|date:"j M" }}</td>                  
-		  <td>{{ obj.processing_status }}</td>
+		  <td>{{ obj.submit_date|date:"j M" }}</td>                 
+          <td>{{ obj.message}} </td>
+		  <td>{{ obj.get_processing_status_display }}</td>
 		  <td>
 		    {% if obj.pattern %}
 		    <a href="{% url 'feedback:admin:edit-pattern' obj.pattern.pk %}">{{ obj.pattern.title }}</a>
