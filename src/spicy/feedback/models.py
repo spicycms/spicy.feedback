@@ -73,9 +73,9 @@ class BaseFeedbackAbstractModel(models.Model):
     phone = models.CharField(
         _('Phone'), max_length=20, blank=True, default='')
 
-    #var1 = models.CharField(_('Var 1'), max_length=255, blank=True, default='')
-    #var2 = models.CharField(_('Var 2'), max_length=255, blank=True, default='')
-    #var3 = models.CharField(_('Var 3'), max_length=255, blank=True, default='')
+    var1 = models.CharField(_('Var 1'), max_length=255, blank=True, default='')
+    var2 = models.CharField(_('Var 2'), max_length=255, blank=True, default='')
+    var3 = models.CharField(_('Var 3'), max_length=255, blank=True, default='')
 
     #attachment = 
 

@@ -23,11 +23,12 @@ class FeedbackForm(forms.ModelForm):
         if defaults.USE_FEEDBACK_CAPTCHA:
             fields = (
                 'name', 'email', 'phone', 'message', 'url',
-                'company_name', 'pattern','captcha')
+                'company_name', 'pattern', 'var1',
+                'var2', 'var3', 'captcha')
         else:
             fields = (
                 'name', 'email', 'phone', 'message', 'url',
-                'company_name', 'pattern')
+                'company_name', 'pattern', 'var1', 'var2', 'var3')
 
 class AjaxExampleForm(CreateView):
     template_name = ''

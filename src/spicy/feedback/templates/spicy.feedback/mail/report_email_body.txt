@@ -16,3 +16,9 @@
 
 {% trans "Message" %}: {{ feedback.message }}
 
+{% trans "Var1" %}: {{ feedback.var1 }}
+
+{% trans "Var2" %}: {{ feedback.var2 }}
+
+{% trans "Var3" %}: {{ feedback.var3 }}
+
