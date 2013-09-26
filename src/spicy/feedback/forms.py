@@ -60,7 +60,7 @@ class AjaxExampleForm(CreateView):
 class EditFeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
-        fields = ('processing_status',)
+        exclude = ('site', 'pattern', 'email_has_been_sent', 'ip_address')
 
 
 class PatternForm(forms.ModelForm):
