@@ -9,14 +9,13 @@ MESSAGES_PER_MINUTE = getattr(settings, 'MESSAGES_PER_MINUTE', 10)
 SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT = getattr(settings, 'SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT', True)
 CREATE_NEW_ACCOUT = getattr(settings, 'CREATE_NEW_ACCOUNT', False)
 
-IS_PROCESSED, OK, FAIL, BINGO  = range(4)
+IS_PROCESSED, NEW_MAIL, FAIL,  = range(3)
 STATUS_TYPE_CHOICES = getattr(settings, 'STATUS_TYPE_CHOICES', (
-    (IS_PROCESSED, _('IS_PROCESSED')),
-    (OK, _('Ok')),
+    (IS_PROCESSED, _('Is Processed')),
+    (NEW_MAIL, _('New Mail')),
     (FAIL, _('Fail')),
-    (BINGO, _('Bingo!')),
 ))
-STATUS_DEFAULT = IS_PROCESSED
+STATUS_DEFAULT = NEW_MAIL 
 
 CUSTOM_FEEDBACK_FORM = getattr(settings, 'CUSTOM_FEEDBACK_FORM', 'spicy.feedback.forms.FeedbackForm')
 CUSTOM_FEEDBACK_MODEL = getattr(settings, 'CUSTOM_FEEDBACK_MODEL', 'feedback.Feedback')

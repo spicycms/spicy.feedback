@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-29 13:03+0400\n"
+"POT-Creation-Date: 2013-09-27 12:56+0400\n"
 "PO-Revision-Date: 2011-04-19 22:28+0400\n"
 "Last-Translator: Stas Shtin<antisvin@gmail.com>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Language: ru_RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Source-Language: C\n"
 
 #: admin.py:20
@@ -40,20 +41,16 @@ msgid "All objects have been deleted successfully"
 msgstr "Все обекты успешно удаленны"
 
 #: defaults.py:14
-msgid "IS_PROCESSED"
-msgstr "ОБРАБОТАН"
+msgid "Is Processed"
+msgstr "Обработано"
 
 #: defaults.py:15
-msgid "Ok"
-msgstr "Ок"
+msgid "New Mail"
+msgstr "Новое письмо"
 
 #: defaults.py:16
 msgid "Fail"
-msgstr "Фэйл"
-
-#: defaults.py:17
-msgid "Bingo!"
-msgstr "Бинго!"
+msgstr "Ошибка (неверные контактные данные)"
 
 #: forms.py:19
 msgid "Captcha"
@@ -95,7 +92,7 @@ msgstr "Тело письма"
 msgid "Site"
 msgstr "Сайт"
 
-#: models.py:66 templates/spicy.feedback/admin/list.html:34
+#: models.py:66 templates/spicy.feedback/admin/list.html:35
 msgid "Processing status"
 msgstr "Статус обработки"
 
@@ -110,6 +107,18 @@ msgstr "Адрес электронной почты"
 #: models.py:74 templates/spicy.feedback/admin/list.html:32
 msgid "Phone"
 msgstr "Телефон"
+
+#: models.py:76
+msgid "Var 1"
+msgstr ""
+
+#: models.py:77
+msgid "Var 2"
+msgstr ""
+
+#: models.py:78
+msgid "Var 3"
+msgstr ""
 
 #: models.py:83 templates/spicy.feedback/mail/report_email_body.txt:17
 msgid "Message"
@@ -133,12 +142,12 @@ msgstr "URL сайта"
 msgid "Edit"
 msgstr "Редактировать"
 
-#: templates/spicy.feedback/admin/edit.html:39
+#: templates/spicy.feedback/admin/edit.html:30
 #: templates/spicy.feedback/admin/edit_pattern.html:41
 msgid "Delete"
 msgstr "Удалить"
 
-#: templates/spicy.feedback/admin/edit.html:42
+#: templates/spicy.feedback/admin/edit.html:33
 #: templates/spicy.feedback/admin/edit_pattern.html:44
 msgid "Save changes"
 msgstr "Сохранить изменения"
@@ -170,11 +179,15 @@ msgstr "Выделить все"
 msgid "Id"
 msgstr "Идентификатор"
 
-#: templates/spicy.feedback/admin/list.html:35
+#: templates/spicy.feedback/admin/list.html:34
+msgid "Messages"
+msgstr "Сообщения"
+
+#: templates/spicy.feedback/admin/list.html:36
 msgid "Pattern"
 msgstr "Шаблон"
 
-#: templates/spicy.feedback/admin/list.html:36
+#: templates/spicy.feedback/admin/list.html:37
 msgid "Email has been sent"
 msgstr "Письмо было отправлено"
 
@@ -223,10 +236,31 @@ msgstr "URL"
 msgid "Feedback pattern"
 msgstr "Тип обратной связи"
 
+#: templates/spicy.feedback/mail/report_email_body.txt:19
+msgid "Var1"
+msgstr ""
+
+#: templates/spicy.feedback/mail/report_email_body.txt:21
+msgid "Var2"
+msgstr ""
+
+#: templates/spicy.feedback/mail/report_email_body.txt:23
+msgid "Var3"
+msgstr ""
+
 #: templates/spicy.feedback/mail/report_email_subject.txt:1
 #, python-format
 msgid "[%(feedback_pk)s] New feedback on %(site_name)s"
 msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
+
+#~ msgid "IS_PROCESSED"
+#~ msgstr "ОБРАБОТАН"
+
+#~ msgid "Ok"
+#~ msgstr "Ок"
+
+#~ msgid "Bingo!"
+#~ msgstr "Бинго!"
 
 #~ msgid "Password"
 #~ msgstr "Пароль"
@@ -431,9 +465,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Map"
 #~ msgstr "Карта"
-
-#~ msgid "New file"
-#~ msgstr "Новый файл"
 
 #~ msgid "Replace all thumb sizes including manual uploads"
 #~ msgstr "Заменить все размеры тамбнейлов, включая загруженные вручную"
@@ -1690,11 +1721,11 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgstr "Авторы"
 
 #~ msgid ""
-#~ "User <b>is banned</b> for breaking terms of <a "
-#~ "href=\"/help/user-agreement/\">user agreement</a>"
+#~ "User <b>is banned</b> for breaking terms of <a href=\"/help/user-"
+#~ "agreement/\">user agreement</a>"
 #~ msgstr ""
-#~ "Пользователь <b>заблокирован</b> за нарушение<a "
-#~ "href='/help/user-agreement/'>пользовательского соглашения</a>"
+#~ "Пользователь <b>заблокирован</b> за нарушение<a href='/help/user-"
+#~ "agreement/'>пользовательского соглашения</a>"
 
 #~ msgid "Author's contacts"
 #~ msgstr "Контакты автора"
@@ -2058,9 +2089,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "My drafts"
 #~ msgstr "Мои черновики"
-
-#~ msgid "Messages"
-#~ msgstr "Сообщения"
 
 #~ msgid "Friends"
 #~ msgstr "Друзья"
@@ -2629,8 +2657,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Storage is empty or wrong configured mediacentee.defaults settings"
 #~ msgstr ""
-#~ "Хранилище пусто или неправильно сконфигурировано в настройках "
-#~ "mediacenter.defaults"
+#~ "Хранилище пусто или неправильно сконфигурировано в настройках mediacenter."
+#~ "defaults"
 
 #~ msgid "Select"
 #~ msgstr "Выбрать"
@@ -2751,8 +2779,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ "User <b>is banned</b> for breaking <a href='/help/user-agreement/'>user "
 #~ "agreement</a>"
 #~ msgstr ""
-#~ "Пользователь <b>заблокирован</b> за нарушение<a "
-#~ "href='/help/user-agreement/'>пользовательского соглашения</a> "
+#~ "Пользователь <b>заблокирован</b> за нарушение<a href='/help/user-"
+#~ "agreement/'>пользовательского соглашения</a> "
 
 #~ msgid ""
 #~ "This materials are <b>not published</b>. After publishing, this article "
@@ -2793,9 +2821,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ "could have arrived in your Spam folder, make sure to check it."
 #~ msgstr ""
 #~ "Пожалуйста, проверти вашу электронную почту <b>%(email)s</b>. Вам было "
-#~ "отправлено письмо со ссылкой для активации профайла. "
-#~ "<br/><b>Внимание!</b> Письмо могло оказаться в папке Спам, обязательно "
-#~ "проверьте её."
+#~ "отправлено письмо со ссылкой для активации профайла. <br/><b>Внимание!</"
+#~ "b> Письмо могло оказаться в папке Спам, обязательно проверьте её."
 
 #~ msgid "Future articles %(username)s"
 #~ msgstr "Будущие статьи %(username)s "
@@ -2847,8 +2874,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ "I have read and accepted <a href=\"/help/user-agreement/\">user "
 #~ "agreement</a>"
 #~ msgstr ""
-#~ "Я прочитал и согласен с правилами <a "
-#~ "href=\"/help/user_agreement/\">пользовательского соглашения</a>"
+#~ "Я прочитал и согласен с правилами <a href=\"/help/user_agreement/"
+#~ "\">пользовательского соглашения</a>"
 
 #~ msgid "Password change"
 #~ msgstr "Изменить пароль"
@@ -3064,9 +3091,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "No stages"
 #~ msgstr "Нет этапов"
-
-#~ msgid "Process"
-#~ msgstr "Процесс"
 
 #~ msgid "Accept stage"
 #~ msgstr "Принять этап"
@@ -6318,8 +6342,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid ""
 #~ "\n"
 #~ "<h1>Activation</h1>\n"
-#~ "<p>Your account is now activated. Go <a href=\"/\">here</a> to "
-#~ "continue.</p>\n"
+#~ "<p>Your account is now activated. Go <a href=\"/\">here</a> to continue.</"
+#~ "p>\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
@@ -6399,8 +6423,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid ""
 #~ "Your account is now activated. Go <a href=\"/\">here</a> to continue."
 #~ msgstr ""
-#~ "Ваша учетная запись была активирована. Перейдите <a href=\"/\">по "
-#~ "ссылке</a> чтобы продолжить."
+#~ "Ваша учетная запись была активирована. Перейдите <a href=\"/\">по ссылке</"
+#~ "a> чтобы продолжить."
 
 #~ msgid "Thank you"
 #~ msgstr "Спасибо"
