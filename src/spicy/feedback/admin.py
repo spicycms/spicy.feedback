@@ -37,13 +37,13 @@ class AdminApp(AdminAppBase):
         return dict(app=self, *args, **kwargs)
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.create_feedbackpattern')
 @render_to('create.html', use_admin=True)
 def create(request):
     message = ''
 
     pattern = None
-    
+
     if request.method == 'POST':
         form = forms.CreatePatternForm(request.POST)
         if form.is_valid():
@@ -60,13 +60,13 @@ def create(request):
     return dict(form=form, message=message)
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.change_feedbackpattern')
 @render_to('edit_pattern.html', use_admin=True)
 def edit_pattern(request, pattern_id):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
-    
+
     if request.method == 'POST':
         form = forms.PatternForm(request.POST, instance=pattern)
         # fromset
@@ -80,37 +80,38 @@ def edit_pattern(request, pattern_id):
 
     return dict(form=form, message=message)
 
-@is_staff(required_perms='feedback.admin_feedback')
+
+@is_staff(required_perms='feedback.change_feedbackpattern')
 @render_to('edit_pattern_media.html', use_admin=True)
 def pattern_media(request, pattern_id):
     status = ''
     message = ''
-    
+
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
     form = forms.PatternForm(instance=pattern)
 
     return dict(status=status, message=message, form=form)
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.change_feedback')
 @render_to('list.html', use_admin=True)
 def feedback_list(request):
     nav = NavigationFilter(request)
     paginator = nav.get_queryset_with_paginator(Feedback)
-    objects_list = paginator.current_page.object_list        
+    objects_list = paginator.current_page.object_list
     return {'paginator': paginator, 'objects_list': objects_list, 'nav': nav}
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.change_feedback')
 @render_to('patterns.html', use_admin=True)
 def patterns(request):
     nav = NavigationFilter(request)
     paginator = nav.get_queryset_with_paginator(models.FeedbackPattern)
-    objects_list = paginator.current_page.object_list        
+    objects_list = paginator.current_page.object_list
     return {'paginator': paginator, 'objects_list': objects_list, 'nav': nav}
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.change_feedback')
 @render_to('edit.html', use_admin=True)
 def detail(request, feedback_id):
     feedback = get_object_or_404(Feedback, pk=feedback_id)
@@ -126,7 +127,7 @@ def detail(request, feedback_id):
     return dict(form=form)
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.delete_feedback')
 @render_to('delete.html', use_admin=True)
 def delete(request, feedback_id):
     message = ''
@@ -142,7 +143,7 @@ def delete(request, feedback_id):
     return dict(message=unicode(message), status=status, instance=instance)
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.delete_feedbackpattern')
 @render_to('delete.html', use_admin=True)
 def delete_pattern(request, pattern_id):
     message = ''
@@ -158,14 +159,14 @@ def delete_pattern(request, pattern_id):
     return dict(message=unicode(message), status=status, instance=instance)
 
 
-@is_staff(required_perms='feedback.admin_feedback')
+@is_staff(required_perms='feedback.delete_feedback')
 @ajax_request
 def delete_list(request):
     message = ''
     status = 'ok'
     try:
         for message in Feedback.objects.filter(
-            id__in=request.POST.getlist('id')):
+                id__in=request.POST.getlist('id')):
             message.delete()
         message = _('All objects have been deleted successfully')
     except KeyError:
