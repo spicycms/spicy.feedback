@@ -37,7 +37,7 @@ class AdminApp(AdminAppBase):
         return dict(app=self, *args, **kwargs)
 
 
-@is_staff(required_perms='feedback.create_feedbackpattern')
+@is_staff(required_perms='feedback.add_feedbackpattern')
 @render_to('create.html', use_admin=True)
 def create(request):
     message = ''
