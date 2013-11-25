@@ -6,16 +6,19 @@ USE_FEEDBACK_CAPTCHA = getattr(settings, 'USE_FEEDBACK_CAPTCHA', False)
 EMAIL_MAX_LENGTH = getattr(settings, 'EMAIL_MAX_LENGTH', 3000)
 MESSAGES_PER_MINUTE = getattr(settings, 'MESSAGES_PER_MINUTE', 10)
 
-SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT = getattr(settings, 'SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT', True)
+SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT = getattr(
+    settings, 'SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT', True)
 CREATE_NEW_ACCOUT = getattr(settings, 'CREATE_NEW_ACCOUNT', False)
 
-IS_PROCESSED, NEW_MAIL, FAIL,  = range(3)
+IS_PROCESSED, NEW_MAIL, FAIL = range(3)
 STATUS_TYPE_CHOICES = getattr(settings, 'STATUS_TYPE_CHOICES', (
     (IS_PROCESSED, _('Is Processed')),
     (NEW_MAIL, _('New Mail')),
     (FAIL, _('Fail')),
 ))
-STATUS_DEFAULT = NEW_MAIL 
+STATUS_DEFAULT = NEW_MAIL
 
-CUSTOM_FEEDBACK_FORM = getattr(settings, 'CUSTOM_FEEDBACK_FORM', 'spicy.feedback.forms.FeedbackForm')
-CUSTOM_FEEDBACK_MODEL = getattr(settings, 'CUSTOM_FEEDBACK_MODEL', 'feedback.Feedback')
+CUSTOM_FEEDBACK_FORM = getattr(
+    settings, 'CUSTOM_FEEDBACK_FORM', 'spicy.feedback.forms.FeedbackForm')
+CUSTOM_FEEDBACK_MODEL = getattr(
+    settings, 'CUSTOM_FEEDBACK_MODEL', 'feedback.Feedback')

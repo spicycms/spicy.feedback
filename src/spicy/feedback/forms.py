@@ -1,14 +1,12 @@
-from django import forms
-from spicy.utils.models import get_custom_model_class
-from captcha.fields import CaptchaField
-from django.utils.translation import ugettext_lazy as _
-
-from django.views.generic.edit import CreateView
-from captcha.models import CaptchaStore
-from captcha.helpers import captcha_image_url
-from django.http import HttpResponse
 import json
-
+from captcha.fields import CaptchaField
+from captcha.helpers import captcha_image_url
+from captcha.models import CaptchaStore
+from django import forms
+from django.http import HttpResponse
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic.edit import CreateView
+from spicy.utils.models import get_custom_model_class
 from . import defaults, models
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
@@ -30,6 +28,7 @@ class FeedbackForm(forms.ModelForm):
                 'name', 'email', 'phone', 'message', 'url',
                 'company_name', 'pattern', 'var1', 'var2', 'var3')
 
+
 class AjaxExampleForm(CreateView):
     template_name = ''
     form_class = FeedbackForm
@@ -41,9 +40,11 @@ class AjaxExampleForm(CreateView):
             to_json_responce['form_errors'] = form.errors
 
             to_json_responce['new_cptch_key'] = CaptchaStore.generate_key()
-            to_json_responce['new_cptch_image'] =                                                  captcha_image_url(to_json_responce['new_cptch_key'])
+            to_json_responce['new_cptch_image'] = captcha_image_url(
+                to_json_responce['new_cptch_key'])
 
-            return HttpResponse(json.dumps(to_json_responce), content_type='application/json')
+            return HttpResponse(
+                json.dumps(to_json_responce), content_type='application/json')
 
     def form_valid(self, form):
         form.save()
@@ -52,9 +53,11 @@ class AjaxExampleForm(CreateView):
             to_json_responce['status'] = 1
 
             to_json_responce['new_cptch_key'] = CaptchaStore.generate_key()
-            to_json_responce['new_cptch_image'] =                                                  captcha_image_url(to_json_responce['new_cptch_key'])
+            to_json_responce['new_cptch_image'] = captcha_image_url(
+                to_json_responce['new_cptch_key'])
 
-            return HttpResponse(json.dumps(to_json_responce), content_type='application/json')
+            return HttpResponse(
+                json.dumps(to_json_responce), content_type='application/json')
 
 
 class EditFeedbackForm(forms.ModelForm):
@@ -69,8 +72,7 @@ class PatternForm(forms.ModelForm):
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
             'email_subject', 'email_body', 'email_template',
-            'from_email',
-            )
+            'from_email')
 
 
 class CreatePatternForm(forms.ModelForm):
@@ -78,5 +80,4 @@ class CreatePatternForm(forms.ModelForm):
         model = models.FeedbackPattern
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
-            'email_subject', 'email_body', 'from_email'
-            )
+            'email_subject', 'email_body', 'from_email')
