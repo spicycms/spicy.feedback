@@ -1,10 +1,7 @@
 from django import http
-from spicy.core.siteskin.decorators import render_to, ajax_request
+from spicy.core.siteskin.decorators import ajax_request
 from spicy.utils import load_module
-from spicy.core.profile.decorators import is_staff
-
-from . import defaults, forms
-
+from . import defaults
 
 
 @ajax_request
@@ -28,9 +25,9 @@ def new_feedback(request):
             feedback.save()
 
             feedback.send_report()
-            
+
             if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
-                feedback.send_using_pattern()                
+                feedback.send_using_pattern()
 
             return {'status': 'success'}
         else:

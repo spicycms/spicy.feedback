@@ -3,13 +3,11 @@ from django import http
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-
 from spicy.core.admin.conf import AdminAppBase, AdminLink, Perms
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
 from spicy.utils import NavigationFilter
 from spicy.utils.models import get_custom_model_class
-
 from . import models, defaults, forms
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
@@ -115,16 +113,19 @@ def patterns(request):
 @render_to('edit.html', use_admin=True)
 def detail(request, feedback_id):
     feedback = get_object_or_404(Feedback, pk=feedback_id)
+    message = ''
+    status = 'ok'
     if request.method == 'POST':
         form = forms.EditFeedbackForm(request.POST, instance=feedback)
         if form.is_valid():
             feedback = form.save()
         else:
-            message = 'Form validation Error: ' + str(form.errors)
+            status = 'error'
+            message = _('Form validation Error: ') + unicode(form.errors)
     else:
         form = forms.EditFeedbackForm(instance=feedback)
 
-    return dict(form=form)
+    return dict(form=form, message=message, status=status)
 
 
 @is_staff(required_perms='feedback.delete_feedback')
