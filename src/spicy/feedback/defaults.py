@@ -20,6 +20,10 @@ STATUS_DEFAULT = NEW_MAIL
 
 CUSTOM_FEEDBACK_FORM = getattr(
     settings, 'CUSTOM_FEEDBACK_FORM', 'spicy.feedback.forms.FeedbackForm')
+
+PATTERN_TEMPLATES_PATH = getattr(
+    settings, 'PATTERN_TEMPLATES_PATH', 'spicy.feedback/patterns')
+
 USE_DEFAULT_FEEDBACK = getattr(settings, 'USE_DEFAULT_FEEDBACK', True)
 CUSTOM_FEEDBACK_MODEL = (
     'feedback.Feedback' if USE_DEFAULT_FEEDBACK else

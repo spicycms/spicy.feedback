@@ -72,7 +72,7 @@ class PatternForm(forms.ModelForm):
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
             'email_subject', 'email_body', 'email_template',
-            'from_email')
+            'from_email', 'use_captcha', 'auto_signup', 'html_response')
 
 
 class CreatePatternForm(forms.ModelForm):
