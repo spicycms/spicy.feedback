@@ -103,7 +103,7 @@ class BaseFeedbackAbstractModel(models.Model):
             print_error(
                 'This feedback {} has no response pattern'.format(self.pk))
             return
-                 
+
         mail = self.pattern.get_mail(self)
 
         try:
@@ -117,6 +117,3 @@ class BaseFeedbackAbstractModel(models.Model):
 
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)
-
-
-

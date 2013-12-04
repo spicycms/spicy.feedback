@@ -5,7 +5,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from spicy.mediacenter.abs import FatMediaConsumerModel
-from spicy.core.profile.implementation import Profile
+from spicy.core.profile import defaults as pf_defaults
 from spicy.core.service import api, models as service_models
 from spicy import utils
 from . import abs, defaults
@@ -54,6 +54,8 @@ class FeedbackPattern(
             from_email = settings.DEFAULT_FROM_EMAIL
 
         if self.auto_signup:
+            Profile = utils.get_custom_model_class(
+                pf_defaults.CUSTOM_USER_MODEL)
             Profile.objects.create_inactive_user(feedback.email)
 
         mail = EmailMultiAlternatives(
