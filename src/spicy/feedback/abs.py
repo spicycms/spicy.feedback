@@ -2,7 +2,7 @@ import traceback
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
@@ -20,6 +20,7 @@ class BaseFeedbackAbstractModel(models.Model):
         Site, verbose_name=_('Site'), default=Site.objects.get_current)
     pattern = models.ForeignKey(
         'feedback.FeedbackPattern', blank=True, null=True)
+
     email_has_been_sent = models.BooleanField(default=False)
     processing_status = models.PositiveSmallIntegerField(
         _('Processing status'), max_length=1,
@@ -106,23 +107,9 @@ class BaseFeedbackAbstractModel(models.Model):
             print_error(
                 'This feedback {} has no response pattern'.format(self.pk))
             return
+                 
+        mail = self.pattern.get_mail(self)
 
-        try:
-            from_email = self.pattern.from_email
-        except:
-            from_email = settings.DEFAULT_FROM_EMAIL
-
-        mail = EmailMessage(
-            subject=self.pattern.email_subject, body=self.pattern.email_body,
-            from_email=from_email, to=(self.email,))
-
-        attachments = api.register['media'][self.pattern].get_instances(
-            consumer=self.pattern, is_public=True)
-
-        if attachments:
-            for attach in attachments:
-                if not attach.is_deleted:
-                    mail.attach_file(attach.get_abs_path())
         try:
             mail.send()
             self.email_has_been_sent = True

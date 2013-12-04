@@ -25,6 +25,16 @@
         <i class="icon-list-alt"></i> {% trans "All patterns" %}
       </a>
     </li>
+    <li>
+      <a href="{% url 'feedback:admin:create-var' %}">
+        <i class="icon-list-alt"></i> {% trans "Create variable" %}
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'feedback:admin:variables' %}">
+        <i class="icon-list-alt"></i> {% trans "Email variables" %}
+      </a>    
+    </li>
   </ul>
 </li>
 

@@ -16,6 +16,9 @@ class FeedbackForm(forms.ModelForm):
     if defaults.USE_FEEDBACK_CAPTCHA:
         captcha = CaptchaField(label=_('Captcha'))
 
+    # TODO
+    # check pattern.use_captcha instead defaults.USE_FEEDBACK_CAPTCHA
+
     class Meta:
         model = Feedback
         if defaults.USE_FEEDBACK_CAPTCHA:
@@ -72,7 +75,7 @@ class PatternForm(forms.ModelForm):
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
             'email_subject', 'email_body', 'email_template',
-            'from_email', 'use_captcha', 'auto_signup', 'html_response')
+            'from_email', 'use_captcha', 'auto_signup',)
 
 
 class CreatePatternForm(forms.ModelForm):
@@ -81,3 +84,9 @@ class CreatePatternForm(forms.ModelForm):
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
             'email_subject', 'email_body', 'from_email')
+
+
+class PatternVariable(forms.ModelForm):
+    class Meta:
+        model = models.PatternVariable
+        fields = ('name', 'value',)
