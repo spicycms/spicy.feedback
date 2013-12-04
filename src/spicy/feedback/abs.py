@@ -2,19 +2,15 @@ import traceback
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
-from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMessage
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
-from spicy.core.service import api
 from spicy.utils.printing import print_error, print_info, print_text
 from . import defaults
 
 
 class BaseFeedbackAbstractModel(models.Model):
-    """
-    An abstract base feedback class
-    """
     # Metadata about the feedback
     site = models.ForeignKey(
         Site, verbose_name=_('Site'), default=Site.objects.get_current)
@@ -34,20 +30,21 @@ class BaseFeedbackAbstractModel(models.Model):
     var2 = models.CharField(_('Var 2'), max_length=255, blank=True, default='')
     var3 = models.CharField(_('Var 3'), max_length=255, blank=True, default='')
     message = models.TextField(
-        _('Message'),  max_length=defaults.EMAIL_MAX_LENGTH, blank=True,
-        default='')
+        _('Message'),  max_length=defaults.EMAIL_MAX_LENGTH,
+        blank=True, default='')
     submit_date = models.DateTimeField(_('Submit date'), auto_now_add=True)
     ip_address = models.IPAddressField(_('IP address'), blank=True, null=True)
     company_name = models.CharField(
-        _('Company name'), max_length=100, blank=True, default='')
+        'Company name', max_length=100, blank=True, default='')
     url = models.URLField(_('Site URL'), blank=True, default='')
 
     on_site = CurrentSiteManager()
     objects = models.Manager()
 
     class Meta:
-        ordering = ['-submit_date']
         db_table = 'fb_feedback'
+        ordering = ['-submit_date']
+        permissions = [('admin_feedback', 'Admin feedback')]
         abstract = True
 
     @models.permalink
@@ -59,7 +56,7 @@ class BaseFeedbackAbstractModel(models.Model):
         Get a URL suitable for redirecting to the content object.
         """
         return "TODO:URL"
-
+    
     def send_report(self):
         if settings.DEBUG:
             print_info(
@@ -99,8 +96,7 @@ class BaseFeedbackAbstractModel(models.Model):
         if not self.email:
             print_info(
                 'This feedback {} has no email for customer response '
-                'Generation'.format(
-                    self.pk))
+                'generation'.format(self.pk))
             return
 
         if self.pattern is None:
@@ -121,3 +117,6 @@ class BaseFeedbackAbstractModel(models.Model):
 
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)
+
+
+
