@@ -83,7 +83,7 @@ class CreatePatternForm(forms.ModelForm):
         model = models.FeedbackPattern
         fields = (
             'title', 'auto_response_timeout', 'managers_emails',
-            'email_subject', 'email_body', 'from_email')
+            'email_subject', 'email_body', 'from_email', 'email_template')
 
 
 class PatternVariable(forms.ModelForm):
