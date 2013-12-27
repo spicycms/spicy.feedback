@@ -1,23 +1,44 @@
-import traceback
-from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
-from django.core.mail import EmailMessage
 from django.db import models
-from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
-from spicy.utils.printing import print_error, print_info, print_text
+from spicy import utils
 from . import defaults
 
 
-class BaseFeedbackAbstractModel(models.Model):
-    # Metadata about the feedback
+def backend_factory(setting, class_name, child_methods=()):
+    bases = ()
+    backends = []
+    for backend in setting:
+        backend_class = utils.load_module(backend + '.' + class_name)
+        bases += (backend_class, )
+        backends.append(backend_class)
+
+    def child_method(name):
+        def _inner(self):
+            for backend in self.backends:
+                return getattr(self, name)(self)
+
+    attrs = dict(backends=backends, __module__=__name__)
+    for method in child_methods:
+        attrs[method] = child_method(method)
+
+    class Meta:
+        abstract = True
+    attrs['Meta'] = Meta
+
+    return type('DynamicBackendFeedback', bases, attrs)
+
+DynamicBackendFeedback = backend_factory(
+    defaults.FEEDBACK_BACKENDS, 'Feedback')
+
+
+class BaseFeedbackAbstractModel(DynamicBackendFeedback):
     site = models.ForeignKey(
         Site, verbose_name=_('Site'), default=Site.objects.get_current)
     pattern = models.ForeignKey(
         'feedback.FeedbackPattern', blank=True, null=True)
 
-    email_has_been_sent = models.BooleanField(default=False)
     processing_status = models.PositiveSmallIntegerField(
         _('Processing status'), max_length=1,
         choices=defaults.STATUS_TYPE_CHOICES, default=defaults.STATUS_DEFAULT)
@@ -56,64 +77,10 @@ class BaseFeedbackAbstractModel(models.Model):
         Get a URL suitable for redirecting to the content object.
         """
         return "TODO:URL"
-    
-    def send_report(self):
-        if settings.DEBUG:
-            print_info(
-                'New feedback {}. Sending report to managers'.format(self.pk))
-
-        context = {'feedback': self, 'site': Site.objects.get_current()}
-
-        subject = render_to_string(
-            'spicy.feedback/mail/report_email_subject.txt', context).strip()
-        body = render_to_string(
-            'spicy.feedback/mail/report_email_body.txt', context)
-
-        send_to = [admin_email for admin_name, admin_email in settings.ADMINS]
-        if self.pattern:
-            to_emails = []
-            for ems in (
-                    x.strip().split(',') for x in
-                    self.pattern.managers_emails.split('\n')):
-                for email in ems:
-                    if email:
-                        to_emails.append(email)
-            if to_emails:
-                send_to = to_emails
-        mail = EmailMessage(
-            subject=subject, body=body,
-            from_email=self.email or settings.DEFAULT_FROM_EMAIL, to=send_to)
-
-        try:
-            mail.send()
-        except Exception, e:
-            print_error(
-                'Error sending email to ADMINS feedback.id={0}: {1}'.format(
-                    self.id, str(e)))
-            print_text(traceback.format_exc())
-
-    def send_using_pattern(self):
-        if not self.email:
-            print_info(
-                'This feedback {} has no email for customer response '
-                'generation'.format(self.pk))
-            return
-
-        if self.pattern is None:
-            print_error(
-                'This feedback {} has no response pattern'.format(self.pk))
-            return
-
-        mail = self.pattern.get_mail(self)
-
-        try:
-            mail.send()
-            self.email_has_been_sent = True
-            self.save()
-        except Exception, e:
-            print_error(
-                'Error sending email id={0}: {1}'.format(self.id, str(e)))
-            print_text(traceback.format_exc())
 
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)
+
+BasePattern = backend_factory(
+    defaults.FEEDBACK_BACKENDS, 'Pattern',
+    child_methods=('send_report', 'send_to_clients'))

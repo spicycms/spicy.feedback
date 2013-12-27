@@ -28,3 +28,6 @@ USE_DEFAULT_FEEDBACK = getattr(settings, 'USE_DEFAULT_FEEDBACK', True)
 CUSTOM_FEEDBACK_MODEL = (
     'feedback.Feedback' if USE_DEFAULT_FEEDBACK else
     settings.CUSTOM_FEEDBACK_MODEL)
+
+FEEDBACK_BACKENDS = getattr(
+    settings, 'FEEDBACK_BACKENDS', ('spicy.feedback.backends.email',))

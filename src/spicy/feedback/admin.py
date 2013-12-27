@@ -1,13 +1,13 @@
 from django.conf import settings
 from django import http
-from django.shortcuts import get_object_or_404
+from django.forms import ModelForm
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.admin.conf import AdminAppBase, AdminLink, Perms
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
-from spicy.utils import NavigationFilter
-from spicy.utils.models import get_custom_model_class
+from spicy.utils import NavigationFilter, load_module, get_custom_model_class
 from . import models, defaults, forms
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
@@ -23,6 +23,8 @@ class AdminApp(AdminAppBase):
         AdminLink('feedback:admin:patterns', _('All patterns')),
         AdminLink('feedback:admin:index', _('All feedbacks')),
     )
+
+    create = AdminLink('feedback:admin:create', _('Create pattern'),)
 
     perms = Perms(view=[],  write=[], manage=[])
 
@@ -43,7 +45,7 @@ def create(request):
     pattern = None
 
     if request.method == 'POST':
-        form = forms.CreatePatternForm(request.POST)
+        form = forms.PatternForm(request.POST)
         if form.is_valid():
             pattern = form.save()
         else:
@@ -53,30 +55,52 @@ def create(request):
             return http.HttpResponseRedirect(
                 reverse('feedback:admin:edit-pattern', args=[pattern.pk]))
     else:
-        form = forms.CreatePatternForm()
+        form = forms.PatternForm()
 
     return dict(form=form, message=message)
 
 
 @is_staff(required_perms='feedback.change_feedbackpattern')
 @render_to('edit_pattern.html', use_admin=True)
-def edit_pattern(request, pattern_id):
+def edit_pattern(request, pattern_id, backend_name=None):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
+    backend_modules = [
+        load_module(backend) for backend in defaults.FEEDBACK_BACKENDS]
+    backends = [
+        (backend.admin_form[0], backend.__name__.rsplit('.', 1)[-1])
+        for backend in backend_modules if backend.admin_form]
+    help_text = None
+    if backend_name:
+        for backend in backend_modules:
+            if backend.__name__.rsplit('.', 1)[-1] == backend_name:
+                tab = backend_name
+                title = backend.admin_form[0]
+
+                class Meta:
+                    model = models.FeedbackPattern
+                    fields = backend.admin_form[1]
+                Form = type(
+                    'CustomFeedback', (ModelForm,), {'Meta': Meta})
+                help_text = getattr(backend, 'admin_help', None)
+    else:
+        Form = forms.PatternForm
+        tab = 'edit'
+        title = _('Edit pattern: %s') % pattern
 
     if request.method == 'POST':
-        form = forms.PatternForm(request.POST, instance=pattern)
-        # fromset
-
+        form = Form(request.POST, instance=pattern)
         if form.is_valid():
             pattern = form.save()
         else:
             message = 'Form validation Error: ' + str(form.errors)
     else:
-        form = forms.PatternForm(instance=pattern)
+        form = Form(instance=pattern)
 
-    return dict(form=form, message=message)
+    return dict(
+        form=form, message=message, tab=tab, title=title, backends=backends,
+        help_text=help_text)
 
 
 @is_staff(required_perms='feedback.change_feedbackpattern')
@@ -88,7 +112,7 @@ def pattern_media(request, pattern_id):
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
     form = forms.PatternForm(instance=pattern)
 
-    return dict(status=status, message=message, form=form)
+    return dict(status=status, message=message, form=form, tab='media')
 
 
 @is_staff(required_perms='feedback.change_feedback')
