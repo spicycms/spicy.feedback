@@ -19,7 +19,8 @@ def backend_factory(setting, class_name, child_methods=()):
             for backend in self.backends:
                 try:
                     getattr(backend, name)(self, *args, **kwargs)
-                except:
+                except Exception, e:
+                    print e
                     pass
 
         return _inner

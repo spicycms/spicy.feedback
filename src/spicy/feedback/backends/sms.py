@@ -39,6 +39,7 @@ class Feedback(base.Pattern):
                 if not number.strip():
                     continue
                 text = body[:140].encode('utf-8')
+                print '$$', text
                 msg = {
                     'reqtype': 'json',
                     'api_key': self.pattern.nexmo_api_key,
@@ -49,6 +50,7 @@ class Feedback(base.Pattern):
                 }
                 sms = NexmoMessage(msg)
                 sms.set_text_info(msg['text'])
+                sms.sms['type'] = 'unicode'
                 sms.send_request()
 
     class Meta:
