@@ -36,13 +36,16 @@ class Feedback(base.Pattern):
             body = render_to_string(
                 'spicy.feedback/sms/report.txt', context)
             for number in self.pattern.sms_report_numbers.splitlines():
+                if not number.strip():
+                    continue
+                text = body[:140].encode('utf-8')
                 msg = {
                     'reqtype': 'json',
                     'api_key': self.pattern.nexmo_api_key,
                     'api_secret': self.pattern.nexmo_secret_key,
                     'from': self.pattern.sms_from_number,
                     'to': number,
-                    'text': body[:140]
+                    'text': text
                 }
                 sms = NexmoMessage(msg)
                 sms.set_text_info(msg['text'])
