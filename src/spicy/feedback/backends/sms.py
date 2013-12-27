@@ -39,7 +39,6 @@ class Feedback(base.Pattern):
                 if not number.strip():
                     continue
                 text = body[:140].encode('utf-8')
-                print '$$', text
                 msg = {
                     'reqtype': 'json',
                     'api_key': self.pattern.nexmo_api_key,
