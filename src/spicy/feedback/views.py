@@ -1,7 +1,11 @@
 from django import http
+from django.shortcuts import get_object_or_404
 from spicy.core.siteskin.decorators import ajax_request
-from spicy.utils import load_module
-from . import defaults
+from spicy.utils import load_module, get_custom_model_class
+from . import defaults, models
+
+
+Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
 
 
 @ajax_request
@@ -13,7 +17,10 @@ def new_feedback(request):
     FeedbackForm = load_module(defaults.CUSTOM_FEEDBACK_FORM)
 
     if request.method == 'POST':
-        form = FeedbackForm(request.POST)
+        pattern = get_object_or_404(
+            models.FeedbackPattern, slug=request.POST.get('pattern'))
+        feedback = Feedback(pattern=pattern)
+        form = FeedbackForm(request.POST, instance=feedback)
 
         if form.is_valid():
             try:

@@ -14,13 +14,7 @@
   <div class="row-fluid">
     <div class="span12">
       <div class="box">
-        <div class="box-header">
-	  <div class="title"></div>
-	  <ul class="nav nav-tabs nav-tabs-right">
-            <li class=""><a href="{% url 'feedback:admin:edit-pattern' form.instance.pk %}"><i class="icon-file-alt"></i> <span>{% trans "Edit email pattern" %}</span></a></li>
-	    <li class="active"><a href="{% url 'feedback:admin:edit-pattern-media' form.instance.pk %}" ><i class="icon-camera"></i> <span>{% trans "Attachments" %}</span></a></li>
-	  </ul>
-        </div>
+	{% include "spicy.feedback/admin/parts/pattern_tabs.html" %}
 
         <div class="box-content">
           {% url "service:admin:media-edit" form.instance.ctype form.instance.pk as edit_url %}{% generic_ssi edit_url %}

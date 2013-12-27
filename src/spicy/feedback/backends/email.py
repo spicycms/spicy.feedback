@@ -34,7 +34,7 @@ class Pattern(base.Pattern):
         """
         Return mail
         """
-        from feedback.models import PatternVariable
+        from spicy.feedback.models import PatternVariable
         var_dict = dict(feedback=feedback, pattern=self)
         for var in PatternVariable.objects.all():
             var_dict[var.name] = var.value
@@ -93,7 +93,7 @@ admin_form = (
 admin_help = _(
     'Add to feedback form:\n\n'
     '&lt;input type="hidden" name="pattern" '
-    'value="{{ form.instance.pk }}"&gt;')
+    'value="{{ form.instance.slug }}"&gt;')
 
 
 class Feedback(base.Pattern):

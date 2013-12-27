@@ -60,12 +60,7 @@ def create(request):
     return dict(form=form, message=message)
 
 
-@is_staff(required_perms='feedback.change_feedbackpattern')
-@render_to('edit_pattern.html', use_admin=True)
-def edit_pattern(request, pattern_id, backend_name=None):
-    message = ''
-
-    pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
+def _backend_data(pattern, backend_name=None):
     backend_modules = [
         load_module(backend) for backend in defaults.FEEDBACK_BACKENDS]
     backends = [
@@ -88,19 +83,29 @@ def edit_pattern(request, pattern_id, backend_name=None):
         Form = forms.PatternForm
         tab = 'edit'
         title = _('Edit pattern: %s') % pattern
+    return locals()
+
+
+@is_staff(required_perms='feedback.change_feedbackpattern')
+@render_to('edit_pattern.html', use_admin=True)
+def edit_pattern(request, pattern_id, backend_name=None):
+    message = ''
+
+    pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
+    data = _backend_data(pattern, backend_name)
+    Form = data.pop('Form')
 
     if request.method == 'POST':
         form = Form(request.POST, instance=pattern)
         if form.is_valid():
             pattern = form.save()
+            message = _('Object has been saved successfully')
         else:
-            message = 'Form validation Error: ' + str(form.errors)
+            message = _('Form validation Error: ') + unicode(form.errors)
     else:
         form = Form(instance=pattern)
 
-    return dict(
-        form=form, message=message, tab=tab, title=title, backends=backends,
-        help_text=help_text)
+    return dict(form=form, message=message, **data)
 
 
 @is_staff(required_perms='feedback.change_feedbackpattern')
@@ -110,9 +115,12 @@ def pattern_media(request, pattern_id):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
+    data = _backend_data(pattern)
+    data.pop('tab')
     form = forms.PatternForm(instance=pattern)
 
-    return dict(status=status, message=message, form=form, tab='media')
+    return dict(
+        status=status, message=message, form=form, tab='media', **data)
 
 
 @is_staff(required_perms='feedback.change_feedback')

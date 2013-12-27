@@ -10,6 +10,9 @@ class FeedbackPattern(
         abs.BasePattern):
     title = models.CharField(
         _('Feedback pattern title'), max_length=250)
+    slug = models.SlugField(
+        _('Slug'), unique=True,
+        default=lambda: 'feedback' + str(FeedbackPattern.objects.count() + 1))
     use_captcha = models.BooleanField(default=False)
     auto_signup = models.BooleanField(default=True)
     auto_response_timeout = models.PositiveSmallIntegerField(

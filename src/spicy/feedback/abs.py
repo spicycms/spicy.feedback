@@ -15,9 +15,14 @@ def backend_factory(setting, class_name, child_methods=()):
         backends.append(backend_class)
 
     def child_method(name):
-        def _inner(self):
+        def _inner(self, *args, **kwargs):
             for backend in self.backends:
-                return getattr(self, name)(self)
+                try:
+                    getattr(backend, name)(self, *args, **kwargs)
+                except:
+                    pass
+
+        return _inner
 
     attrs = dict(backends=backends, __module__=__name__)
     for method in child_methods:
@@ -30,7 +35,8 @@ def backend_factory(setting, class_name, child_methods=()):
     return type('DynamicBackendFeedback', bases, attrs)
 
 DynamicBackendFeedback = backend_factory(
-    defaults.FEEDBACK_BACKENDS, 'Feedback')
+    defaults.FEEDBACK_BACKENDS, 'Feedback',
+    child_methods=('send_report', 'send_to_clients'))
 
 
 class BaseFeedbackAbstractModel(DynamicBackendFeedback):
@@ -81,6 +87,4 @@ class BaseFeedbackAbstractModel(DynamicBackendFeedback):
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)
 
-BasePattern = backend_factory(
-    defaults.FEEDBACK_BACKENDS, 'Pattern',
-    child_methods=('send_report', 'send_to_clients'))
+BasePattern = backend_factory(defaults.FEEDBACK_BACKENDS, 'Pattern')
