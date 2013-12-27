@@ -1,4 +1,5 @@
 begin;
+set constraints all immediate;
 alter table fb_pattern add column send_sms boolean not null default false;
 alter table fb_pattern alter column send_sms drop default;
 alter table fb_pattern add column nexmo_api_key varchar(8) not null default '';

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-27 12:56+0400\n"
+"POT-Creation-Date: 2013-12-27 18:01+0400\n"
 "PO-Revision-Date: 2011-04-19 22:28+0400\n"
 "Last-Translator: Stas Shtin<antisvin@gmail.com>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -16,126 +16,197 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Language: ru_RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Source-Language: C\n"
 
-#: admin.py:20
-msgid "Feedbacks"
-msgstr "Фидбеки"
-
-#: admin.py:24 templates/spicy.feedback/admin/menu.html:20
-msgid "Create pattern"
-msgstr "Создать шаблон"
-
-#: admin.py:25 templates/spicy.feedback/admin/menu.html:25
-msgid "All patterns"
-msgstr "Все шаблоны"
-
-#: admin.py:26 templates/spicy.feedback/admin/menu.html:15
-msgid "All feedbacks"
-msgstr "Все фидбеки"
-
-#: admin.py:170
-msgid "All objects have been deleted successfully"
-msgstr "Все обекты успешно удаленны"
-
-#: defaults.py:14
-msgid "Is Processed"
-msgstr "Обработано"
-
-#: defaults.py:15
-msgid "New Mail"
-msgstr "Новое письмо"
-
-#: defaults.py:16
-msgid "Fail"
-msgstr "Ошибка (неверные контактные данные)"
-
-#: forms.py:19
-msgid "Captcha"
-msgstr "Капча"
-
-#: models.py:22
-msgid "Feedback pattern title"
-msgstr "Название паттерна фидбека"
-
-#: models.py:25
-msgid "Timeout for auto response"
-msgstr "Таймаут для автоответа"
-
-#: models.py:28
-msgid "Managers emails"
-msgstr "Электронная почта менеджеров"
-
-#: models.py:33
-msgid "Template"
-msgstr "Шаблон"
-
-#: models.py:37
-msgid "From email"
-msgstr "Электронная почта отправителя"
-
-#: models.py:41 templates/spicy.feedback/admin/patterns.html:31
-msgid "Email subject"
-msgstr "Тема письма"
-
-#: models.py:42
-msgid "Dear customer! You won 1 million smiles =)"
-msgstr "Дорогой клиент! Вы выиграли 1 миллион долларов Зимбабве :-)"
-
-#: models.py:44
-msgid "Email body"
-msgstr "Тело письма"
-
-#: models.py:60
+#: abs.py:44
 msgid "Site"
 msgstr "Сайт"
 
-#: models.py:66 templates/spicy.feedback/admin/list.html:35
+#: abs.py:49 templates/spicy.feedback/admin/list.html:35
 msgid "Processing status"
 msgstr "Статус обработки"
 
-#: models.py:71 templates/spicy.feedback/admin/list.html:30
+#: abs.py:51 templates/spicy.feedback/admin/list.html:30
 msgid "Name"
 msgstr "Имя"
 
-#: models.py:72 templates/spicy.feedback/admin/list.html:31
+#: abs.py:53 templates/spicy.feedback/admin/list.html:31
 msgid "Email"
 msgstr "Адрес электронной почты"
 
-#: models.py:74 templates/spicy.feedback/admin/list.html:32
+#: abs.py:55 templates/spicy.feedback/admin/list.html:32
 msgid "Phone"
 msgstr "Телефон"
 
-#: models.py:76
+#: abs.py:56
 msgid "Var 1"
-msgstr ""
+msgstr "Переменная 1"
 
-#: models.py:77
+#: abs.py:57
 msgid "Var 2"
-msgstr ""
+msgstr "Переменная 2"
 
-#: models.py:78
+#: abs.py:58
 msgid "Var 3"
-msgstr ""
+msgstr "Переменная 3"
 
-#: models.py:83 templates/spicy.feedback/mail/report_email_body.txt:17
+#: abs.py:60 templates/spicy.feedback/mail/report_email_body.txt:17
 msgid "Message"
 msgstr "Сообщение"
 
-#: models.py:87 templates/spicy.feedback/admin/list.html:33
+#: abs.py:62 templates/spicy.feedback/admin/list.html:33
 #: templates/spicy.feedback/mail/report_email_body.txt:13
 msgid "Submit date"
 msgstr "Дата отправки"
 
-#: models.py:90 templates/spicy.feedback/mail/report_email_body.txt:15
+#: abs.py:63 templates/spicy.feedback/mail/report_email_body.txt:15
 msgid "IP address"
 msgstr "IP адрес"
 
-#: models.py:95
+#: abs.py:66
 msgid "Site URL"
 msgstr "URL сайта"
+
+#: admin.py:18
+msgid "Feedbacks"
+msgstr "Фидбеки"
+
+#: admin.py:22 admin.py:27 templates/spicy.feedback/admin/menu.html:20
+msgid "Create pattern"
+msgstr "Создать шаблон"
+
+#: admin.py:23 templates/spicy.feedback/admin/menu.html:25
+msgid "All patterns"
+msgstr "Все шаблоны"
+
+#: admin.py:24 templates/spicy.feedback/admin/menu.html:15
+msgid "All feedbacks"
+msgstr "Все фидбеки"
+
+#: admin.py:85
+#, python-format
+msgid "Edit pattern: %s"
+msgstr "Редактировать шаблон: %s"
+
+#: admin.py:102
+msgid "Object has been saved successfully"
+msgstr "Объект успешно сохранен"
+
+#: admin.py:104 admin.py:156
+msgid "Form validation Error: "
+msgstr "Ошибка в форме:"
+
+#: admin.py:204
+msgid "All objects have been deleted successfully"
+msgstr "Все обекты успешно удаленны"
+
+#: defaults.py:15
+msgid "Is Processed"
+msgstr "Обработано"
+
+#: defaults.py:16
+msgid "New Mail"
+msgstr "Новое письмо"
+
+#: defaults.py:17
+msgid "Fail"
+msgstr "Ошибка (неверные контактные данные)"
+
+#: forms.py:17
+msgid "Captcha"
+msgstr "Капча"
+
+#: models.py:12
+msgid "Feedback pattern title"
+msgstr "Название паттерна фидбека"
+
+#: models.py:14
+msgid "Slug"
+msgstr "Текст ссылки"
+
+#: models.py:19
+msgid "Timeout for auto response"
+msgstr "Таймаут для автоответа"
+
+#: models.py:32
+msgid "Varibale name"
+msgstr "Название переменной"
+
+#: models.py:34
+msgid "Value"
+msgstr "Значение"
+
+#: backends/email.py:19
+msgid "Template"
+msgstr "Шаблон"
+
+#: backends/email.py:22
+msgid "Managers emails"
+msgstr "Электронная почта менеджеров"
+
+#: backends/email.py:26
+msgid "From email"
+msgstr "Электронная почта отправителя"
+
+#: backends/email.py:28 templates/spicy.feedback/admin/patterns.html:31
+msgid "Email subject"
+msgstr "Тема письма"
+
+#: backends/email.py:30
+msgid "Email body"
+msgstr "Тело письма"
+
+#: backends/email.py:31
+msgid "Auto response feedback text"
+msgstr "Текст автоответа обратной связи"
+
+#: backends/email.py:89
+msgid "Email settings"
+msgstr "Настройки e-mail"
+
+#: backends/email.py:94
+msgid ""
+"Add to feedback form:\n"
+"\n"
+"&lt;input type=\"hidden\" name=\"pattern\" value=\"{{ form.instance.slug "
+"}}\"&gt;"
+msgstr ""
+"Добавьте к форме обратной связи:\n"
+"&lt;input type=\"hidden\" name=\"pattern\" value=\"{{ form.instance.slug "
+"}}\"&gt;"
+
+#: backends/sms.py:10
+msgid "Send SMS"
+msgstr "Отправлять SMS"
+
+#: backends/sms.py:12
+msgid "Nexmo API Key"
+msgstr "Ключ АПИ Nexmo"
+
+#: backends/sms.py:14
+msgid "Nexmo Secret Key"
+msgstr "Тайный ключ Nexmo"
+
+#: backends/sms.py:16
+msgid "SMS Sender Number"
+msgstr "Номер отправителя SMS"
+
+#: backends/sms.py:18
+msgid "SMS Report Number"
+msgstr "Номера для SMS отчетов"
+
+#: backends/sms.py:20
+msgid ""
+"Enter one or more numbers separated by line breaks. Example number is "
+"74951234567"
+msgstr ""
+"Введите один или несколько номеров, разделенных переносом строки. Пример "
+"номера -74951234567 "
+
+#: backends/sms.py:56
+msgid "SMS settings"
+msgstr "Настройки SMS"
 
 #: templates/spicy.feedback/admin/edit.html:3
 #: templates/spicy.feedback/admin/edit_pattern.html:3
@@ -143,24 +214,14 @@ msgid "Edit"
 msgstr "Редактировать"
 
 #: templates/spicy.feedback/admin/edit.html:30
-#: templates/spicy.feedback/admin/edit_pattern.html:41
+#: templates/spicy.feedback/admin/edit_pattern.html:33
 msgid "Delete"
 msgstr "Удалить"
 
 #: templates/spicy.feedback/admin/edit.html:33
-#: templates/spicy.feedback/admin/edit_pattern.html:44
+#: templates/spicy.feedback/admin/edit_pattern.html:36
 msgid "Save changes"
 msgstr "Сохранить изменения"
-
-#: templates/spicy.feedback/admin/edit_pattern.html:17
-#: templates/spicy.feedback/admin/edit_pattern_media.html:20
-msgid "Edit email pattern"
-msgstr "Редактировать шаблон письма"
-
-#: templates/spicy.feedback/admin/edit_pattern.html:18
-#: templates/spicy.feedback/admin/edit_pattern_media.html:21
-msgid "Attachments"
-msgstr "Прикрепленные файлы"
 
 #: templates/spicy.feedback/admin/list.html:3
 #: templates/spicy.feedback/admin/list.html:4
@@ -211,6 +272,14 @@ msgstr "Таймаут автоответа"
 msgid "Has attachments"
 msgstr "Имеет прикрепленные файлы"
 
+#: templates/spicy.feedback/admin/parts/pattern_tabs.html:5
+msgid "Edit email pattern"
+msgstr "Редактировать шаблон письма"
+
+#: templates/spicy.feedback/admin/parts/pattern_tabs.html:9
+msgid "Attachments"
+msgstr "Прикрепленные файлы"
+
 #: templates/spicy.feedback/mail/report_email_body.txt:1
 #, python-format
 msgid "[%(feedback_pk)s] New message on %(site_name)s"
@@ -238,20 +307,23 @@ msgstr "Тип обратной связи"
 
 #: templates/spicy.feedback/mail/report_email_body.txt:19
 msgid "Var1"
-msgstr ""
+msgstr "Переменная1"
 
 #: templates/spicy.feedback/mail/report_email_body.txt:21
 msgid "Var2"
-msgstr ""
+msgstr "Переменная2"
 
 #: templates/spicy.feedback/mail/report_email_body.txt:23
 msgid "Var3"
-msgstr ""
+msgstr "Переменная3"
 
 #: templates/spicy.feedback/mail/report_email_subject.txt:1
 #, python-format
 msgid "[%(feedback_pk)s] New feedback on %(site_name)s"
 msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
+
+#~ msgid "Dear customer! You won 1 million smiles =)"
+#~ msgstr "Дорогой клиент! Вы выиграли 1 миллион долларов Зимбабве :-)"
 
 #~ msgid "IS_PROCESSED"
 #~ msgstr "ОБРАБОТАН"
@@ -501,9 +573,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "media"
 #~ msgstr "медиа"
-
-#~ msgid "Slug"
-#~ msgstr "Текст ссылки"
 
 #~ msgid "Publication date"
 #~ msgstr "Дата публикации"
@@ -919,9 +988,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "August"
 #~ msgstr "Август"
-
-#~ msgid "September"
-#~ msgstr "Сентябрь"
 
 #~ msgid "October"
 #~ msgstr "Октябрь"
@@ -1721,11 +1787,11 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgstr "Авторы"
 
 #~ msgid ""
-#~ "User <b>is banned</b> for breaking terms of <a href=\"/help/user-"
-#~ "agreement/\">user agreement</a>"
+#~ "User <b>is banned</b> for breaking terms of <a "
+#~ "href=\"/help/user-agreement/\">user agreement</a>"
 #~ msgstr ""
-#~ "Пользователь <b>заблокирован</b> за нарушение<a href='/help/user-"
-#~ "agreement/'>пользовательского соглашения</a>"
+#~ "Пользователь <b>заблокирован</b> за нарушение<a "
+#~ "href='/help/user-agreement/'>пользовательского соглашения</a>"
 
 #~ msgid "Author's contacts"
 #~ msgstr "Контакты автора"
@@ -2657,8 +2723,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Storage is empty or wrong configured mediacentee.defaults settings"
 #~ msgstr ""
-#~ "Хранилище пусто или неправильно сконфигурировано в настройках mediacenter."
-#~ "defaults"
+#~ "Хранилище пусто или неправильно сконфигурировано в настройках "
+#~ "mediacenter.defaults"
 
 #~ msgid "Select"
 #~ msgstr "Выбрать"
@@ -2779,8 +2845,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ "User <b>is banned</b> for breaking <a href='/help/user-agreement/'>user "
 #~ "agreement</a>"
 #~ msgstr ""
-#~ "Пользователь <b>заблокирован</b> за нарушение<a href='/help/user-"
-#~ "agreement/'>пользовательского соглашения</a> "
+#~ "Пользователь <b>заблокирован</b> за нарушение<a "
+#~ "href='/help/user-agreement/'>пользовательского соглашения</a> "
 
 #~ msgid ""
 #~ "This materials are <b>not published</b>. After publishing, this article "
@@ -2821,8 +2887,9 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ "could have arrived in your Spam folder, make sure to check it."
 #~ msgstr ""
 #~ "Пожалуйста, проверти вашу электронную почту <b>%(email)s</b>. Вам было "
-#~ "отправлено письмо со ссылкой для активации профайла. <br/><b>Внимание!</"
-#~ "b> Письмо могло оказаться в папке Спам, обязательно проверьте её."
+#~ "отправлено письмо со ссылкой для активации профайла. "
+#~ "<br/><b>Внимание!</b> Письмо могло оказаться в папке Спам, обязательно "
+#~ "проверьте её."
 
 #~ msgid "Future articles %(username)s"
 #~ msgstr "Будущие статьи %(username)s "
@@ -2874,8 +2941,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ "I have read and accepted <a href=\"/help/user-agreement/\">user "
 #~ "agreement</a>"
 #~ msgstr ""
-#~ "Я прочитал и согласен с правилами <a href=\"/help/user_agreement/"
-#~ "\">пользовательского соглашения</a>"
+#~ "Я прочитал и согласен с правилами <a "
+#~ "href=\"/help/user_agreement/\">пользовательского соглашения</a>"
 
 #~ msgid "Password change"
 #~ msgstr "Изменить пароль"
@@ -3325,9 +3392,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Edit letter"
 #~ msgstr "Редакторовать письмо"
-
-#~ msgid "Settings"
-#~ msgstr "Настройки"
 
 #~ msgid "Attached files"
 #~ msgstr "Прикрепленные файлы"
@@ -4311,9 +4375,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid "Send PDF"
 #~ msgstr "Отправлять PDF"
 
-#~ msgid "Send HTML"
-#~ msgstr "Отправлять HTML"
-
 #~ msgid "Send ASCII"
 #~ msgstr "Отправлять ASCII"
 
@@ -4352,9 +4413,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Order info"
 #~ msgstr "Информация о заказе"
-
-#~ msgid "Secret key"
-#~ msgstr "Тайный ключ"
 
 #~ msgid "SMS ID"
 #~ msgstr "Код SMS"
@@ -4542,9 +4600,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid "Edit table"
 #~ msgstr "Редакторовать таблицу"
 
-#~ msgid "Table settings"
-#~ msgstr "Настройки таблицы"
-
 #~ msgid "Columns"
 #~ msgstr "Колонки"
 
@@ -4607,9 +4662,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Filter"
 #~ msgstr "Фильтр"
-
-#~ msgid "Value"
-#~ msgstr "Значение"
 
 #~ msgid "Sources"
 #~ msgstr "Источники"
@@ -5109,9 +5161,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Short name"
 #~ msgstr "Короткое название"
-
-#~ msgid "Value name"
-#~ msgstr "Название значения"
 
 #~ msgid "Custom value"
 #~ msgstr "Специальное значение"
@@ -6342,8 +6391,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid ""
 #~ "\n"
 #~ "<h1>Activation</h1>\n"
-#~ "<p>Your account is now activated. Go <a href=\"/\">here</a> to continue.</"
-#~ "p>\n"
+#~ "<p>Your account is now activated. Go <a href=\"/\">here</a> to "
+#~ "continue.</p>\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
@@ -6423,8 +6472,8 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid ""
 #~ "Your account is now activated. Go <a href=\"/\">here</a> to continue."
 #~ msgstr ""
-#~ "Ваша учетная запись была активирована. Перейдите <a href=\"/\">по ссылке</"
-#~ "a> чтобы продолжить."
+#~ "Ваша учетная запись была активирована. Перейдите <a href=\"/\">по "
+#~ "ссылке</a> чтобы продолжить."
 
 #~ msgid "Thank you"
 #~ msgstr "Спасибо"
@@ -6714,9 +6763,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Forgot yous password?"
 #~ msgstr "Забыли пароль?"
-
-#~ msgid "Form validation Error: %s"
-#~ msgstr "Ошибка в форме: %s"
 
 #~ msgid "Related documents"
 #~ msgstr "Связные документы"
