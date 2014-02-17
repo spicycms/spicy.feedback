@@ -40,10 +40,12 @@ setup(
     namespace_packages=['spicy', ],
     install_requires=[
         'spicy>=1.1',
-        'django-bitfield==1.6.4'
+        'django-bitfield==1.6.4',
+        'nexmomessage'
     ],
     dependency_links=[
         'hg+http://hg.bramabrama.com/spicy#egg=spicy',
+        'git+https://github.com/marcuz/libpynexmo.git#egg=nexmomessage'
     ],
 
     classifiers=[
