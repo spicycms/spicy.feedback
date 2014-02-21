@@ -1,14 +1,16 @@
-from django.conf import settings
 from django import http
-from django.forms import ModelForm
+from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.db import transaction
+from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.admin.conf import AdminAppBase, AdminLink, Perms
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
 from spicy.utils import NavigationFilter, load_module, get_custom_model_class
-from . import models, defaults, forms
+from . import abs, models, defaults, forms
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
 
@@ -208,3 +210,84 @@ def delete_list(request):
     except Exception, e:
         print e
     return dict(message=unicode(message), status=status)
+
+
+@is_staff()
+@render_to('provider_form.html', use_admin=True)
+def provider_form(request, consumer_type, consumer_id, field_name):
+    default_pattern = models.FeedbackPattern.objects.all()[:1]
+    initial = {'pattern': default_pattern[0]} if default_pattern else None
+    form = forms.ProviderForm(initial=initial)
+    fields = (
+        'name', 'email', 'phone', 'message', 'company_name', 'url', 'var1',
+        'var2', 'var3')
+    fields_data = []
+    for field in fields:
+        field_data = {
+            'name': field,
+            'label': unicode(
+                abs.BaseFeedbackAbstractModel._meta.get_field_by_name(
+                    field)[0].verbose_name)}
+        fields_data.append(field_data)
+    return {
+        'form': form, 'consumer_type': consumer_type, 'fields': fields_data,
+        'consumer_id': consumer_id, 'field_name': field_name,
+        'field_types': defaults.FEEDBACK_VAR_CHOICES}
+
+
+@is_staff()
+@ajax_request
+@transaction.commit_on_success
+def create_provider(request, consumer_type, consumer_id):
+    content_type = get_object_or_404(ContentType, model=consumer_type)
+    model = content_type.model_class()
+    get_object_or_404(model, pk=consumer_id)
+    sid = transaction.savepoint()
+    status = 'error'
+    message = ''
+    prov_id = None
+    prov = models.FeedbackPatternProvider(
+        consumer_type=content_type, consumer_id=consumer_id)
+    provider_form = forms.ProviderForm(
+        request.POST, instance=prov)
+    try:
+        prov = models.FeedbackPatternProvider(
+            consumer_type=content_type, consumer_id=consumer_id)
+        provider_form = forms.ProviderForm(
+            request.POST, instance=prov)
+        if provider_form.is_valid():
+            prov = provider_form.save()
+            prov_id = prov.id
+        else:
+            raise Exception('Form error')
+        fields_cnt = provider_form.cleaned_data['fields_cnt']
+        pos = 0
+        for i in xrange(fields_cnt):
+            var = models.FeedbackPatternProviderVariable(
+                provider=prov, position=pos)
+            var_form = forms.FeedbackVariableForm(
+                request.POST, prefix='fields_%i' % i, instance=var)
+            if var_form.is_valid():
+                pos += 1
+                var = var_form.save()
+                if var.field_type in defaults.FEEDBACK_VARS_WITH_OPTIONS:
+                    options_cnt = var_form.cleaned_data['options_cnt']
+                    sub_pos = 0
+                    for j in xrange(options_cnt):
+                        option = models.FeedbackVariableOption(
+                            variable=var, position=sub_pos)
+                        option_form = forms.FeedbackOptionForm(
+                            request.POST, instance=option,
+                            prefix='fields_{}_{}'.format(i, j))
+                        if option_form.is_valid():
+                            sub_pos += 1
+                            option = option_form.save()
+
+        transaction.savepoint_commit(sid)
+        status = 'ok'
+    except Exception:
+        transaction.savepoint_rollback(sid)
+        message = _('Error processing form data')
+    return {
+        'status': status, 'message': unicode(message),
+        'provider_id': prov_id if status == 'ok' else None}

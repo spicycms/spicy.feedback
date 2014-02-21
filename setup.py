@@ -1,5 +1,4 @@
 """spicy.feedback"""
-from importlib import import_module
 from setuptools import setup, find_packages
 
 
@@ -41,7 +40,7 @@ setup(
     install_requires=[
         'spicy>=1.1',
         'django-bitfield==1.6.4',
-        'nexmomessage==dev'
+        'nexmomessage==dev',
     ],
     dependency_links=[
         'hg+http://hg.bramabrama.com/spicy#egg=spicy',

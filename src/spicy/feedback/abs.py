@@ -63,7 +63,7 @@ class BaseFeedbackAbstractModel(DynamicBackendFeedback):
     submit_date = models.DateTimeField(_('Submit date'), auto_now_add=True)
     ip_address = models.IPAddressField(_('IP address'), blank=True, null=True)
     company_name = models.CharField(
-        'Company name', max_length=100, blank=True, default='')
+        _('Company name'), max_length=100, blank=True, default='')
     url = models.URLField(_('Site URL'), blank=True, default='')
 
     on_site = CurrentSiteManager()
@@ -89,3 +89,8 @@ class BaseFeedbackAbstractModel(DynamicBackendFeedback):
         return '%s @ %s' % (self.name, self.submit_date)
 
 BasePattern = backend_factory(defaults.FEEDBACK_BACKENDS, 'Pattern')
+
+
+#class FeedbackConsumer(models.Model):
+#    class Meta:
+#        abstract = True

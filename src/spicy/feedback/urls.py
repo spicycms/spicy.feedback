@@ -25,6 +25,12 @@ admin_urls = patterns(
         r'^delete_pattern/(?P<pattern_id>\d+)/$', 'delete_pattern',
         name='delete-pattern'),
     url(r'^list/delete/$', 'delete_list', name='message-delete'),
+    url(
+        r'^provider/(?P<consumer_type>\w+)/(?P<consumer_id>\d+)/'
+        r'(?P<field_name>\S+)/form/$', 'provider_form', name='provider-form'),
+    url(
+        r'^provider/(?P<consumer_type>\w+)/(?P<consumer_id>\d+)/add/$',
+        'create_provider', name='create-provider'),
 )
 
 urlpatterns = patterns(

@@ -1,3 +1,4 @@
+import os
 import traceback
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -17,7 +18,8 @@ from .. import defaults
 class Pattern(base.Pattern):
     email_template = models.CharField(
         _('Template'), max_length=255,
-        choices=utils.find_templates(defaults.PATTERN_TEMPLATES_PATH))
+        choices=utils.find_templates(
+            defaults.PATTERN_TEMPLATES_PATH, abs_path=False))
     managers_emails = models.TextField(
         _('Managers emails'), max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default=','.join([
@@ -34,11 +36,7 @@ class Pattern(base.Pattern):
         """
         Return mail
         """
-        from spicy.feedback.models import PatternVariable
         var_dict = dict(feedback=feedback, pattern=self)
-        for var in PatternVariable.objects.all():
-            var_dict[var.name] = var.value
-
         context = Context(var_dict)
         body_template = Template(self.email_body)
         text = body_template.render(context)
@@ -61,7 +59,8 @@ class Pattern(base.Pattern):
             html_var_dict = dict(body=text, site=Site.objects.get_current())
             html_var_dict.update(var_dict)
             template = loader.get_template(
-                defaults.PATTERN_TEMPLATES_PATH + '/' + self.email_template)
+                os.path.join(
+                    defaults.PATTERN_TEMPLATES_PATH, self.email_template))
 
             mail.attach_alternative(
                 template.render(Context(html_var_dict)), "text/html")

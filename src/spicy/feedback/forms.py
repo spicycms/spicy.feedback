@@ -76,7 +76,27 @@ class PatternForm(forms.ModelForm):
             'auto_signup')
 
 
-class PatternVariable(forms.ModelForm):
+class ProviderForm(forms.ModelForm):
+    fields_cnt = forms.IntegerField(widget=forms.HiddenInput)
+    pattern = forms.ModelChoiceField(
+        queryset=models.FeedbackPattern.objects.all(),
+        label=_('Feedback pattern'), empty_label=None)
+
     class Meta:
-        model = models.PatternVariable
-        fields = ('name', 'value',)
+        model = models.FeedbackPatternProvider
+        fields = 'pattern', 'js_code', 'title', 'button_text'
+
+
+class FeedbackVariableForm(forms.ModelForm):
+    options_cnt = forms.IntegerField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = models.FeedbackPatternProviderVariable
+        fields = (
+            'field', 'field_type', 'title_display', 'help_text')
+
+
+class FeedbackOptionForm(forms.ModelForm):
+    class Meta:
+        model = models.FeedbackVariableOption
+        fields = 'key', 'value'

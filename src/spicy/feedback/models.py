@@ -21,24 +21,74 @@ class FeedbackPattern(
     class Meta:
         db_table = 'fb_pattern'
 
-
-class PatternVariable(models.Model):
-    """
-    Default variables - are all pattern field
-
-    email, name, phone, var1 etc...
-    """
-    name = models.CharField(
-        _('Varibale name'), max_length=50, blank=True, default='')
-    value = models.TextField(
-        _('Value'),  max_length=defaults.EMAIL_MAX_LENGTH,
-        blank=True, default='')
-
-    class Meta:
-        db_table = 'fb_variables'
+    def __unicode__(self):
+        return self.title
 
 
 if defaults.USE_DEFAULT_FEEDBACK:
     class Feedback(abs.BaseFeedbackAbstractModel):
         class Meta(abs.BaseFeedbackAbstractModel.Meta):
             abstract = False
+
+
+class FeedbackPatternProvider(service_models.ProviderModel):
+    pattern = models.ForeignKey(
+        FeedbackPattern, verbose_name=_('Feedback pattern'))
+    title = models.CharField(
+        _('Form title'), max_length=255, default=_('Feedback'))
+    button_text = models.CharField(
+        _('Button text'), max_length=255, default=_('Submit'))
+    js_code = models.TextField(
+        _('JavaScript code'), help_text=_('Extra code for analytics, etc'),
+        blank=True)
+
+    class Meta:
+        db_table = 'fb_provider'
+
+
+class FeedbackPatternProviderVariable(models.Model):
+    provider = models.ForeignKey(FeedbackPatternProvider)
+    field = models.CharField(_('Field'), max_length=50)
+    field_type = models.PositiveSmallIntegerField(
+        _('Field type'), choices=defaults.FEEDBACK_VAR_CHOICES)
+    title_display = models.CharField(_('Field title'), max_length=100)
+    help_text = models.CharField(
+        _('Field help text'), max_length=255, blank=True,
+        help_text=_('This field can contain optional help text'))
+    position = models.PositiveSmallIntegerField(_('Position'))
+
+    class Meta:
+        db_table = 'fb_pvar'
+        ordering = 'provider', 'position'
+
+    def make_field(self):
+        field_name = unicode(self.field)
+        field_data = defaults.FEEDBACK_VAR_FIELDS[self.field_type]
+
+        field_class = field_data[0]
+
+        kwargs = {'label': self.title_display}
+        if len(field_data) == 2:
+            kwargs['widget'] = field_data[1]
+        if self.help_text:
+            kwargs['help_text'] = self.title
+        if self.options and self.field in defaults.FEEDBACK_VARS_WITH_OPTIONS:
+            kwargs['choices'] = [
+                (key.split('_', 1)[1], value)
+                for key, value in sorted(self.options.iteritemes())]
+        else:
+            kwargs['max_length'] = getattr(
+                abs.BaseFeedbackAbstractModel, field_name).max_length
+        field = field_class(kwargs)
+        return (field_name, field)
+
+
+class FeedbackVariableOption(models.Model):
+    variable = models.ForeignKey(FeedbackPatternProviderVariable)
+    position = models.PositiveIntegerField(_('Position'))
+    key = models.CharField(_('Key'), max_length=50)
+    value = models.CharField(_('Value'), max_length=255)
+
+    class Meta:
+        db_table = 'fb_poption'
+        ordering = 'variable', 'position'
