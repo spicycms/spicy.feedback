@@ -14,8 +14,8 @@
       <table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" bordercolor="#ffffff" align="center" style="font-size:12px; width:800px; text-align:left; border-collapse:collapse; color:#636363;">
 	<tr bgcolor="#000000" style="height:42px;">
 	  <td width="25px;"></td>
-	  <td style="width:129px;"><a href="http://{{ site.domain }}" target="_blank" >{{ site.domain }}</a></td>
-	  <td><sup style="color:white; font-size:16px;">{{ site.domain }}</sup></td>
+	  <td style="width:129px;"><a href="http://{{ site.domain }}" target="_blank" ><sup style="color:white; font-size:16px;">{{ site.domain }}</sup></a></td>
+	  <td></td>
 
 	  {% comment %}
 	  <td style="text-align:right;"><span style="color:#dedede; line-height: 26px;">К нам уже присоединились: </span>
@@ -26,7 +26,7 @@
 
 	  <td width="25px;"></td>	
 	</tr>
-	<tr><td colspan="5" style="height:12px;" border="0">
+	<tr><td colspan="4" style="height:12px;" border="0">
 	    <h1 style="line-height:37px; font-size: 20px; margin: 25px; color: black;"><a href="http://{{ site.domain }}" style="color:black; line-height: 10px; font-size: 20px; font-weight: normal;">{{ pattern.email_subject }}</a></h1>
 	</td></tr>
 	<tr>	
@@ -34,12 +34,10 @@
 	  <td style="width:290px;" colspan="2">
 	    
 	    {# TODO top#}
+        {{ body|safe }}
 
 	  </td>
-	  <td valign="top" style="width:400px;">
-	   
-	    {{ body|safe }}
-	    
+	  <td>
 	  </td>
 	  <td width="25px;"></td>
 	</tr>

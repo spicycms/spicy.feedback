@@ -31,6 +31,9 @@ class Pattern(base.Pattern):
     email_body = models.TextField(
         _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, help_text=_('Auto response feedback text'))
+    text_signature = models.TextField(
+        _('Email signature'),  max_length=defaults.EMAIL_MAX_LENGTH,
+        blank=True, help_text=_('Your signature is added to the letter'))
 
     def get_mail(self, feedback):
         """
@@ -38,7 +41,7 @@ class Pattern(base.Pattern):
         """
         var_dict = dict(feedback=feedback, pattern=self)
         context = Context(var_dict)
-        body_template = Template(self.email_body)
+        body_template = Template(self.email_body, text_signature)
         text = body_template.render(context)
 
         try:
@@ -87,7 +90,7 @@ class Pattern(base.Pattern):
 admin_form = (
     _('Email settings'),
     ('email_template', 'managers_emails', 'from_email', 'email_subject',
-     'email_body'))
+     'email_body', 'text_signature'))
 
 admin_help = _(
     'Add to feedback form:\n\n'
