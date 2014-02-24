@@ -42,7 +42,9 @@ class Pattern(base.Pattern):
         var_dict = dict(feedback=feedback, pattern=self)
         context = Context(var_dict)
         body_template = Template(self.email_body)
-        text = body_template.render(context) + self.text_signature
+        text = body_template.render(context)
+        html_text = text
+        text = text + '\n\n' + self.text_signature
 
         try:
             from_email = self.from_email
@@ -59,7 +61,7 @@ class Pattern(base.Pattern):
             headers={'format': 'flowed'})
 
         if self.email_template:
-            html_var_dict = dict(body=text, site=Site.objects.get_current())
+            html_var_dict = dict(body=html_text, site=Site.objects.get_current())
             html_var_dict.update(var_dict)
             template = loader.get_template(
                 os.path.join(
