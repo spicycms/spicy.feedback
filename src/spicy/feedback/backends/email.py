@@ -41,8 +41,8 @@ class Pattern(base.Pattern):
         """
         var_dict = dict(feedback=feedback, pattern=self)
         context = Context(var_dict)
-        body_template = Template(self.email_body, text_signature)
-        text = body_template.render(context)
+        body_template = Template(self.email_body)
+        text = body_template.render(context) + self.text_signature
 
         try:
             from_email = self.from_email
