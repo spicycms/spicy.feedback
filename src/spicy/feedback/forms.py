@@ -74,29 +74,3 @@ class PatternForm(forms.ModelForm):
         fields = (
             'title', 'slug', 'auto_response_timeout', 'use_captcha',
             'auto_signup')
-
-
-class ProviderForm(forms.ModelForm):
-    fields_cnt = forms.IntegerField(widget=forms.HiddenInput)
-    pattern = forms.ModelChoiceField(
-        queryset=models.FeedbackPattern.objects.all(),
-        label=_('Feedback pattern'), empty_label=None)
-
-    class Meta:
-        model = models.FeedbackPatternProvider
-        fields = 'pattern', 'js_code', 'title', 'button_text'
-
-
-class FeedbackVariableForm(forms.ModelForm):
-    options_cnt = forms.IntegerField(widget=forms.HiddenInput)
-
-    class Meta:
-        model = models.FeedbackPatternProviderVariable
-        fields = (
-            'field', 'field_type', 'title_display', 'help_text')
-
-
-class FeedbackOptionForm(forms.ModelForm):
-    class Meta:
-        model = models.FeedbackVariableOption
-        fields = 'key', 'value'
