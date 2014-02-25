@@ -61,7 +61,9 @@ class Pattern(base.Pattern):
             headers={'format': 'flowed'})
 
         if self.email_template:
-            html_var_dict = dict(body=html_text, site=Site.objects.get_current())
+            html_var_dict = dict(
+                body=html_text, signature=self.text_signature,
+                site=Site.objects.get_current())
             html_var_dict.update(var_dict)
             template = loader.get_template(
                 os.path.join(
