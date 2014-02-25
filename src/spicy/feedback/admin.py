@@ -1,8 +1,11 @@
 from django import http
+import os
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
+from django.template import Context, Template, loader
+from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.admin.conf import AdminAppBase, AdminLink, Perms
 from spicy.core.profile.decorators import is_staff
@@ -106,6 +109,23 @@ def edit_pattern(request, pattern_id, backend_name=None):
         form = Form(instance=pattern)
 
     return dict(form=form, message=message, **data)
+
+
+def view_pattern(request, pattern_id):
+    pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
+    html_var_dict = dict(
+        body=pattern.email_body, signature=pattern.text_signature,
+        site=Site.objects.get_current(), pattern=pattern)
+    text_template = Template(pattern.email_body)
+    if pattern.email_template:
+        template = loader.get_template(
+            os.path.join(
+                defaults.PATTERN_TEMPLATES_PATH, pattern.email_template))
+        return http.HttpResponse(template.render(Context(html_var_dict)))
+    else:
+        body_template = Template('{{ body|linebreaks }}{{ signature|linebreaks }}')
+        text = body_template.render(Context(html_var_dict))
+        return http.HttpResponse(text)
 
 
 @is_staff(required_perms='feedback.change_feedbackpattern')

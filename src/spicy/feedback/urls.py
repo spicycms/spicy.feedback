@@ -15,6 +15,10 @@ admin_urls = patterns(
         r'^pattern/(?P<pattern_id>\d+)/extra/(?P<backend_name>\w+)/$',
         'edit_pattern', name='edit-pattern'),
     url(
+        r'^pattern/(?P<pattern_id>\d+)/view/email/$', 'view_pattern',
+        name='view-pattern'),
+
+    url(
         r'^pattern/attach/(?P<pattern_id>\d+)/$', 'pattern_media',
         name='edit-pattern-media'),
     url(r'^patterns/$', 'patterns', name='patterns'),
