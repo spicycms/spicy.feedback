@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.template import Context, Template, loader
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
-from spicy.core.admin.conf import AdminAppBase, AdminLink, Perms
+from spicy.core.admin import conf
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
 from spicy.utils import NavigationFilter, load_module, get_custom_model_class
@@ -16,20 +16,20 @@ from . import models, defaults, forms
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
 
 
-class AdminApp(AdminAppBase):
+class AdminApp(conf.AdminAppBase):
     name = 'feedback'
     label = _('Feedbacks')
     order_number = 4
 
     menu_items = (
-        AdminLink('feedback:admin:create', _('Create pattern')),
-        AdminLink('feedback:admin:patterns', _('All patterns')),
-        AdminLink('feedback:admin:index', _('All feedbacks')),
+        conf.AdminLink('feedback:admin:create', _('Create pattern')),
+        conf.AdminLink('feedback:admin:patterns', _('All patterns')),
+        conf.AdminLink('feedback:admin:index', _('All feedbacks')),
     )
 
-    create = AdminLink('feedback:admin:create', _('Create pattern'),)
+    create = conf.AdminLink('feedback:admin:create', _('Create pattern'),)
 
-    perms = Perms(view=[],  write=[], manage=[])
+    perms = conf.Perms(view=[],  write=[], manage=[])
 
     @render_to('menu.html', use_admin=True)
     def menu(self, request, *args, **kwargs):
@@ -38,6 +38,15 @@ class AdminApp(AdminAppBase):
     @render_to('dashboard.html', use_admin=True)
     def dashboard(self, request, *args, **kwargs):
         return dict(app=self, *args, **kwargs)
+
+    dashboard_links = [
+        conf.AdminLink(
+            'simplepages:admin:create', _('Create feedback pattern'),
+            models.FeedbackPattern.objects.count())]
+    dashboard_lists = [
+        conf.DashboardList(
+            _('New feedback'), 'feedback:admin:edit',
+            Feedback.on_site.order_by('-id'))]
 
 
 @is_staff(required_perms='feedback.add_feedbackpattern')
