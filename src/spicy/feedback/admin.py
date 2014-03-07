@@ -41,8 +41,8 @@ class AdminApp(conf.AdminAppBase):
 
     dashboard_links = [
         conf.AdminLink(
-            'simplepages:admin:create', _('Create feedback pattern'),
-            models.FeedbackPattern.objects.count())]
+            'feedback:admin:create', _('Create feedback pattern'),
+            models.FeedbackPattern.objects.count(), 'icon-envelope')]
     dashboard_lists = [
         conf.DashboardList(
             _('New feedback'), 'feedback:admin:edit',
