@@ -10,11 +10,12 @@ SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT = getattr(
     settings, 'SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT', True)
 CREATE_NEW_ACCOUT = getattr(settings, 'CREATE_NEW_ACCOUNT', False)
 
-IS_PROCESSED, NEW_MAIL, FAIL = range(3)
+IS_PROCESSED, NEW_MAIL, FAIL, SPAM = range(4)
 STATUS_TYPE_CHOICES = getattr(settings, 'STATUS_TYPE_CHOICES', (
     (IS_PROCESSED, _('Is Processed')),
     (NEW_MAIL, _('New Mail')),
     (FAIL, _('Fail')),
+    (SPAM, _('Spam')),
 ))
 STATUS_DEFAULT = NEW_MAIL
 

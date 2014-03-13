@@ -29,9 +29,17 @@ def new_feedback(request):
                 pass
             feedback = form.save(commit=False)
             feedback.ip_address = request.META['REMOTE_ADDR']
+            if not (
+                    feedback.name.strip() or feedback.email.strip() or
+                    feedback.phone.strip() or feedback.var1.strip() or
+                    feedback.var2.strip() or feedback.var3.strip() or
+                    feedback.message.strip() or
+                    feedback.company_name.strip() or feedback.url.strip()):
+                feedback.processing_status = defaults.SPAM
             feedback.save()
 
-            feedback.send_report()
+            if feedback.processing_status != defaults.SPAM:
+                feedback.send_report()
 
             if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
                 feedback.send_to_customers()
