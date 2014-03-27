@@ -73,15 +73,15 @@ class Pattern(base.Pattern):
                 template.render(Context(html_var_dict)), "text/html")
 
         if self.has_attachments():
-            for attach in self.attachments:
+            for attach in self.attachments():
                 if not attach.is_deleted:
                     mail.attach_file(attach.get_abs_path())
 
         return mail
 
     def attachments(self):
-        return api.register['media'][self.pattern].get_instances(
-            consumer=self.pattern, is_public=True)
+        return api.register['media'][self].get_instances(
+            consumer=self, is_public=True)
 
     def has_attachments(self):
         return bool(api.register['media'][self].get_instances(
