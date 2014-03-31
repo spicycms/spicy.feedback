@@ -27,18 +27,17 @@
     </li>
 {% comment %}
     <li>
-      <a href="{% url 'feedback:admin:create-var' %}">
+      <a href="{% url 'feedback:admin:add-var' %}">
         <i class="icon-list-alt"></i> {% trans "Create variable" %}
       </a>
     </li>
     <li>
-      <a href="{% url 'feedback:admin:variables' %}">
+      <a href="{% url 'feedback:admin:var-list' %}">
         <i class="icon-list-alt"></i> {% trans "Email variables" %}
       </a>    
     </li>
 {% endcomment %}
   </ul>
 </li>
-
 {% endwith %}
 {% endif %}

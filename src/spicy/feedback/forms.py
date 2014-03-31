@@ -74,3 +74,10 @@ class PatternForm(forms.ModelForm):
         fields = (
             'title', 'slug', 'auto_response_timeout', 'use_captcha',
             'auto_signup')
+
+
+#class PatternVariableForm(forms.ModelForm):
+#    class Meta:
+#        model = models.PatternVariable
+#        fields = ('name', 'value',)
+

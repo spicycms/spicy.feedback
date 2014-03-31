@@ -71,6 +71,56 @@ def create(request):
 
     return dict(form=form, message=message)
 
+@is_staff(required_perms='feedback.add_patternvariable')
+@render_to('add_var.html', use_admin=True)
+def add_var(request):
+    message = ''
+    pattern = None
+
+    if request.method == 'POST':
+        form = forms.PatternVariableForm(request.POST)
+        if form.is_valid():
+            var = form.save()
+        else:
+            message = 'Form validation Error: ' + str(form.errors)
+
+        if pattern is not None:
+            return http.HttpResponseRedirect(
+                reverse('feedback:admin:edit-var', args=[var.pk]))
+    else:
+        form = forms.PatternVariableForm()
+
+    return dict(form=form, message=message)
+
+@is_staff(required_perms='feedback.add_patternvariable')
+@render_to('var_list.html', use_admin=True)
+def var_list(request):
+    nav = NavigationFilter(request)
+    paginator = nav.get_queryset_with_paginator(models.PatternVariable)
+    objects_list = paginator.current_page.object_list
+    return {'paginator': paginator, 'objects_list': objects_list, 'nav': nav}
+
+
+@is_staff(required_perms='feedback.change_patternvariable')
+@render_to('edit_var.html', use_admin=True)
+def edit_var(request, var_id):
+    message = ''
+
+    var = get_object_or_404(models.PatternPattern, pk=var_id)
+
+    if request.method == 'POST':
+        form = forms.PatternVariableForm(request.POST, instance=var)
+        # fromset
+
+        if form.is_valid():
+            var = form.save()
+        else:
+            message = 'Form validation Error: ' + str(form.errors)
+    else:
+        form = forms.PatternVariableForm(instance=var)
+
+    return dict(form=form, message=message)
+
 
 def _backend_data(pattern, backend_name=None):
     backend_modules = [
