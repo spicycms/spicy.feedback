@@ -55,7 +55,7 @@
 		  <td>
                     <a href="{% url 'feedback:admin:edit' obj.pk %}"> {{ obj.phone }}</a>
                   </td>                  
-		  <td>{{ obj.submit_date|date:"j M" }}</td>                 
+		  <td>{{ obj.submit_date|date:"j M Y" }}</td>                 
           <td>{{ obj.message}} </td>
 		  <td>{{ obj.get_processing_status_display }}</td>
 		  <td>
