@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.db import models
 from django.template import Context, Template, loader
+from django.template.defaultfilters import linebreaksbr
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from spicy import utils
@@ -20,6 +21,7 @@ class Pattern(base.Pattern):
         _('Template'), max_length=255,
         choices=utils.find_templates(
             defaults.PATTERN_TEMPLATES_PATH, abs_path=False))
+    is_custom = models.BooleanField(_('Is custom'), default=False)
     managers_emails = models.TextField(
         _('Managers emails'), max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default=','.join([
@@ -39,12 +41,19 @@ class Pattern(base.Pattern):
         """
         Return mail
         """
-        var_dict = dict(feedback=feedback, pattern=self)
-        context = Context(var_dict)
+        text_context = Context({
+            'feedback': feedback, 'pattern': self, 'page': self,
+            'page_content_field': 'content', 'text_mode': True})
         body_template = Template(self.email_body)
-        text = body_template.render(context)
-        html_text = text
-        text = text + '\n\n' + self.text_signature
+        text = body_template.render(text_context)
+        text += '\n\n' + self.text_signature
+
+        # HTML version must be rendered first to avoid stripping tags
+        # if blocks are created.
+        html_body_context = Context({
+            'feedback': feedback, 'pattern': self, 'page': self,
+            'page_content_field': 'content'})
+        html_body_text = Template(self.email_body).render(html_body_context)
 
         try:
             from_email = self.from_email
@@ -60,17 +69,17 @@ class Pattern(base.Pattern):
             self.email_subject, text, from_email, [feedback.email],
             headers={'format': 'flowed'})
 
-        if self.email_template:
-            html_var_dict = dict(
-                body=html_text, signature=self.text_signature,
-                site=Site.objects.get_current())
-            html_var_dict.update(var_dict)
-            template = loader.get_template(
-                os.path.join(
-                    defaults.PATTERN_TEMPLATES_PATH, self.email_template))
-
-            mail.attach_alternative(
-                template.render(Context(html_var_dict)), "text/html")
+        html_context = Context({
+            'body': linebreaksbr(html_body_text),
+            'site': Site.objects.get_current(),
+            'feedback': feedback, 'pattern': self, 'page': self,
+            'page_content_field': 'content'})
+        template = loader.get_template(
+            os.path.join(
+                defaults.PATTERN_TEMPLATES_PATH, self.email_template))
+        
+        mail.attach_alternative(
+            template.render(html_context), "text/html")
 
         if self.has_attachments():
             for attach in self.attachments():

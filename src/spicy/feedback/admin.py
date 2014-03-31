@@ -71,6 +71,7 @@ def create(request):
 
     return dict(form=form, message=message)
 
+
 @is_staff(required_perms='feedback.add_patternvariable')
 @render_to('add_var.html', use_admin=True)
 def add_var(request):
@@ -91,6 +92,7 @@ def add_var(request):
         form = forms.PatternVariableForm()
 
     return dict(form=form, message=message)
+
 
 @is_staff(required_perms='feedback.add_patternvariable')
 @render_to('var_list.html', use_admin=True)
@@ -122,7 +124,7 @@ def edit_var(request, var_id):
     return dict(form=form, message=message)
 
 
-def _backend_data(pattern, backend_name=None):
+def backend_data(pattern, backend_name=None):
     backend_modules = [
         load_module(backend) for backend in defaults.FEEDBACK_BACKENDS]
     backends = [
@@ -154,7 +156,7 @@ def edit_pattern(request, pattern_id, backend_name=None):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
-    data = _backend_data(pattern, backend_name)
+    data = backend_data(pattern, backend_name)
     Form = data.pop('Form')
 
     if request.method == 'POST':
@@ -167,7 +169,7 @@ def edit_pattern(request, pattern_id, backend_name=None):
     else:
         form = Form(instance=pattern)
 
-    return dict(form=form, message=message, **data)
+    return dict(form=form, instance=pattern, message=message, **data)
 
 
 def view_pattern(request, pattern_id):
@@ -175,14 +177,14 @@ def view_pattern(request, pattern_id):
     html_var_dict = dict(
         body=pattern.email_body, signature=pattern.text_signature,
         site=Site.objects.get_current(), pattern=pattern)
-    text_template = Template(pattern.email_body)
     if pattern.email_template:
         template = loader.get_template(
             os.path.join(
                 defaults.PATTERN_TEMPLATES_PATH, pattern.email_template))
         return http.HttpResponse(template.render(Context(html_var_dict)))
     else:
-        body_template = Template('{{ body|linebreaks }}{{ signature|linebreaks }}')
+        body_template = Template(
+            '{{ body|linebreaks }}{{ signature|linebreaks }}')
         text = body_template.render(Context(html_var_dict))
         return http.HttpResponse(text)
 
@@ -194,12 +196,13 @@ def pattern_media(request, pattern_id):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
-    data = _backend_data(pattern)
+    data = backend_data(pattern)
     data.pop('tab')
     form = forms.PatternForm(instance=pattern)
 
     return dict(
-        status=status, message=message, form=form, tab='media', **data)
+        status=status, message=message, form=form, tab='media',
+        instance=pattern, **data)
 
 
 @is_staff(required_perms='feedback.change_feedback')
@@ -236,7 +239,7 @@ def detail(request, feedback_id):
     else:
         form = forms.EditFeedbackForm(instance=feedback)
 
-    return dict(form=form, message=message, status=status)
+    return dict(form=form, message=message, status=status, instance=feedback)
 
 
 @is_staff(required_perms='feedback.delete_feedback')

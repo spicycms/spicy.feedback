@@ -7,13 +7,17 @@ public_urls = patterns(
 
 admin_urls = patterns(
     'spicy.feedback.admin',
-    url(r'^create/$', 'create', name='create'),    
-    url(r'^pattern/(?P<pattern_id>\d+)/$', 'edit_pattern', name='edit-pattern'),
-    url(r'^pattern/attach/(?P<pattern_id>\d+)/$', 'pattern_media', name='edit-pattern-media'),    
-    url(r'^pattern/(?P<pattern_id>\d+)/extra/(?P<backend_name>\w+)/$',
-        'edit_pattern', name='edit-pattern'),
+    url(r'^create/$', 'create', name='create'),
     url(
-        r'^pattern/(?P<pattern_id>\d+)/view/email/$', 'view_pattern',
+        r'^patterns/(?P<pattern_id>\d+)/$', 'edit_pattern',
+        name='edit-pattern'),
+    url(
+        r'^patterns/(?P<pattern_id>\d+)/extra/(?P<backend_name>\w+)/$',
+        'edit_pattern', name='edit-pattern'),
+    url(r'^patterns/(?P<pattern_id>\d+)/attach/$', 'pattern_media',
+        name='edit-pattern-media'),
+    url(
+        r'^patterns/(?P<pattern_id>\d+)/view/email/$', 'view_pattern',
         name='view-pattern'),
 
     url(r'^add/var/$', 'add_var', name='add-var'),
@@ -21,15 +25,15 @@ admin_urls = patterns(
     url(r'^edit/var/(?P<var_id>\d+)/$', 'edit_var', name='edit-var'),
 
     url(
-        r'^pattern/attach/(?P<pattern_id>\d+)/$', 'pattern_media',
+        r'^patterns/attach/(?P<pattern_id>\d+)/$', 'pattern_media',
         name='edit-pattern-media'),
 
     url(r'^patterns/$', 'patterns', name='patterns'),
     url(r'^list/$', 'feedback_list', name='index'),
-    url(r'^feedback/(?P<feedback_id>\d+)/$', 'detail', name='edit'),
-    url(r'^delete_feedback/(?P<feedback_id>\d+)/$', 'delete', name='delete'),
+    url(r'^(?P<feedback_id>\d+)/$', 'detail', name='edit'),
+    url(r'^(?P<feedback_id>\d+)/delete/$', 'delete', name='delete'),
     url(
-        r'^delete_pattern/(?P<pattern_id>\d+)/$', 'delete_pattern',
+        r'^patterns/(?P<pattern_id>\d+)/delete/$', 'delete_pattern',
         name='delete-pattern'),
     url(r'^list/delete/$', 'delete_list', name='message-delete'),
 )

@@ -10,12 +10,22 @@ SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT = getattr(
     settings, 'SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT', True)
 CREATE_NEW_ACCOUT = getattr(settings, 'CREATE_NEW_ACCOUNT', False)
 
-IS_PROCESSED, NEW_MAIL, FAIL, SPAM = range(4)
+(
+    IS_PROCESSED, NEW_MAIL, FAIL, SPAM, POLL_SENT, MIN_PRICE, OFFER_SENT,
+    CONTRACT_IN_PROCESS, CONTRACT_SENT, TECH_ASSIGNMENT, TECH_SUPPORT
+) = range(11)
 STATUS_TYPE_CHOICES = getattr(settings, 'STATUS_TYPE_CHOICES', (
     (IS_PROCESSED, _('Is Processed')),
     (NEW_MAIL, _('New Mail')),
     (FAIL, _('Fail')),
     (SPAM, _('Spam')),
+    (POLL_SENT, _('Poll is sent')),
+    (MIN_PRICE, _('Minimal price threshold')),
+    (OFFER_SENT, _('Commercial offer is sent')),
+    (CONTRACT_IN_PROCESS, _('Contract in progress')),
+    (CONTRACT_SENT, _('Contract is sent')),
+    (TECH_ASSIGNMENT, _('Technical assignement in progress')),
+    (TECH_SUPPORT, _('Technical support')),
 ))
 STATUS_DEFAULT = NEW_MAIL
 

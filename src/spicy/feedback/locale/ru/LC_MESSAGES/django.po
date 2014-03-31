@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-27 18:01+0400\n"
+"POT-Creation-Date: 2014-03-31 22:30+0400\n"
 "PO-Revision-Date: 2011-04-19 22:28+0400\n"
 "Last-Translator: Stas Shtin<antisvin@gmail.com>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -19,99 +19,143 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Source-Language: C\n"
 
-#: abs.py:44
+#: abs.py:45
 msgid "Site"
 msgstr "Сайт"
 
-#: abs.py:49 templates/spicy.feedback/admin/list.html:35
+#: abs.py:50 templates/spicy.feedback/admin/list.html:35
 msgid "Processing status"
 msgstr "Статус обработки"
 
-#: abs.py:51 templates/spicy.feedback/admin/list.html:30
+#: abs.py:52 templates/spicy.feedback/admin/list.html:30
 msgid "Name"
 msgstr "Имя"
 
-#: abs.py:53 templates/spicy.feedback/admin/list.html:31
+#: abs.py:54 templates/spicy.feedback/admin/list.html:31
 msgid "Email"
 msgstr "Адрес электронной почты"
 
-#: abs.py:55 templates/spicy.feedback/admin/list.html:32
+#: abs.py:56 templates/spicy.feedback/admin/list.html:32
 msgid "Phone"
 msgstr "Телефон"
 
-#: abs.py:56
+#: abs.py:57
 msgid "Var 1"
 msgstr "Переменная 1"
 
-#: abs.py:57
+#: abs.py:58
 msgid "Var 2"
 msgstr "Переменная 2"
 
-#: abs.py:58
+#: abs.py:59
 msgid "Var 3"
 msgstr "Переменная 3"
 
-#: abs.py:60 templates/spicy.feedback/mail/report_email_body.txt:17
+#: abs.py:61 templates/spicy.feedback/mail/report_email_body.txt:17
 msgid "Message"
 msgstr "Сообщение"
 
-#: abs.py:62 templates/spicy.feedback/admin/list.html:33
+#: abs.py:63 templates/spicy.feedback/admin/list.html:33
 #: templates/spicy.feedback/mail/report_email_body.txt:13
 msgid "Submit date"
 msgstr "Дата отправки"
 
-#: abs.py:63 templates/spicy.feedback/mail/report_email_body.txt:15
+#: abs.py:64 templates/spicy.feedback/mail/report_email_body.txt:15
 msgid "IP address"
 msgstr "IP адрес"
 
 #: abs.py:66
+msgid "Company name"
+msgstr "Название компании"
+
+#: abs.py:67
 msgid "Site URL"
 msgstr "URL сайта"
 
-#: admin.py:18
+#: admin.py:21
 msgid "Feedbacks"
-msgstr "Фидбеки"
+msgstr "Отклики"
 
-#: admin.py:22 admin.py:27 templates/spicy.feedback/admin/menu.html:20
+#: admin.py:25 admin.py:30 templates/spicy.feedback/admin/menu.html:20
 msgid "Create pattern"
 msgstr "Создать шаблон"
 
-#: admin.py:23 templates/spicy.feedback/admin/menu.html:25
+#: admin.py:26 templates/spicy.feedback/admin/menu.html:25
 msgid "All patterns"
 msgstr "Все шаблоны"
 
-#: admin.py:24 templates/spicy.feedback/admin/menu.html:15
+#: admin.py:27 templates/spicy.feedback/admin/menu.html:15
 msgid "All feedbacks"
-msgstr "Все фидбеки"
+msgstr "Все отклики"
 
-#: admin.py:85
+#: admin.py:44
+msgid "Create feedback pattern"
+msgstr "Создать шаблон обратной связи"
+
+#: admin.py:48
+msgid "New feedback"
+msgstr "Новый отклик"
+
+#: admin.py:149
 #, python-format
 msgid "Edit pattern: %s"
 msgstr "Редактировать шаблон: %s"
 
-#: admin.py:102
+#: admin.py:166
 msgid "Object has been saved successfully"
 msgstr "Объект успешно сохранен"
 
-#: admin.py:104 admin.py:156
+#: admin.py:168 admin.py:238
 msgid "Form validation Error: "
 msgstr "Ошибка в форме:"
 
-#: admin.py:204
+#: admin.py:286
 msgid "All objects have been deleted successfully"
 msgstr "Все обекты успешно удаленны"
 
-#: defaults.py:15
+#: defaults.py:18
 msgid "Is Processed"
 msgstr "Обработано"
 
-#: defaults.py:16
+#: defaults.py:19
 msgid "New Mail"
 msgstr "Новое письмо"
 
-#: defaults.py:17
+#: defaults.py:20
 msgid "Fail"
 msgstr "Ошибка (неверные контактные данные)"
+
+#: defaults.py:21
+msgid "Spam"
+msgstr "Спам"
+
+#: defaults.py:22
+msgid "Poll is sent"
+msgstr "Отправлена анкета"
+
+#: defaults.py:23
+msgid "Minimal price threshold"
+msgstr "Минимальный ценовой порог"
+
+#: defaults.py:24
+msgid "Commercial offer is sent"
+msgstr "Отправлено коммерческое предложение"
+
+#: defaults.py:25
+msgid "Contract in progress"
+msgstr "Оформление договора"
+
+#: defaults.py:26
+msgid "Contract is sent"
+msgstr "Договор отправлен"
+
+#: defaults.py:27
+msgid "Technical assignement in progress"
+msgstr "Подготовка тех задания"
+
+#: defaults.py:28
+msgid "Technical support"
+msgstr "Техническая поддержка"
 
 #: forms.py:17
 msgid "Captcha"
@@ -119,7 +163,7 @@ msgstr "Капча"
 
 #: models.py:12
 msgid "Feedback pattern title"
-msgstr "Название паттерна фидбека"
+msgstr "Название паттерна обратной связи"
 
 #: models.py:14
 msgid "Slug"
@@ -129,43 +173,47 @@ msgstr "Текст ссылки"
 msgid "Timeout for auto response"
 msgstr "Таймаут для автоответа"
 
-#: models.py:32
-msgid "Varibale name"
-msgstr "Название переменной"
-
-#: models.py:34
-msgid "Value"
-msgstr "Значение"
-
-#: backends/email.py:19
+#: backends/email.py:21
 msgid "Template"
 msgstr "Шаблон"
 
-#: backends/email.py:22
+#: backends/email.py:24
+msgid "Is custom"
+msgstr "Редактирован пользователем"
+
+#: backends/email.py:26
 msgid "Managers emails"
 msgstr "Электронная почта менеджеров"
 
-#: backends/email.py:26
+#: backends/email.py:30
 msgid "From email"
 msgstr "Электронная почта отправителя"
 
-#: backends/email.py:28 templates/spicy.feedback/admin/patterns.html:31
+#: backends/email.py:32 templates/spicy.feedback/admin/patterns.html:31
 msgid "Email subject"
 msgstr "Тема письма"
 
-#: backends/email.py:30
+#: backends/email.py:34
 msgid "Email body"
 msgstr "Тело письма"
 
-#: backends/email.py:31
+#: backends/email.py:35
 msgid "Auto response feedback text"
 msgstr "Текст автоответа обратной связи"
 
-#: backends/email.py:89
+#: backends/email.py:37
+msgid "Email signature"
+msgstr "Подпись в письме"
+
+#: backends/email.py:38
+msgid "Your signature is added to the letter"
+msgstr "Ваша подпись добавлена к письму"
+
+#: backends/email.py:104
 msgid "Email settings"
 msgstr "Настройки e-mail"
 
-#: backends/email.py:94
+#: backends/email.py:109
 msgid ""
 "Add to feedback form:\n"
 "\n"
@@ -204,7 +252,7 @@ msgstr ""
 "Введите один или несколько номеров, разделенных переносом строки. Пример "
 "номера: 74951234567 "
 
-#: backends/sms.py:56
+#: backends/sms.py:60
 msgid "SMS settings"
 msgstr "Настройки SMS"
 
@@ -317,10 +365,14 @@ msgstr "Переменная2"
 msgid "Var3"
 msgstr "Переменная3"
 
-#: templates/spicy.feedback/mail/report_email_subject.txt:1
-#, python-format
-msgid "[%(feedback_pk)s] New feedback on %(site_name)s"
-msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
+#~ msgid "Varibale name"
+#~ msgstr "Название переменной"
+
+#~ msgid "Value"
+#~ msgstr "Значение"
+
+#~ msgid "[%(feedback_pk)s] New feedback on %(site_name)s"
+#~ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Dear customer! You won 1 million smiles =)"
 #~ msgstr "Дорогой клиент! Вы выиграли 1 миллион долларов Зимбабве :-)"
@@ -1801,9 +1853,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgstr ""
 #~ "Увеличивайте рейтинг написанием интересных статей и приглашая друзей!"
 
-#~ msgid "Contacts"
-#~ msgstr "Контакты"
-
 #~ msgid "VKontakte"
 #~ msgstr "ВКонтакте"
 
@@ -2510,9 +2559,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid "Subject"
 #~ msgstr "Тема"
 
-#~ msgid "Technical support"
-#~ msgstr "Техническая поддержка"
-
 #~ msgid "Found an error"
 #~ msgstr "Онаружена ошибка"
 
@@ -3093,9 +3139,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 #~ msgid "Number of pools"
 #~ msgstr "Количество бассейнов"
 
-#~ msgid "Minimal depth"
-#~ msgstr "Минимальная глубина"
-
 #~ msgid "Maximal depth"
 #~ msgstr "Максимальная глубина"
 
@@ -3203,9 +3246,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Report"
 #~ msgstr "Отчет"
-
-#~ msgid "Create process"
-#~ msgstr "Создать процесс"
 
 #~ msgid "Edit process"
 #~ msgstr "Редактировать процесс"
@@ -3317,9 +3357,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "All messages"
 #~ msgstr "Все сообщения"
-
-#~ msgid "Company name"
-#~ msgstr "Название компании"
 
 #~ msgid "Actions details"
 #~ msgstr "Подробности действия"
@@ -3597,9 +3634,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Edit poll"
 #~ msgstr "Редактировать опрос"
-
-#~ msgid "Poll settings"
-#~ msgstr "Настройки опроса"
 
 #~ msgid "Choices"
 #~ msgstr "Варианты выбора"
@@ -4188,9 +4222,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Purchasing from"
 #~ msgstr "Начало подписки"
-
-#~ msgid "Is custom order"
-#~ msgstr "Индивидуальный заказ"
 
 #~ msgid "Individual month range"
 #~ msgstr "Индивидуальный интервал в месяцах"
@@ -6270,9 +6301,6 @@ msgstr "[%(feedback_pk)s] Обратная связь с %(site_name)s"
 
 #~ msgid "Denied invite"
 #~ msgstr "Приглашение отвергнуто"
-
-#~ msgid "Spam"
-#~ msgstr "Спам"
 
 #~ msgid "Misc"
 #~ msgstr "Прочее"
