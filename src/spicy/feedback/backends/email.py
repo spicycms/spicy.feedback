@@ -37,23 +37,37 @@ class Pattern(base.Pattern):
         _('Email signature'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, help_text=_('Your signature is added to the letter'))
 
-    def get_mail(self, feedback):
-        """
-        Return mail
-        """
+    def get_text_email(self, feedback=None):
         text_context = Context({
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content', 'text_mode': True})
         body_template = Template(self.email_body)
         text = body_template.render(text_context)
         text += '\n\n' + self.text_signature
+        return text
 
-        # HTML version must be rendered first to avoid stripping tags
-        # if blocks are created.
+    def get_html_body(self, feedback=None):
         html_body_context = Context({
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content'})
-        html_body_text = Template(self.email_body).render(html_body_context)
+        return linebreaksbr(
+            Template(self.email_body).render(html_body_context))
+
+    def get_html_email(self, feedback=None):
+        html_context = Context({
+            'body': self.get_html_body(feedback),
+            'site': Site.objects.get_current(),
+            'feedback': feedback, 'pattern': self, 'page': self,
+            'page_content_field': 'content'})
+        template = loader.get_template(
+            os.path.join(
+                defaults.PATTERN_TEMPLATES_PATH, self.email_template))
+        return template.render(html_context)
+
+    def get_mail(self, feedback):
+        """
+        Return mail
+        """
 
         try:
             from_email = self.from_email
@@ -66,20 +80,11 @@ class Pattern(base.Pattern):
             Profile.objects.create_inactive_user(feedback.email)
 
         mail = EmailMultiAlternatives(
-            self.email_subject, text, from_email, [feedback.email],
-            headers={'format': 'flowed'})
+            self.email_subject, self.get_text_email(feedback), from_email,
+            [feedback.email], headers={'format': 'flowed'})
 
-        html_context = Context({
-            'body': linebreaksbr(html_body_text),
-            'site': Site.objects.get_current(),
-            'feedback': feedback, 'pattern': self, 'page': self,
-            'page_content_field': 'content'})
-        template = loader.get_template(
-            os.path.join(
-                defaults.PATTERN_TEMPLATES_PATH, self.email_template))
-        
         mail.attach_alternative(
-            template.render(html_context), "text/html")
+            self.get_html_email(feedback), "text/html")
 
         if self.has_attachments():
             for attach in self.attachments():

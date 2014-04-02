@@ -174,19 +174,7 @@ def edit_pattern(request, pattern_id, backend_name=None):
 
 def view_pattern(request, pattern_id):
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
-    html_var_dict = dict(
-        body=pattern.email_body, signature=pattern.text_signature,
-        site=Site.objects.get_current(), pattern=pattern)
-    if pattern.email_template:
-        template = loader.get_template(
-            os.path.join(
-                defaults.PATTERN_TEMPLATES_PATH, pattern.email_template))
-        return http.HttpResponse(template.render(Context(html_var_dict)))
-    else:
-        body_template = Template(
-            '{{ body|linebreaks }}{{ signature|linebreaks }}')
-        text = body_template.render(Context(html_var_dict))
-        return http.HttpResponse(text)
+    return http.HttpResponse(pattern.get_html_email())
 
 
 @is_staff(required_perms='feedback.change_feedbackpattern')

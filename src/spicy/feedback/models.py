@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.service import models as service_models
@@ -23,6 +24,9 @@ class FeedbackPattern(
 
     def __unicode__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('feedback:admin:view-pattern', args=[self.pk])
 
 
 if defaults.USE_DEFAULT_FEEDBACK:
