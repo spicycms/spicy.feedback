@@ -31,6 +31,7 @@ admin_urls = patterns(
     url(r'^patterns/$', 'patterns', name='patterns'),
     url(r'^list/$', 'feedback_list', name='index'),
     url(r'^(?P<feedback_id>\d+)/$', 'detail', name='edit'),
+    url(r'^(?P<feedback_id>\d+)/calc/$', 'calc', name='calc'),
     url(r'^(?P<feedback_id>\d+)/delete/$', 'delete', name='delete'),
     url(
         r'^patterns/(?P<pattern_id>\d+)/delete/$', 'delete_pattern',

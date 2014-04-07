@@ -1,11 +1,8 @@
 from django import http
-import os
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
-from django.template import Context, Template, loader
-from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.admin import conf
 from spicy.core.profile.decorators import is_staff
@@ -227,7 +224,23 @@ def detail(request, feedback_id):
     else:
         form = forms.EditFeedbackForm(instance=feedback)
 
-    return dict(form=form, message=message, status=status, instance=feedback)
+    return {
+        'form': form, 'message': message, 'status': status,
+        'instance': feedback, 'tab': 'edit'}
+
+
+@is_staff(required_perms='feedback.change_feedback')
+@render_to('edit_calc.html', use_admin=True)
+def calc(request, feedback_id):
+    feedback = get_object_or_404(Feedback, pk=feedback_id)
+    consumer_type = feedback.__class__.__name__.lower()
+    from spicy.calc.models import CalcProvider
+    fields = CalcProvider.objects.filter(
+        feedback_pattern=feedback.pattern
+    ).values_list('feedback_field', flat=True).distinct()
+    return {
+        'instance': feedback, 'tab': 'calc', 'consumer_type': consumer_type,
+        'fields': fields}
 
 
 @is_staff(required_perms='feedback.delete_feedback')

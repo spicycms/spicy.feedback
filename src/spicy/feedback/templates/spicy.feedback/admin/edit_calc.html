@@ -17,20 +17,30 @@
 		enctype="multipart/form-data">{% csrf_token %}
 
             <div class="row-fluid">
+	      <div class="span12">
+		{% if fields %}
+		<table>
+		  <tbody>
+		    {% for field in fields %}
+		    {% url "calc:admin:feedback-field" instance.pk field as field_url %}
+		    {% generic_ssi field_url %}
+		    {% endfor %}
+		  </tbody>
+		</table>
+		{% else %} %}
+		<h3>
+		  {% trans "No calculators attached" %}
+		</h3>
+		{% endif %}
+	      </div>
+	    </div>
+
+            <div class="row-fluid">
               <ul class="padded separate-sections">
 		{{ form.as_ul }}
 	      </ul>           
             </div>
             
-	    <div class="form-actions">
-	      {% captureas delete_url %}{{ app.name }}:admin:delete{% endcaptureas %}
-	      <a class="btn btn-red" href="{% url delete_url instance.pk %}">{% trans "Delete" %}</a>
-
-	      <div class="pull-right">
-		<button type="submit" class="btn btn-blue" name="save" onclick="document.edit_{{ app.name }}.submit(); return true;">{% trans "Save changes" %}</button>
-	      </div>
-            </div>
-
           </form>
         </div>
       </div>

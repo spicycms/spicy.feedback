@@ -1,0 +1,9 @@
+{% load spicy_admin %}
+{% load url from future %}
+        <div class="box-header">
+          <span class="title">{{ instance.name }}</span>
+	  <ul class="nav nav-tabs nav-tabs-right">
+            <li{% if tab == 'edit'%} class="active"{% endif %}><a href="{% url 'feedback:admin:edit' instance.pk %}"><i class="icon-file-alt"></i> <span>{% trans "Edit feedback" %}</span></a></li>
+	    {% if 'spicy.calc'|installed_app and 'spicy.landing'|installed_app %}<li{% if tab == 'calc' %} class="active"{% endif %}><a href="{% url 'feedback:admin:calc' instance.pk %}"><i class="icon-table"></i> <span>{% trans "Calculator" %}</span></a></li>{% endif %}
+	  </ul>
+	</div>
