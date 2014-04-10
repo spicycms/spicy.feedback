@@ -6,38 +6,9 @@ from spicy import utils
 from . import defaults
 
 
-def backend_factory(setting, class_name, child_methods=()):
-    bases = ()
-    backends = []
-    for backend in setting:
-        backend_class = utils.load_module(backend + '.' + class_name)
-        bases += (backend_class, )
-        backends.append(backend_class)
-
-    def child_method(name):
-        def _inner(self, *args, **kwargs):
-            for backend in self.backends:
-                try:
-                    getattr(backend, name)(self, *args, **kwargs)
-                except Exception, e:
-                    print e
-                    pass
-
-        return _inner
-
-    attrs = dict(backends=backends, __module__=__name__)
-    for method in child_methods:
-        attrs[method] = child_method(method)
-
-    class Meta:
-        abstract = True
-    attrs['Meta'] = Meta
-
-    return type('DynamicBackendFeedback', bases, attrs)
-
-DynamicBackendFeedback = backend_factory(
+DynamicBackendFeedback = utils.backend_factory(
     defaults.FEEDBACK_BACKENDS, 'Feedback',
-    child_methods=('send_report', 'send_to_clients'))
+    delegate_methods=('send_report', 'send_to_clients'))
 
 
 class BaseFeedbackAbstractModel(DynamicBackendFeedback):
@@ -88,7 +59,7 @@ class BaseFeedbackAbstractModel(DynamicBackendFeedback):
     def __unicode__(self):
         return '%s @ %s' % (self.name, self.submit_date)
 
-BasePattern = backend_factory(defaults.FEEDBACK_BACKENDS, 'Pattern')
+BasePattern = utils.backend_factory(defaults.FEEDBACK_BACKENDS, 'Pattern')
 
 
 #class FeedbackConsumer(models.Model):
