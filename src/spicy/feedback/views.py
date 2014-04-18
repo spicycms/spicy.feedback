@@ -1,7 +1,11 @@
 from django import http
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
 from spicy.core.siteskin.decorators import ajax_request
-from spicy.utils import load_module, get_custom_model_class
+from spicy.core.siteskin.decorators import render_to, multi_view
+from spicy.utils import load_module, get_custom_model_class, NavigationFilter
+from django.core.paginator import Paginator
 from . import defaults, models
 
 
@@ -50,3 +54,34 @@ def new_feedback(request):
             return {'status': 'error', 'errors': str(form.errors)}
     else:
         return http.HttpResponseNotAllowed(['POST'])
+
+
+@multi_view()
+def any_feedback(request, template):
+#    items = Feedback.objects.filter(processing_status=1)
+    try:
+        page_num = int(request.GET.get('page', 1))
+    except ValueError:
+        page_num = 1
+    accepting_filters = [
+        ('search_text', ''),
+        ('var2', ''),
+    ]
+    force_filter = None 
+    nav = NavigationFilter(
+        request, default_order='-submit_date', force_filter=force_filter,
+        accepting_filters=accepting_filters)
+    search_args, search_kwargs = [], {}
+    if nav.search_text:
+        search_args.append(
+            Q(var1__icontains=nav.search_text) |
+            Q(message__icontains=nav.search_text))
+    if nav.var2:
+        search_args.append(Q(var2__icontains=nav.var2))
+    search_args.append(Q(processing_status=11))#PUBLISHED
+    items = Feedback.objects.filter(*search_args)
+    paginator = Paginator(items, defaults.FEEDBACK_PER_PAGE)
+    page = paginator.page(page_num)
+    paginator.current_page = page
+    objects_list = page.object_list
+    return dict(items=objects_list, paginator=paginator, template=template)

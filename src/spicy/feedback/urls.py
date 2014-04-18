@@ -3,6 +3,7 @@ from django.conf.urls.defaults import patterns, url, include
 public_urls = patterns(
     'spicy.feedback.views',
     url(r'^new/$', 'new_feedback', name='new'),
+    url(r'^list/(?P<template>\S+)$', 'any_feedback', name='any-feedback'),
 )
 
 admin_urls = patterns(
