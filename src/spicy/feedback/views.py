@@ -58,27 +58,21 @@ def new_feedback(request):
 
 @multi_view()
 def any_feedback(request, template):
-#    items = Feedback.objects.filter(processing_status=1)
     try:
         page_num = int(request.GET.get('page', 1))
     except ValueError:
         page_num = 1
-    accepting_filters = [
-        ('search_text', ''),
-        ('var2', ''),
-    ]
-    force_filter = None 
-    nav = NavigationFilter(
-        request, default_order='-submit_date', force_filter=force_filter,
-        accepting_filters=accepting_filters)
     search_args, search_kwargs = [], {}
-    if nav.search_text:
+    search_text = request.GET.get('search_text')
+    if search_text:
         search_args.append(
-            Q(var1__icontains=nav.search_text) |
-            Q(message__icontains=nav.search_text))
-    if nav.var2:
-        search_args.append(Q(var2__icontains=nav.var2))
-    search_args.append(Q(processing_status=11))#PUBLISHED
+            Q(var1__icontains=search_text) |
+            Q(message__icontains=search_text))
+    filter_name = request.GET.get('filter_name')
+    filter_value = request.GET.get('filter_value')
+    if filter_name and filter_value:
+        search_args.append(Q(**{'%s__icontains' % filter_name: filter_value}))
+    search_args.append(Q(processing_status=defaults.PUBLISHED))#PUBLISHED
     items = Feedback.objects.filter(*search_args)
     paginator = Paginator(items, defaults.FEEDBACK_PER_PAGE)
     page = paginator.page(page_num)
