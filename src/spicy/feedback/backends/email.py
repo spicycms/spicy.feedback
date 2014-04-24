@@ -117,7 +117,7 @@ admin_help = _(
 
 
 class Feedback(base.Pattern):
-    email_has_been_sent = models.BooleanField(default=False)
+    email_has_been_sent = models.BooleanField(default=False, editable=False)
 
     def send_report(self):
         if settings.DEBUG:
