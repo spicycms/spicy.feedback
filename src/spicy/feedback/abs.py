@@ -45,6 +45,7 @@ class BaseFeedbackAbstractModel(DynamicBackendFeedback):
         ordering = ['-submit_date']
         permissions = [('admin_feedback', 'Admin feedback')]
         abstract = True
+        verbose_name = _('Feedback')
 
     @models.permalink
     def get_admin_url(self):
