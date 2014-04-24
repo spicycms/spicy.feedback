@@ -13,8 +13,7 @@ DynamicBackendFeedback = utils.backend_factory(
 
 class BaseFeedbackAbstractModel(DynamicBackendFeedback):
     site = models.ForeignKey(
-        Site, verbose_name=_('Site'), default=Site.objects.get_current,
-        editable=False)
+        Site, verbose_name=_('Site'), default=Site.objects.get_current)
     pattern = models.ForeignKey(
         'feedback.FeedbackPattern', blank=True, null=True,
         verbose_name=_('Fedback pattern'))
