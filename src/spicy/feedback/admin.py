@@ -125,19 +125,14 @@ def backend_data(pattern, backends_list, backend_name=None):
     backend_modules = [
         load_module(backend) for backend in backends_list]
     backends = [
-        (backend.admin_form[0], backend.__name__.rsplit('.', 1)[-1])
-        for backend in backend_modules if backend.admin_form]
+        backend.__name__.rsplit('.', 1)[-1]
+        for backend in backend_modules if backend.get_admin_form]
     if backend_name:
         for backend in backend_modules:
             if backend.__name__.rsplit('.', 1)[-1] == backend_name:
                 tab = backend_name
-                title = backend.admin_form[0]
 
-                class Meta:
-                    model = models.FeedbackPattern
-                    fields = backend.admin_form[1]
-                Form = type(
-                    'CustomFeedback', (ModelForm,), {'Meta': Meta})
+                title, Form = backend.get_admin_form()
                 break
         else:
             backend = None
@@ -161,6 +156,7 @@ def edit_pattern(request, pattern_id, backend_name=None):
         form = Form(request.POST, instance=pattern)
         if form.is_valid():
             pattern = form.save()
+            form = Form(instance=pattern)
             message = _('Object has been saved successfully')
         else:
             message = _('Form validation Error: ') + unicode(form.errors)

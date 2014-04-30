@@ -1,10 +1,10 @@
-import os
 import traceback
+from django import forms
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.db import models
-from django.template import Context, Template, loader
+from django.template import Context, Template
 from django.template.defaultfilters import linebreaksbr
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
@@ -30,9 +30,9 @@ class Pattern(base.Pattern, EditableTemplateModel):
         _('From email'), max_length=255, default=settings.DEFAULT_FROM_EMAIL)
     email_subject = models.CharField(
         _('Email subject'), max_length=255, blank=True, default='')
-    #email_body = models.TextField(
-    #    _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
-    #    blank=True, help_text=_('Auto response feedback text'))
+    email_body = models.TextField(
+        _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
+        blank=True, help_text=_('Auto response feedback text'))
     text_signature = models.TextField(
         _('Email signature'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, help_text=_('Your signature is added to the letter'))
@@ -41,7 +41,7 @@ class Pattern(base.Pattern, EditableTemplateModel):
         text_context = Context({
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content', 'text_mode': True})
-        body_template = Template(self.content)
+        body_template = Template(self.email_body)
         text = body_template.render(text_context)
         text += '\n\n' + self.text_signature
         return text
@@ -51,7 +51,7 @@ class Pattern(base.Pattern, EditableTemplateModel):
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content'})
         return linebreaksbr(
-            Template(self.content).render(html_body_context))
+            Template(self.email_body).render(html_body_context))
 
     def get_html_email(self, feedback=None):
         html_context = Context({
@@ -59,10 +59,7 @@ class Pattern(base.Pattern, EditableTemplateModel):
             'site': Site.objects.get_current(),
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content'})
-        template = loader.get_template(
-            os.path.join(
-                defaults.PATTERN_TEMPLATES_PATH, self.template_name))
-        return template.render(html_context)
+        return self.get_template().render(html_context)
 
     def get_mail(self, feedback):
         """
@@ -105,10 +102,24 @@ class Pattern(base.Pattern, EditableTemplateModel):
         abstract = True
 
 
-admin_form = (
-    _('Email settings'),
-    ('template_name', 'managers_emails', 'from_email', 'email_subject',
-     'content', 'text_signature', 'is_custom'))
+def get_admin_form():
+    from spicy.core.simplepages.forms import EditableTemplateForm
+    from spicy.feedback.models import FeedbackPattern
+
+    class AdminForm(EditableTemplateForm):
+        template_name = forms.ChoiceField(
+            label=_('Email template'),
+            choices=utils.find_templates(
+                defaults.PATTERN_TEMPLATES_PATH, rel_path=True))
+
+        class Meta:
+            model = FeedbackPattern
+            fields = (
+                'is_custom', 'template_name', 'content', 'managers_emails',
+                'from_email', 'email_subject', 'text_signature',
+                'email_body')
+
+    return _('Email settings'), AdminForm
 
 form_template = 'spicy.feedback/admin/parts/email_form.html'
 

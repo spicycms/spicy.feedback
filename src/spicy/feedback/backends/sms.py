@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.sites.models import Site
 from django.db import models
 from django.template.loader import render_to_string
@@ -56,7 +57,14 @@ class Feedback(base.Pattern):
         abstract = True
 
 
-admin_form = (
-    _('SMS settings'),
-    ('send_sms', 'nexmo_api_key', 'nexmo_secret_key', 'sms_from_number',
-     'sms_report_numbers'))
+def get_admin_form():
+    from spicy.feedback.models import FeedbackPattern
+
+    class AdminForm(forms.ModelForm):
+        class Meta:
+            model = FeedbackPattern
+            fields = (
+                'send_sms', 'nexmo_api_key', 'nexmo_secret_key',
+                'sms_from_number', 'sms_report_numbers')
+
+    return _('SMS settings'), AdminForm
