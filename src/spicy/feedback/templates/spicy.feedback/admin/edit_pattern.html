@@ -2,6 +2,7 @@
 
 {% block title %}{% trans "Edit" %} {{ instance.title }}{% endblock %}
 {% block status_title %}<i class="icon-pencil"></i> {{ instance.title }}{% endblock status_title %}
+{% block status_subtitle %}{% trans "Add to feedback form:" %} &lt;input type="hidden" name="pattern" value="{{ instance.slug }}"&gt;{% endblock %}
 {% block status_stats %}
 <a class="pull-right" href="{% url 'feedback:admin:view-pattern' instance.pk %}" target="_blank"><i class="icon-eye-open icon-2x"></i></a>
 {% endblock status_stats %}
@@ -13,27 +14,24 @@
       <div class="box">
 	{% include "spicy.feedback/admin/parts/pattern_tabs.html" %}
         <div class="box-content">
-	  {% if help_text %}
-	  <pre>
-	    {{ help_text|safe }}
-	  </pre>
-	  {% endif %}
-	  
-          <form name="edit_{{ app.name }}" class="form-horizontal fill-up validatable" method="post" action="." autocomplete="off"
+          <form id="edit_{{ app.name }}" class="form-horizontal fill-up validatable" method="post" action="." autocomplete="off"
 		enctype="multipart/form-data">{% csrf_token %}
-
+	    {% if backend.form_template %}
+	    {% include backend.form_template %}
+	    {% else %}
             <div class="row-fluid">
               <ul class="padded separate-sections">
 		{{ form.as_ul }}
 	      </ul>           
             </div>
+	    {% endif %}
             
 	    <div class="form-actions">
 	      {% captureas delete_url %}{{ app.name }}:admin:delete{% endcaptureas %}
 	      <a class="btn btn-red" href="{% url delete_url instance.pk %}">{% trans "Delete" %}</a>
 
 	      <div class="pull-right">
-		<button type="submit" class="btn btn-blue" name="save" onclick="document.edit_{{ app.name }}.submit(); return true;">{% trans "Save changes" %}</button>
+		<button type="submit" class="btn btn-blue" name="save">{% trans "Save changes" %}</button>
 	      </div>
             </div>
 

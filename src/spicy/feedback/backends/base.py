@@ -18,3 +18,4 @@ class Feedback(models.Model):
 
 
 admin_form = None
+form_template = None

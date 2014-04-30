@@ -1,0 +1,41 @@
+{% load spicy_admin %}
+{% formfield "" form "is_custom" "li-hidden" %}
+<div class="row-fluid">
+  <div class="span6">
+    <ul class="padded separate-sections">
+      {% formfield "" form "from_email" "li-text" %}
+      {% formfield "" form "managers_emails" "li-textarea" %}
+      {% if form.instance.is_custom %}
+      {% formfield "" form "template_name" "li-hidden" %}
+      {% else %}
+      {% formfield "" form "template_name" "li-text" %}
+      {% endif %}
+      <button type="button" class="btn btn-blue custom">{% if form.instance.is_custom %}{% trans "Disable editing HTML code and use the template" %} - {{ form.template_name.value }}{% else %}{% trans "Edit the HTML source code of the page" %}{% endif %}</button>
+    </ul>
+  </div>
+  <div class="span6">
+    <ul class="padded separate-sections">
+      {% formfield "" form "email_subject" "li-text" %}   
+      {% formfield "" form "text_signature" "li-textarea" %}
+    </ul>
+  </div>
+</div>
+
+{% if form.instance.is_custom %}
+<div class="row-fluid">
+  <ul class="padded separate-sections">
+    {% formfield "" form "content" "li-textarea-large" %}
+  </ul>
+</div>
+{% else %}
+{% formfield "" form "content" "li-hidden" %}
+{% endif %}
+
+<script>
+$(function(){
+  $('.custom').click(function(){
+    $('#id_is_custom').val({% if form.instance.is_custom %}''{% else %}'on'{% endif %})
+    $('#edit_{{ app.name }}').submit()
+  });
+});
+</script>

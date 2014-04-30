@@ -11,17 +11,17 @@ from django.utils.translation import ugettext_lazy as _
 from spicy import utils
 from spicy.core.profile import defaults as pf_defaults
 from spicy.core.service import api
+from spicy.core.simplepages.abs import EditableTemplateModel
 from spicy.utils.printing import print_error, print_info, print_text
 from . import base
 from .. import defaults
 
 
-class Pattern(base.Pattern):
-    email_template = models.CharField(
-        _('Template'), max_length=255,
-        choices=utils.find_templates(
-            defaults.PATTERN_TEMPLATES_PATH, abs_path=False))
-    is_custom = models.BooleanField(_('Is custom'), default=False)
+class Pattern(base.Pattern, EditableTemplateModel):
+    #email_template = models.CharField(
+    #    _('Template'), max_length=255,
+    #    choices=utils.find_templates(
+    #        defaults.PATTERN_TEMPLATES_PATH, abs_path=False))
     managers_emails = models.TextField(
         _('Managers emails'), max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default=','.join([
@@ -30,9 +30,9 @@ class Pattern(base.Pattern):
         _('From email'), max_length=255, default=settings.DEFAULT_FROM_EMAIL)
     email_subject = models.CharField(
         _('Email subject'), max_length=255, blank=True, default='')
-    email_body = models.TextField(
-        _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
-        blank=True, help_text=_('Auto response feedback text'))
+    #email_body = models.TextField(
+    #    _('Email body'),  max_length=defaults.EMAIL_MAX_LENGTH,
+    #    blank=True, help_text=_('Auto response feedback text'))
     text_signature = models.TextField(
         _('Email signature'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, help_text=_('Your signature is added to the letter'))
@@ -41,7 +41,7 @@ class Pattern(base.Pattern):
         text_context = Context({
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content', 'text_mode': True})
-        body_template = Template(self.email_body)
+        body_template = Template(self.content)
         text = body_template.render(text_context)
         text += '\n\n' + self.text_signature
         return text
@@ -51,7 +51,7 @@ class Pattern(base.Pattern):
             'feedback': feedback, 'pattern': self, 'page': self,
             'page_content_field': 'content'})
         return linebreaksbr(
-            Template(self.email_body).render(html_body_context))
+            Template(self.content).render(html_body_context))
 
     def get_html_email(self, feedback=None):
         html_context = Context({
@@ -61,7 +61,7 @@ class Pattern(base.Pattern):
             'page_content_field': 'content'})
         template = loader.get_template(
             os.path.join(
-                defaults.PATTERN_TEMPLATES_PATH, self.email_template))
+                defaults.PATTERN_TEMPLATES_PATH, self.template_name))
         return template.render(html_context)
 
     def get_mail(self, feedback):
@@ -107,16 +107,13 @@ class Pattern(base.Pattern):
 
 admin_form = (
     _('Email settings'),
-    ('email_template', 'managers_emails', 'from_email', 'email_subject',
-     'email_body', 'text_signature'))
+    ('template_name', 'managers_emails', 'from_email', 'email_subject',
+     'content', 'text_signature', 'is_custom'))
 
-admin_help = _(
-    'Add to feedback form:\n\n'
-    '&lt;input type="hidden" name="pattern" '
-    'value="{{ form.instance.slug }}"&gt;')
+form_template = 'spicy.feedback/admin/parts/email_form.html'
 
 
-class Feedback(base.Pattern):
+class Feedback(base.Feedback):
     email_has_been_sent = models.BooleanField(default=False, editable=False)
 
     def send_report(self):

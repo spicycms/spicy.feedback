@@ -121,13 +121,12 @@ def edit_var(request, var_id):
     return dict(form=form, message=message)
 
 
-def backend_data(pattern, backend_name=None):
+def backend_data(pattern, backends_list, backend_name=None):
     backend_modules = [
-        load_module(backend) for backend in defaults.FEEDBACK_BACKENDS]
+        load_module(backend) for backend in backends_list]
     backends = [
         (backend.admin_form[0], backend.__name__.rsplit('.', 1)[-1])
         for backend in backend_modules if backend.admin_form]
-    help_text = None
     if backend_name:
         for backend in backend_modules:
             if backend.__name__.rsplit('.', 1)[-1] == backend_name:
@@ -139,7 +138,9 @@ def backend_data(pattern, backend_name=None):
                     fields = backend.admin_form[1]
                 Form = type(
                     'CustomFeedback', (ModelForm,), {'Meta': Meta})
-                help_text = getattr(backend, 'admin_help', None)
+                break
+        else:
+            backend = None
     else:
         Form = forms.PatternForm
         tab = 'edit'
@@ -153,7 +154,7 @@ def edit_pattern(request, pattern_id, backend_name=None):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
-    data = backend_data(pattern, backend_name)
+    data = backend_data(pattern, defaults.FEEDBACK_BACKENDS, backend_name)
     Form = data.pop('Form')
 
     if request.method == 'POST':
@@ -165,7 +166,6 @@ def edit_pattern(request, pattern_id, backend_name=None):
             message = _('Form validation Error: ') + unicode(form.errors)
     else:
         form = Form(instance=pattern)
-
     return dict(form=form, instance=pattern, message=message, **data)
 
 
@@ -181,7 +181,7 @@ def pattern_media(request, pattern_id):
     message = ''
 
     pattern = get_object_or_404(models.FeedbackPattern, pk=pattern_id)
-    data = backend_data(pattern)
+    data = backend_data(pattern, defaults.FEEDBACK_BACKENDS)
     data.pop('tab')
     form = forms.PatternForm(instance=pattern)
 
