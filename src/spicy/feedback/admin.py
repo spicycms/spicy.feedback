@@ -125,8 +125,8 @@ def backend_data(pattern, backends_list, backend_name=None):
     backend_modules = [
         load_module(backend) for backend in backends_list]
     backends = [
-        backend.__name__.rsplit('.', 1)[-1]
-        for backend in backend_modules if backend.get_admin_form]
+        (backend.get_admin_form()[0], backend.__name__.rsplit('.', 1)[-1])
+        for backend in backend_modules if hasattr(backend, 'get_admin_form')]
     if backend_name:
         for backend in backend_modules:
             if backend.__name__.rsplit('.', 1)[-1] == backend_name:
