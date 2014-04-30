@@ -1,10 +1,9 @@
 from django import http
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from spicy.core.admin import conf
+from spicy.core.admin import conf, defaults as admin_defaults
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
 from spicy.utils import NavigationFilter, load_module, get_custom_model_class
@@ -190,7 +189,8 @@ def pattern_media(request, pattern_id):
 @render_to('list.html', use_admin=True)
 def feedback_list(request):
     nav = NavigationFilter(request)
-    paginator = nav.get_queryset_with_paginator(Feedback)
+    paginator = nav.get_queryset_with_paginator(
+        Feedback, obj_per_page=admin_defaults.ADMIN_OBJECTS_PER_PAGE)
     objects_list = paginator.current_page.object_list
     return {'paginator': paginator, 'objects_list': objects_list, 'nav': nav}
 
@@ -199,7 +199,9 @@ def feedback_list(request):
 @render_to('patterns.html', use_admin=True)
 def patterns(request):
     nav = NavigationFilter(request)
-    paginator = nav.get_queryset_with_paginator(models.FeedbackPattern)
+    paginator = nav.get_queryset_with_paginator(
+        models.FeedbackPattern,
+        obj_per_page=admin_defaults.ADMIN_OBJECTS_PER_PAGE)
     objects_list = paginator.current_page.object_list
     return {'paginator': paginator, 'objects_list': objects_list, 'nav': nav}
 

@@ -119,6 +119,8 @@ def get_admin_form():
                 'from_email', 'email_subject', 'text_signature',
                 'email_body')
 
+    AdminForm.base_fields['content'].label = _('HTML email code')
+
     return _('Email settings'), AdminForm
 
 form_template = 'spicy.feedback/admin/parts/email_form.html'

@@ -29,7 +29,8 @@
 		  <td>{% nav_order_url nav 'id' _('Id') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'title' _('Title') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'emai_subject' _('Email subject') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
-		  <td>{% nav_order_url nav 'emai_template' _('Email template') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
+		  <td>{% nav_order_url nav 'is_custom' _('Has been customized') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
+		  <td>{% nav_order_url nav 'template_name' _('Email template') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'auto_response_timeout' _('Auto response timeout') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  <td>{% nav_order_url nav 'has_attachments' _('Has attachments') "icon-sort" "icon-sort-down" "icon-sort-up" %}</td>
 		  {#% for field in app.list_model.display_list %#}		                    
@@ -46,7 +47,8 @@
 		  <td>{{ obj.id }}</td>
                   <td><a href="{% url 'feedback:admin:edit-pattern' obj.pk %}"> {{ obj.title }}</a></td>                  
 		  <td><a href="{% url 'feedback:admin:edit-pattern' obj.pk %}"> {{ obj.email_subject }}</a></td>                  
-		  <td><a href="{% url 'feedback:admin:edit-pattern' obj.pk %}"> {{ obj.email_template }}</a></td>                  
+		  <td class="icon"><i class="{{ obj.is_custom|yesno:"green icon-ok,icon-remove red" }}"></i></td>
+		  <td><a href="{% url 'feedback:admin:edit-pattern' obj.pk %}"> {{ obj.template_name }}</a></td>                  
 		  <td>{{ obj.auto_response_timeout }}</td>
 		  <td class="icon"><i class="{{ obj.has_attachments|yesno:"green icon-ok,icon-remove red" }}"></i></td>
 		</tr>
