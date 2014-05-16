@@ -1,7 +1,8 @@
 from django import http
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
 from spicy.core.siteskin.decorators import ajax_request
 from spicy.core.siteskin.decorators import render_to, multi_view
 from spicy.utils import load_module, get_custom_model_class, NavigationFilter
@@ -41,6 +42,23 @@ def new_feedback(request):
                     feedback.company_name.strip() or feedback.url.strip()):
                 feedback.processing_status = defaults.SPAM
             feedback.save()
+
+            try:
+                from spicy.marketing.models import Visitor
+                from spicy.crm.models import Lead
+                if request.session.session_key:
+                    visitors = Visitor.objects.filter(
+                        session_key=request.session.session_key,
+                        lead__isnull=True)
+                    if visitors:
+                        visitor = visitors[0]
+                        visitor.lead = Lead.objects.get(
+                            consumer_type=ContentType.objects.get_for_model(
+                                feedback),
+                            consumer_id=feedback.pk)
+                        visitor.save()
+            except ImportError:
+                pass
 
             if feedback.processing_status != defaults.SPAM:
                 feedback.send_report()
