@@ -46,7 +46,7 @@ def new_feedback(request):
             try:
                 from spicy.marketing.models import Visitor
                 from spicy.crm.models import Lead
-                if request.session.session_key:
+                if getattr(request.session, 'session_key', None):
                     visitors = Visitor.objects.filter(
                         session_key=request.session.session_key,
                         lead__isnull=True)
