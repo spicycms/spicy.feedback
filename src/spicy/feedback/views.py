@@ -34,7 +34,7 @@ def new_feedback(request):
             feedback.send_report()
 
             if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
-                feedback.send_to_customers()
+                feedback.send_to_customers(realhost=request.get_host())
 
             return {'status': 'success'}
         else:
