@@ -61,7 +61,7 @@ class Pattern(base.Pattern, EditableTemplateModel):
             'page_content_field': 'content'})
         return self.get_template().render(html_context)
 
-    def get_mail(self, feedback):
+    def get_mail(self, feedback, realhost=None):
         """
         Return mail
         """
@@ -74,7 +74,7 @@ class Pattern(base.Pattern, EditableTemplateModel):
         if self.auto_signup:
             Profile = utils.get_custom_model_class(
                 pf_defaults.CUSTOM_USER_MODEL)
-            Profile.objects.create_inactive_user(feedback.email)
+            Profile.objects.create_inactive_user(feedback.email, realhost=realhost)
 
         mail = EmailMultiAlternatives(
             self.email_subject, self.get_text_email(feedback), from_email,
@@ -164,7 +164,7 @@ class Feedback(base.Feedback):
                     self.id, str(e)))
             print_text(traceback.format_exc())
 
-    def send_to_customers(self):
+    def send_to_customers(self, realhost=None):
         if not self.email:
             print_info(
                 'This feedback {} has no email for customer response '
@@ -176,7 +176,7 @@ class Feedback(base.Feedback):
                 'This feedback {} has no response pattern'.format(self.pk))
             return
 
-        mail = self.pattern.get_mail(self)
+        mail = self.pattern.get_mail(self, realhost)
 
         try:
             mail.send()
