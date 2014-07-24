@@ -1,11 +1,10 @@
 from django import http
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from spicy.core.siteskin.decorators import ajax_request
-from spicy.core.siteskin.decorators import render_to, multi_view
-from spicy.utils import load_module, get_custom_model_class, NavigationFilter
+from spicy.core.siteskin.decorators import multi_view
+from spicy.utils import load_module, get_custom_model_class
 from django.core.paginator import Paginator
 from . import defaults, models
 
@@ -56,6 +55,7 @@ def new_feedback(request):
                             consumer_type=ContentType.objects.get_for_model(
                                 feedback),
                             consumer_id=feedback.pk)
+                        visitor.update_slice(inc_lead=True)
                         visitor.save()
             except ImportError:
                 pass
@@ -80,7 +80,7 @@ def any_feedback(request, template):
         page_num = int(request.GET.get('page', 1))
     except ValueError:
         page_num = 1
-    search_args, search_kwargs = [], {}
+    search_args = []
     search_text = request.GET.get('search_text')
     if search_text:
         search_args.append(
@@ -90,7 +90,7 @@ def any_feedback(request, template):
     filter_value = request.GET.get('filter_value')
     if filter_name and filter_value:
         search_args.append(Q(**{'%s__icontains' % filter_name: filter_value}))
-    search_args.append(Q(processing_status=defaults.PUBLISHED))#PUBLISHED
+    search_args.append(Q(processing_status=defaults.PUBLISHED))
     items = Feedback.objects.filter(*search_args)
     paginator = Paginator(items, defaults.FEEDBACK_PER_PAGE)
     page = paginator.page(page_num)
