@@ -55,7 +55,7 @@ def new_feedback(request):
                             consumer_type=ContentType.objects.get_for_model(
                                 feedback),
                             consumer_id=feedback.pk)
-                        visitor.update_slice(inc_lead=True)
+                        visitor.update_slice(inc_visitors=False, inc_lead=True)
                         visitor.save()
             except ImportError:
                 pass
