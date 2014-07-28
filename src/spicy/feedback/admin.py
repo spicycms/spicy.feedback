@@ -38,11 +38,13 @@ class AdminApp(conf.AdminAppBase):
     dashboard_links = [
         conf.AdminLink(
             'feedback:admin:create', _('Create feedback pattern'),
-            models.FeedbackPattern.objects.count(), 'icon-envelope')]
+            models.FeedbackPattern.objects.count(), 'icon-envelope',
+            perms='feedback.add_feedbackpattern')]
     dashboard_lists = [
         conf.DashboardList(
             _('New feedback'), 'feedback:admin:edit',
-            Feedback.on_site.order_by('-id'))]
+            Feedback.on_site.order_by('-id'),
+            perms='feedback.change_feedbackpattern')]
 
 
 @is_staff(required_perms='feedback.add_feedbackpattern')
