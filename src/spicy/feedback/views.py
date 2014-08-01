@@ -43,9 +43,14 @@ def new_feedback(request):
             feedback.save()
 
             try:
-                from spicy.marketing.models import Visitor
+                from spicy.marketing.models import Visitor, MarketingSettings
                 from spicy.crm.models import Lead
-                if getattr(request.session, 'session_key', None):
+                settings, _created = MarketingSettings.objects.get_or_create(
+                    defaults={})
+                if (
+                        not request.user.is_staff or
+                        not request.user.exclude_staff
+                ) and getattr(request.session, 'session_key', None):
                     visitors = Visitor.objects.filter(
                         session_key=request.session.session_key,
                         lead__isnull=True)

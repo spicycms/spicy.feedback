@@ -23,8 +23,6 @@ class AdminApp(conf.AdminAppBase):
         conf.AdminLink('feedback:admin:index', _('All feedbacks')),
     )
 
-    create = conf.AdminLink('feedback:admin:create', _('Create pattern'),)
-
     perms = conf.Perms(view=[],  write=[], manage=[])
 
     @render_to('menu.html', use_admin=True)
