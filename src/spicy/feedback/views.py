@@ -6,7 +6,7 @@ from spicy.core.siteskin.decorators import ajax_request
 from spicy.core.siteskin.decorators import multi_view
 from spicy.utils import load_module, get_custom_model_class
 from django.core.paginator import Paginator
-from . import defaults, models
+from . import defaults, models, signals
 
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
@@ -41,6 +41,8 @@ def new_feedback(request):
                     feedback.company_name.strip() or feedback.url.strip()):
                 feedback.processing_status = defaults.SPAM
             feedback.save()
+            create_feedback.send(
+                sender=feedback.__class__, request=request, feedback=feedback)
 
             try:
                 from spicy.marketing.models import Visitor, MarketingSettings
