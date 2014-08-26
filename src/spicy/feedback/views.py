@@ -2,7 +2,7 @@ from django import http
 from django.shortcuts import get_object_or_404
 from spicy.core.siteskin.decorators import ajax_request
 from spicy.utils import load_module, get_custom_model_class
-from . import defaults, models
+from . import defaults, models, signals
 
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
@@ -32,6 +32,9 @@ def new_feedback(request):
             feedback.save()
 
             feedback.send_report()
+
+            signals.create_feedback.send(
+                sender=feedback.__class__, request=request, feedback=feedback)
 
             if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
                 feedback.send_to_customers(realhost=request.get_host())
