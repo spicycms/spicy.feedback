@@ -41,7 +41,7 @@ def new_feedback(request):
                     feedback.company_name.strip() or feedback.url.strip()):
                 feedback.processing_status = defaults.SPAM
             feedback.save()
-            create_feedback.send(
+            signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
 
             try:
