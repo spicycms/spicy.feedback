@@ -51,7 +51,7 @@ def new_feedback(request):
                     defaults={})
                 if (
                         not request.user.is_staff or
-                        not request.user.exclude_staff
+                        not settings.exclude_staff
                 ) and getattr(request.session, 'session_key', None):
                     visitors = Visitor.objects.filter(
                         session_key=request.session.session_key,
