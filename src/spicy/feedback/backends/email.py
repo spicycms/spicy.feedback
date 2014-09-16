@@ -74,14 +74,16 @@ class Pattern(base.Pattern, EditableTemplateModel):
         if self.auto_signup:
             Profile = utils.get_custom_model_class(
                 pf_defaults.CUSTOM_USER_MODEL)
-            Profile.objects.create_inactive_user(feedback.email, realhost=realhost)
+            Profile.objects.create_inactive_user(
+                feedback.email, realhost=realhost)
 
         mail = EmailMultiAlternatives(
             self.email_subject, self.get_text_email(feedback), from_email,
             [feedback.email], headers={'format': 'flowed'})
 
-        mail.attach_alternative(
-            self.get_html_email(feedback), "text/html")
+        html_email = self.get_html_email(feedback)
+        if html_email:
+            mail.attach_alternative(html_email, "text/html")
 
         if self.has_attachments():
             for attach in self.attachments():
