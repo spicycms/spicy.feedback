@@ -1,5 +1,4 @@
 from django import http
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from spicy.core.siteskin.decorators import ajax_request
@@ -43,29 +42,6 @@ def new_feedback(request):
             feedback.save()
             signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
-
-            try:
-                from spicy.marketing.models import Visitor, MarketingSettings
-                from spicy.crm.models import Lead
-                settings, _created = MarketingSettings.objects.get_or_create(
-                    defaults={})
-                if (
-                        not request.user.is_staff or
-                        not settings.exclude_staff
-                ) and getattr(request.session, 'session_key', None):
-                    visitors = Visitor.objects.filter(
-                        session_key=request.session.session_key,
-                        lead__isnull=True)
-                    if visitors:
-                        visitor = visitors[0]
-                        visitor.lead = Lead.objects.get(
-                            consumer_type=ContentType.objects.get_for_model(
-                                feedback),
-                            consumer_id=feedback.pk)
-                        visitor.update_slice(inc_visitors=False, inc_lead=True)
-                        visitor.save()
-            except ImportError:
-                pass
 
             if feedback.processing_status != defaults.SPAM:
                 feedback.send_report()
