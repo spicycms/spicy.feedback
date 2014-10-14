@@ -79,4 +79,6 @@ def any_feedback(request, template):
     page = paginator.page(page_num)
     paginator.current_page = page
     objects_list = page.object_list
+    if template.replace('/','').split(".")[-1] != 'html':
+        template = template.replace('/','') + '.html'
     return dict(items=objects_list, paginator=paginator, template=template)
