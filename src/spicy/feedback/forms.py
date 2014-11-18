@@ -13,22 +13,16 @@ Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
 
 
 class FeedbackForm(forms.ModelForm):
-    if defaults.USE_FEEDBACK_CAPTCHA:
-        captcha = CaptchaField(label=_('Captcha'))
 
-    # TODO
-    # check pattern.use_captcha instead defaults.USE_FEEDBACK_CAPTCHA
+    def __init__(self, *args, **kwargs):
+        super(FeedbackForm, self).__init__(*args, **kwargs)
+        if self.instance.pattern.use_captcha:
+            self.fields['captcha'] = CaptchaField(label=_('Captcha'))
 
     class Meta:
         model = Feedback
-        if defaults.USE_FEEDBACK_CAPTCHA:
-            fields = (
-                'name', 'email', 'phone', 'message', 'url', 'company_name',
-                'var1', 'var2', 'var3', 'captcha')
-        else:
-            fields = (
-                'name', 'email', 'phone', 'message', 'url', 'company_name',
-                'var1', 'var2', 'var3')
+        fields = ('name', 'email', 'phone', 'message', 'url', 'company_name',
+                  'var1', 'var2', 'var3')
 
 
 class AjaxExampleForm(CreateView):
@@ -63,12 +57,14 @@ class AjaxExampleForm(CreateView):
 
 
 class EditFeedbackForm(forms.ModelForm):
+
     class Meta:
         model = Feedback
         exclude = ('site', 'pattern', 'email_has_been_sent', 'ip_address')
 
 
 class PatternForm(forms.ModelForm):
+
     class Meta:
         model = models.FeedbackPattern
         fields = (
@@ -76,8 +72,7 @@ class PatternForm(forms.ModelForm):
             'auto_signup')
 
 
-#class PatternVariableForm(forms.ModelForm):
+# class PatternVariableForm(forms.ModelForm):
 #    class Meta:
 #        model = models.PatternVariable
 #        fields = ('name', 'value',)
-
