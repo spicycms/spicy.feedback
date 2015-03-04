@@ -28,7 +28,7 @@ def new_feedback(request):
         if form.is_valid():
             try:
                 del request.session['feedback_form']
-            except KeyError:
+            except KeyError, e:
                 pass
             feedback = form.save(commit=False)
             feedback.ip_address = request.META['REMOTE_ADDR']
