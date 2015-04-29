@@ -37,14 +37,13 @@ setup(
     long_description=long_description(),
 
     namespace_packages=['spicy', ],
-    dependency_links=[
-        'git+https://github.com/marcuz/libpynexmo.git#egg=nexmomessage'
-    ],
     install_requires=[
         'django-bitfield==1.6.4',
-         # 'nexmomessage',
+        'nexmomessage==dev',
     ],
-
+    dependency_links=[
+        'http://github.com/marcuz/libpynexmo/tarball/master#egg=nexmomessage-dev'
+    ],
 
     classifiers=[
         'Framework :: Django',
