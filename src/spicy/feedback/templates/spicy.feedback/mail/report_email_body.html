@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">{% load sk feedback %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>{% blocktrans with site_name=site.name feedback_pk=feedback.pk %}[{{ feedback_pk }}] New message on {{ site_name }}{% endblocktrans %}</title>
+  <meta name="description" content='{% block description %}{% endblock %}' lang="{{ LANGUAGE_CODE }}"/>
+  <meta name="keywords" content="{% block keywords %}{% endblock %}" lang="{{ LANGUAGE_CODE }}"/>
+  <link rel="shortcut icon" href="" type="image/x-icon"/>
+</head>
+
+<body style="font-family: Arial;">
+
+  <center><div style="border-style:solid; border: 1px solid #6e6e6e; width:800px;">
+      <table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" bordercolor="#ffffff" align="center" style="font-size:12px; width:800px; text-align:left; border-collapse:collapse; color:#636363;">
+	<tr bgcolor="#000000" style="height:42px;">
+	  <td width="25px;"></td>
+	  <td style="width:129px;"><a href="http://{{ site.domain }}" target="_blank" ><sup style="color:white; font-size:16px;">{{ site.domain }}</sup></a></td>
+	  <td></td>
+
+	  {% comment %}
+	  <td style="text-align:right;"><span style="color:#dedede; line-height: 26px;">К нам уже присоединились: </span>
+	    <a href="" style="text-decoration:none; line-height:29px;"><img src="" alt="" style="border-top: 6px solid #000000; vertical-align: top;"/>&nbsp;<u style="text-decoration:none; background: white;color: black; border:2px solid #ffffff; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px;">&nbsp;2473&nbsp;</u>&nbsp;</a>
+	    <a href="" style="text-decoration:none; line-height:29px;">&nbsp;<img src="" alt="" style="border-top: 6px solid #000000; vertical-align: top;"/>&nbsp;<u style="text-decoration:none; background: white;color: black; border:2px solid #ffffff; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px;">&nbsp;1015&nbsp;</u></a>
+	  </td>
+	  {% endcomment %}
+
+	  <td width="25px;"></td>	
+	</tr>
+	<tr><td colspan="4" style="height:12px;" border="0">
+	    <h1 style="line-height:37px; font-size: 20px; margin: 25px; color: black;"><a href="http://{{ site.domain }}" style="color:black; line-height: 10px; font-size: 20px; font-weight: normal;">{% blocktrans with site_name=site.name feedback_pk=feedback.pk %}[{{ feedback_pk }}] New message on {{ site_name }}{% endblocktrans %}</a></h1>
+	</td></tr>
+	<tr>	
+	  <td width="25px;"></td>
+	  <td style="width:290px;" colspan="2">
+		<ul style="list-style-type:none;font-size:16px">
+			<li>{% trans "Sender name" %}: {{ feedback.name }}</li>
+			<li>{% trans "Sender email" %}: {{ feedback.email }}</li>
+			<li>{% trans "Sender phone" %}: {{ feedback.phone }}</li>
+			<li>{% trans "URL" %}: {{ feedback.url }}</li>
+			<li>{% trans "Feedback pattern" %}: {{ feedback.pattern.title|default:"none" }}</li>
+			<li>{% trans "Submit date" %}: {{ feedback.submit_date }}</li>
+			<li>{% trans "IP address" %}: {{ feedback.ip_address }}</li>
+			<li>{% trans "Message" %}: {{ feedback.message }}</li>
+			<li>{% trans "Var1" %}: {{ feedback.var1 }}</li>
+			<li>{% trans "Var2" %}: {{ feedback.var2 }}</li>
+			<li>{% trans "Var3" %}: {{ feedback.var3 }}</li>
+		</ul>
+	  </td>
+	  <td>
+	  </td>
+	  <td width="25px;"></td>
+	</tr>
+      </table>
+    </div>
+  </center>
+  
+</body>
+</html>

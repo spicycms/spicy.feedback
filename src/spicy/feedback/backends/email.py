@@ -142,6 +142,8 @@ class Feedback(base.Feedback):
             'spicy.feedback/mail/report_email_subject.txt', context).strip()
         body = render_to_string(
             'spicy.feedback/mail/report_email_body.txt', context)
+        html_body = render_to_string(
+            'spicy.feedback/mail/report_email_body.html', context)
 
         send_to = [admin_email for admin_name, admin_email in settings.ADMINS]
         if self.pattern:
@@ -154,9 +156,12 @@ class Feedback(base.Feedback):
                         to_emails.append(email)
             if to_emails:
                 send_to = to_emails
-        mail = EmailMessage(
+        mail = EmailMultiAlternatives(
             subject=subject, body=body,
-            from_email=self.email or settings.DEFAULT_FROM_EMAIL, to=send_to)
+            from_email=self.email or settings.DEFAULT_FROM_EMAIL, to=send_to,
+            headers={'format': 'flowed'})
+        if html_body:
+            mail.attach_alternative(html_body, 'text/html')
 
         try:
             mail.send()
