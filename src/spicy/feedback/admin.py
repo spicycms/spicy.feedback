@@ -64,7 +64,6 @@ def create(request):
                 reverse('feedback:admin:edit-pattern', args=[pattern.pk]))
     else:
         form = forms.PatternForm()
-
     return dict(form=form, message=message)
 
 

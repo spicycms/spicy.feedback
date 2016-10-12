@@ -4,9 +4,11 @@ from django.shortcuts import get_object_or_404
 from spicy.core.siteskin.decorators import ajax_request
 from spicy.core.siteskin.decorators import multi_view
 from spicy.utils import load_module, get_custom_model_class
+from rest_framework.authtoken.models import Token
 from django.core.paginator import Paginator
 from . import defaults, models, signals
-
+import requests
+import json
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
 
@@ -19,6 +21,10 @@ def new_feedback(request):
     """
     FeedbackForm = load_module(defaults.CUSTOM_FEEDBACK_FORM)
 
+    if request.method == 'GET':
+        from django.shortcuts import render
+        return render(request, 'spicy.core.simplepages/simplepages/feedback_create_lead.html')
+
     if request.method == 'POST':
         pattern = get_object_or_404(
             models.FeedbackPattern, slug=request.POST.get('pattern'))
@@ -26,11 +32,10 @@ def new_feedback(request):
         form = FeedbackForm(request.POST, instance=feedback)
 
         if form.is_valid():
-            try:
+            if 'import requests' in request.session:
                 del request.session['feedback_form']
-            except KeyError, e:
-                pass
             feedback = form.save(commit=False)
+
             feedback.ip_address = request.META['REMOTE_ADDR']
             if not (
                     feedback.name.strip() or feedback.email.strip() or
@@ -40,19 +45,33 @@ def new_feedback(request):
                     feedback.company_name.strip() or feedback.url.strip()):
                 feedback.processing_status = defaults.SPAM
             feedback.save()
+
             signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
+
+            if pattern.token:
+                url_to_api = pattern.url_to_api
+                token = Token.objects.get(user__email=feedback.email)
+                if token and url_to_api:
+                    full_request = request.POST.copy()
+                    full_request.update({'lead_source': request.META.get('HTTP_HOST')})
+                    headers = {'Authorization': 'Token %s' % token.key, 'content-type': 'application/json'}
+                    data = json.dumps(full_request)
+                    requests.post(url_to_api, data=data, headers=headers)
 
             if feedback.processing_status != defaults.SPAM:
                 feedback.send_report()
 
-            if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
-                feedback.send_to_customers(realhost=request.get_host())
+            try:
+                if defaults.SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT:
+                    feedback.send_to_customers(realhost=request.get_host())
+            except Exception as e:
+                return {'status': 'success', 'errors': e.message}
 
             return {'status': 'success'}
         else:
             request.session['feedback_form'] = request.POST
-            return {'status': 'error', 'errors': str(form.errors)}
+            return {'status': 'fail', 'errors': str(form.errors)}
     else:
         return http.HttpResponseNotAllowed(['POST'])
 
