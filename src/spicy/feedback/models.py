@@ -3,15 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.service import models as service_models
 from spicy.mediacenter.abs import FatMediaConsumerModel
-from rest_framework.authtoken.models import Token
 from . import abs, defaults
-
-
-def token_str(self):
-    return '%s (%s)' % (self.key, self.user)
-
-Token.__str__ = token_str
-Token.__unicode__ = token_str
 
 class FeedbackPattern(
         service_models.CustomAbstractModel, FatMediaConsumerModel,
