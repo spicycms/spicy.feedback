@@ -17,8 +17,6 @@ class FeedbackPattern(
     auto_signup = models.BooleanField(default=True)
     auto_response_timeout = models.PositiveSmallIntegerField(
         _('Timeout for auto response'), max_length=1, default=15)
-    url_to_api = models.CharField(_('URL for api requests'), max_length=300, blank=True, null=True)
-    token = models.BooleanField(_('Create lead by token'), default=False, blank=True)
 
     class Meta:
         db_table = 'fb_pattern'

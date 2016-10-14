@@ -48,16 +48,6 @@ def new_feedback(request):
             signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
 
-            if pattern.token:
-                url_to_api = pattern.url_to_api
-                token = Token.objects.get(user__email=feedback.email)
-                if token and url_to_api:
-                    full_request = request.POST.copy()
-                    full_request.update({'lead_source': request.META.get('HTTP_HOST')})
-                    headers = {'Authorization': 'Token %s' % token.key, 'content-type': 'application/json'}
-                    data = json.dumps(full_request)
-                    requests.post(url_to_api, data=data, headers=headers)
-
             if feedback.processing_status != defaults.SPAM:
                 feedback.send_report()
 
