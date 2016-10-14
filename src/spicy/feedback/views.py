@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404
 from spicy.core.siteskin.decorators import ajax_request
 from spicy.core.siteskin.decorators import multi_view
 from spicy.utils import load_module, get_custom_model_class
-from rest_framework.authtoken.models import Token
 from django.core.paginator import Paginator
 from . import defaults, models, signals
 import requests
