@@ -68,7 +68,8 @@ class PatternForm(forms.ModelForm):
     class Meta:
         model = models.FeedbackPattern
         fields = (
-            'title', 'slug', 'auto_response_timeout', 'url_to_api', )
+            'title', 'slug', 'auto_response_timeout', 'use_captcha',
+			'auto_signup')
 
 
 # class PatternVariableForm(forms.ModelForm):
