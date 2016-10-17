@@ -7,6 +7,7 @@ from spicy.core.admin import conf, defaults as admin_defaults
 from spicy.core.profile.decorators import is_staff
 from spicy.core.siteskin.decorators import render_to, ajax_request
 from spicy.utils import NavigationFilter, load_module, get_custom_model_class
+from rest_framework.authtoken.models import Token
 from . import models, defaults, forms
 
 Feedback = get_custom_model_class(defaults.CUSTOM_FEEDBACK_MODEL)
@@ -56,6 +57,9 @@ def create(request):
         form = forms.PatternForm(request.POST)
         if form.is_valid():
             pattern = form.save()
+            token, created = Token.objects.get_or_create(user=request.user)
+            pattern.token = token.key
+            pattern.save()
         else:
             message = 'Form validation Error: ' + str(form.errors)
 
@@ -155,7 +159,8 @@ def edit_pattern(request, pattern_id, backend_name=None):
         if form.is_valid():
             pattern = form.save()
             form = Form(instance=pattern)
-            message = _('Object has been saved successfully')
+
+            message = _('Object has been saved successfully   | ' + str(form.fields['token'].widget.__dict__))
         else:
             message = _('Form validation Error: ') + unicode(form.errors)
     else:

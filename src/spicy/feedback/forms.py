@@ -64,12 +64,14 @@ class EditFeedbackForm(forms.ModelForm):
 
 
 class PatternForm(forms.ModelForm):
+    token = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}), required=False)
 
     class Meta:
         model = models.FeedbackPattern
         fields = (
-            'title', 'slug', 'auto_response_timeout', 'use_captcha', 
+            'title', 'slug', 'auto_response_timeout', 'url_to_api', 'token', 'use_captcha',
             'auto_signup')
+
 
 
 # class PatternVariableForm(forms.ModelForm):

@@ -45,6 +45,13 @@ def new_feedback(request):
                 feedback.processing_status = defaults.SPAM
             feedback.save()
 
+            if pattern.url_to_api and pattern.token:
+                full_request = request.POST.copy()
+                full_request.update({'lead_source': request.META.get('HTTP_HOST')})
+                headers = {'Authorization': 'Token %s' % pattern.token, 'content-type': 'application/json'}
+                data = json.dumps(full_request)
+                requests.post(pattern.url_to_api, data=data, headers=headers)
+
             signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
 
