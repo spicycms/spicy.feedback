@@ -6,7 +6,8 @@ import requests
 
 
 class Pattern(base.Pattern):
-    token = models.CharField(_('Token (generated automatically)'), max_length=255, blank=True, null=True)
+    send_to_api = models.BooleanField(_('Send lead to API'), default=False)
+    token = models.CharField(_('Token (get from CRM admin)'), max_length=255, blank=True, null=True)
     url_to_api = models.CharField(_('URL to rest api'), max_length=300, blank=True, null=True)
 
     def save_in_api(self, request):
