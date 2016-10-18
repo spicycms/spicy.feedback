@@ -159,8 +159,7 @@ def edit_pattern(request, pattern_id, backend_name=None):
         if form.is_valid():
             pattern = form.save()
             form = Form(instance=pattern)
-
-            message = _('Object has been saved successfully   | ' + str(form.fields['token'].widget.__dict__))
+            message = _('Object has been saved successfully')
         else:
             message = _('Form validation Error: ') + unicode(form.errors)
     else:

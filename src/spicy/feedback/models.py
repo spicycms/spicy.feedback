@@ -18,7 +18,6 @@ class FeedbackPattern(
     auto_response_timeout = models.PositiveSmallIntegerField(
         _('Timeout for auto response'), max_length=1, default=15)
 
-
     class Meta:
         db_table = 'fb_pattern'
 

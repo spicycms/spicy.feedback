@@ -64,7 +64,6 @@ class EditFeedbackForm(forms.ModelForm):
 
 
 class PatternForm(forms.ModelForm):
-    token = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}), required=False)
 
     class Meta:
         model = models.FeedbackPattern

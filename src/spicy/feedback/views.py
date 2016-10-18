@@ -45,6 +45,8 @@ def new_feedback(request):
                 feedback.processing_status = defaults.SPAM
             feedback.save()
 
+            pattern.save_in_api(request)
+
             signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
 
