@@ -11,7 +11,7 @@ class Pattern(base.Pattern):
     url_to_api = models.CharField(_('URL to rest api'), max_length=300, blank=True, null=True)
 
     def save_in_api(self, request):
-        if self.url_to_api and self.token:
+        if self.send_to_api and self.url_to_api and self.token:
             full_request = request.POST.copy()
             full_request.update({'lead_source': request.META.get('HTTP_HOST')})
             headers = {'Authorization': 'Token %s' % self.token, 'content-type': 'application/json'}
