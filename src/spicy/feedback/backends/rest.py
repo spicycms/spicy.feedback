@@ -17,7 +17,9 @@ class Pattern(base.Pattern):
             headers = {'Authorization': 'Token %s' % self.token, 'content-type': 'application/json'}
             data = json.dumps(full_request)
             response = requests.post(self.url_to_api, data=data, headers=headers)
+            print 'RESPONSE::: ' + str(response)
             return response
+
 
     class Meta:
         abstract = True
@@ -35,6 +37,6 @@ def get_admin_form():
     class AdminForm(forms.ModelForm):
         class Meta:
             model = FeedbackPattern
-            fields = ('token', 'url_to_api')
+            fields = ('token', 'url_to_api', 'send_to_api')
 
     return _('REST API settings'), AdminForm
