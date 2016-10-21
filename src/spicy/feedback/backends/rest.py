@@ -17,7 +17,6 @@ class Pattern(base.Pattern):
             headers = {'Authorization': 'Token %s' % self.token, 'content-type': 'application/json'}
             data = json.dumps(full_request)
             response = requests.post(self.url_to_api, data=data, headers=headers)
-            print 'RESPONSE::: ' + str(response)
             return response
 
 

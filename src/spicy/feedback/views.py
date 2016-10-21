@@ -46,7 +46,6 @@ def new_feedback(request):
             feedback.save()
 
             resp = pattern.save_in_api(request)
-            print 'RESP:::' + str(resp)
 
             signals.create_feedback.send(
                 sender=feedback.__class__, request=request, feedback=feedback)
