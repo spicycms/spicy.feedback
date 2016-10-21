@@ -13,9 +13,11 @@ class Pattern(base.Pattern):
     def save_in_api(self, request):
         if self.send_to_api and self.url_to_api and self.token:
             full_request = request.POST.copy()
-            full_request.update({'full_name': request.POST.get('name')})
-            full_request.update({'title': request.POST.get('company_name')})
-            msg = '%s\n%s\n%s\n%s' % (request.POST.get('message', ''),
+            full_request.update({'full_name': request.POST.get('name','')})
+            full_request.update({'email': request.POST.get('email','')})
+            full_request.update({'phone': request.POST.get('phone','')})
+            full_request.update({'title': request.POST.get('name','')})
+            msg = u'%s\n%s\n%s\n%s' % (request.POST.get('message', ''),
                                       request.POST.get('var1', ''),
                                       request.POST.get('var2', ''),
                                       request.POST.get('var3', ''))
