@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.sites.models import Site
 from . import base
 import json
 import requests
@@ -17,6 +18,8 @@ class Pattern(base.Pattern):
             full_request.update({'email': request.POST.get('email','')})
             full_request.update({'phone': request.POST.get('phone','')})
             full_request.update({'title': request.POST.get('name','')})
+            full_request.update({'birthday':''})
+            full_request.update({'lead_source': Site.objects.get_current()})
             msg = u'%s\n%s\n%s\n%s' % (request.POST.get('message', ''),
                                       request.POST.get('var1', ''),
                                       request.POST.get('var2', ''),
