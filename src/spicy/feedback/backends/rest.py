@@ -14,22 +14,20 @@ class Pattern(base.Pattern):
     def save_in_api(self, request):
         if self.send_to_api and self.url_to_api and self.token:
             full_request = request.POST.copy()
-            full_request.update({'full_name': request.POST.get('name','')})
-            full_request.update({'email': request.POST.get('email','')})
-            full_request.update({'phone': request.POST.get('phone','')})
-            full_request.update({'title': request.POST.get('name','')})
-            full_request.update({'birthday':''})
-            full_request.update({'lead_source': Site.objects.get_current()})
-            msg = u'%s\n%s\n%s\n%s' % (request.POST.get('message', ''),
-                                      request.POST.get('var1', ''),
-                                      request.POST.get('var2', ''),
-                                      request.POST.get('var3', ''))
+            full_request.update({'full_name': request.POST.get('name')})
+            full_request.update({'email': request.POST.get('email')})
+            full_request.update({'phone': request.POST.get('phone')})
+            full_request.update({'title': request.POST.get('name')})
+            full_request.update({'birthday': None})
+            full_request.update({'lead_source': Site.objects.get_current().domain})
+            msg = u'%s\n%s\n%s\n%s' % (request.POST.get('message'),
+                                      request.POST.get('var1'),
+                                      request.POST.get('var2'),
+                                      request.POST.get('var3'))
             full_request.update({'description': msg})
-            full_request.update({'lead_source': request.META.get('HTTP_HOST')})
             headers = {'Authorization': 'Token %s' % self.token, 'content-type': 'application/json'}
             data = json.dumps(full_request)
             response = requests.post(self.url_to_api, data=data, headers=headers)
-
             return response
 
     class Meta:
@@ -40,6 +38,7 @@ class Feedback(base.Pattern):
 
     class Meta:
         abstract = True
+
 
 def get_admin_form():
     from spicy.feedback.models import FeedbackPattern
