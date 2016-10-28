@@ -13,8 +13,8 @@ class FeedbackPattern(
     slug = models.SlugField(
         _('Slug'), unique=True,
         default=lambda: 'feedback' + str(FeedbackPattern.objects.count() + 1))
-    use_captcha = models.BooleanField(default=False)
-    auto_signup = models.BooleanField(default=True)
+    use_captcha = models.BooleanField(default=False, verbose_name=_('Use captcha'))
+    auto_signup = models.BooleanField(default=True, verbose_name=_('Auto signup'))
     auto_response_timeout = models.PositiveSmallIntegerField(
         _('Timeout for auto response'), max_length=1, default=15)
 
