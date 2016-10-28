@@ -38,6 +38,28 @@
           </form>
         </div>
       </div>
+
+        <div class="alert alert-info">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <h5>Rest API settings</h5>
+          <div class="note">
+            Раздел для доступа к PEST API (генерация лидов).
+
+            <div class="row-fluid">
+                <ul class="padded separate-sections">
+                    <li>Пример curl запроса к API:  </li>
+                    <p>curl -X POST {url_to_api} -H "Content-Type: application/json" -H 'Authorization: Token {secret_token_key}' -d '{"full_name": "full name", "email": "email@example.com", "phone": "89990111100", "title": "company title", "lead_source": "lead source", "description": "description"}'</p>
+                    <li>Для отправки запроса к API необходимо</li>
+                    <p>1) Назвать шаблон обратной связи 'feedback_create_lead'</p>
+                    <p>2) Указать URL к API, полученный от администратора CRM</p>
+                    <p>3) Добавить к шаблону обратной связи токен, полученный от администратора CRM</p>
+                    <p>4) Для отправки данных использовать форму с input'ами: full_name, email, phone, title, lead_source, description и скрытый со значением 'feedback_create_lead' </p>
+
+                </ul>
+            </div>
+          </div>
+        </div>
+
     </div>
   </div>
 </div>
