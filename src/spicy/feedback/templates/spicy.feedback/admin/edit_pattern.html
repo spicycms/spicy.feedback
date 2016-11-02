@@ -39,6 +39,7 @@
         </div>
       </div>
 
+		{% if '/rest/' in request.path %}
         <div class="alert alert-info">
           <button type="button" class="close" data-dismiss="alert">×</button>
           <h5>Rest API settings</h5>
@@ -59,6 +60,7 @@
             </div>
           </div>
         </div>
+		{% endif %}
 
     </div>
   </div>
