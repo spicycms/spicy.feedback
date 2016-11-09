@@ -20,10 +20,10 @@ class Pattern(base.Pattern):
             full_request.update({'title': request.POST.get('name')})
             full_request.update({'birthday': None})
             full_request.update({'lead_source': Site.objects.get_current().domain})
-            msg = u'%s\n%s\n%s\n%s' % (request.POST.get('message'),
-                                      request.POST.get('var1'),
-                                      request.POST.get('var2'),
-                                      request.POST.get('var3'))
+            msg = u'%s\n%s\n%s\n%s' % (request.POST.get('message',''),
+                                      request.POST.get('var1',''),
+                                      request.POST.get('var2',''),
+                                      request.POST.get('var3',''))
             full_request.update({'description': msg})
             headers = {'Authorization': 'Token %s' % self.token, 'content-type': 'application/json'}
             data = json.dumps(full_request)
@@ -49,4 +49,4 @@ def get_admin_form():
             model = FeedbackPattern
             fields = ('token', 'url_to_api', 'send_to_api')
 
-    return _('REST API settings'), AdminForm
+    return _('CRM API settings'), AdminForm
