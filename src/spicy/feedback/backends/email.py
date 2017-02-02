@@ -93,12 +93,14 @@ class Pattern(base.Pattern, EditableTemplateModel):
         return mail
 
     def attachments(self):
-        return api.register['media'][self].get_instances(
-            consumer=self, is_public=True)
+        return []
+        #return api.register['media'][self].get_instances(
+        #    consumer=self, is_public=True)
 
     def has_attachments(self):
-        return bool(api.register['media'][self].get_instances(
-            consumer=self, is_public=True).count())
+        return False
+        #return bool(api.register['media'][self].get_instances(
+        #    consumer=self, is_public=True).count())
 
     class Meta:
         abstract = True
