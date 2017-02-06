@@ -158,7 +158,7 @@ class Feedback(base.Feedback):
                 send_to = to_emails
         mail = EmailMessage(
             subject=subject, body=body,
-            from_email=self.email or settings.DEFAULT_FROM_EMAIL, to=send_to)
+            from_email=self.pattern.from_email or settings.DEFAULT_FROM_EMAIL, to=send_to)
 
         try:
             mail.send()
