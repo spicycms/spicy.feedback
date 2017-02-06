@@ -1,1 +1,1 @@
-[{{ feedback.pk }}] {{ feedback.pattern.title }} ({{ feedback.name }} <{{ feedback.email }}>
+[{{ feedback.pk }}] {{ feedback.pattern.title }} ({{ feedback.name }} <{{ feedback.email }}>)
