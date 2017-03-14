@@ -39,12 +39,19 @@ setup(
     namespace_packages=['spicy', ],
     install_requires=[
         'django-bitfield==1.6.4',
-        'nexmomessage==dev',
+        'Django<=1.5.12',
+
+        # Deprecated
+        # comment it because PIP deprecate --process-dependency-links feature
+        # and ignore dependency links by default.
+        # Put nexmomessage to your requirements.txt file        
+        #'nexmomessage==0.0.1'
+        
     ],
 
-    dependency_links=[
-        'http://github.com/marcuz/libpynexmo/tarball/master#egg=nexmomessage-dev',
-    ],
+    #dependency_links=[
+    #    'http://github.com/marcuz/libpynexmo/tarball/master#egg=nexmomessage-0.0.1',
+    #],
 
     classifiers=[
         'Framework :: Django',
