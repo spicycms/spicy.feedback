@@ -39,7 +39,6 @@ setup(
     namespace_packages=['spicy', ],
     install_requires=[
         'django-bitfield==1.6.4',
-    ],
         'nexmomessage==dev',
     ],
 
