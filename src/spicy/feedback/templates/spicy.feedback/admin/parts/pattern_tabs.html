@@ -6,6 +6,6 @@
 	    {% for backend in backends %}
 	    <li{% if tab == backend.1 %} class="active"{% endif %}><a href="{% url 'feedback:admin:edit-pattern' form.instance.pk backend.1 %}"><i class="icon-file-alt"></i> <span>{{ backend.0 }}</span></a></li>
 	    {% endfor %}
-	    <li{% if tab == 'media' %} class="active"{% endif %}><a href="{% url 'feedback:admin:edit-pattern-media' form.instance.pk %}" ><i class="icon-camera"></i> <span>{% trans "Attachments" %}</span></a></li>
+	    {#<li{% if tab == 'media' %} class="active"{% endif %}><a href="{% url 'feedback:admin:edit-pattern-media' form.instance.pk %}" ><i class="icon-camera"></i> <span>{% trans "Attachments" %}</span></a></li>#}
 	  </ul>
         </div>

@@ -2,11 +2,10 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from spicy.core.service import models as service_models
-from spicy.mediacenter.abs import FatMediaConsumerModel
 from . import abs, defaults
 
 class FeedbackPattern(
-        service_models.CustomAbstractModel, FatMediaConsumerModel,
+        service_models.CustomAbstractModel,
         abs.BasePattern):
     title = models.CharField(
         _('Feedback pattern title'), max_length=250)

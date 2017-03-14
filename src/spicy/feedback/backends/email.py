@@ -93,12 +93,14 @@ class Pattern(base.Pattern, EditableTemplateModel):
         return mail
 
     def attachments(self):
-        return api.register['media'][self].get_instances(
-            consumer=self, is_public=True)
+        return []
+        #return api.register['media'][self].get_instances(
+        #    consumer=self, is_public=True)
 
     def has_attachments(self):
-        return bool(api.register['media'][self].get_instances(
-            consumer=self, is_public=True).count())
+        return False
+        #return bool(api.register['media'][self].get_instances(
+        #    consumer=self, is_public=True).count())
 
     class Meta:
         abstract = True
@@ -156,7 +158,7 @@ class Feedback(base.Feedback):
                 send_to = to_emails
         mail = EmailMessage(
             subject=subject, body=body,
-            from_email=self.email or settings.DEFAULT_FROM_EMAIL, to=send_to)
+            from_email=self.pattern.from_email or settings.DEFAULT_FROM_EMAIL, to=send_to)
 
         try:
             mail.send()
