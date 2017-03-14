@@ -1,7 +1,7 @@
 Spicy Django Feedback
 ==============================
 
-Require Django versions: 1.4.11
+Require Django versions: 1.4.11 - 1.5.12
 
 Installation
 ============
@@ -56,4 +56,4 @@ because we need database table before we can use ``FB``
 version
 ===========================
 
-1.1.0 - stable version
+1.1.0 - latest release

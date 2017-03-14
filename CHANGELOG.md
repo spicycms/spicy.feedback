@@ -1,3 +1,6 @@
+## [1.1.1] - 2017-03-14
+- Add libpynexmo for SMS in setup.py
+	
 ## [1.1.0] - 2016-11-02
 
 - Отправка данных формы из CMS (REST API)
