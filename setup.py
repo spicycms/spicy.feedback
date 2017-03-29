@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-version = '1.0'
+version = '1.1.1'
 LONG_DESCRIPTION = """
 spicy.feedback package
 """
@@ -20,9 +20,9 @@ def long_description():
 setup(
     name='spicy.feedback',
     version=version,
-    author='Burtsev Alexander',
-    author_email='eburus@gmail.com',
-    description='Spicy Categories',
+    author='BramaBrama Ltd.',
+    author_email='help@spicycms.com',
+    description='Spicy Feedback',
     license='BSD',
     keywords='django, cms',
     url='',
