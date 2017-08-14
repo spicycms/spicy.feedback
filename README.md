@@ -34,17 +34,19 @@ FEEDBACK_BACKENDS = (
 ```
 
 И добавьте в ``urls.py`` путь для модуля spicy.feedback:
-
+```
 urlpatterns = patterns('',
     ...
     url(r'^', include('spicy.feedback.urls', namespace='feedback')),
     ...
 )
+```
 
 После этого необходимо выполнить ``manage.py syncdb``, чтобы Django создала таблицы sicy.feedback в базе данных.
 
 Настройка email рассылки
 ===========================
+{TODO: про spicy.feedback.backends.email}
 
 Настройка sms рассылки
 ===========================
