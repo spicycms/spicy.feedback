@@ -50,13 +50,14 @@ urlpatterns = patterns('',
 
 Email рассылка
 --------------
+Бэкенд [spicy.feedback.backends.email](./src/spicy/feedback/backends/email.py#L20) реализует две модели - отзыв Feedback и шаблон отзыва Pattern. С их помощью в админке настраивается рассылка уведомлений об оставленных отзывах менеджерам.
 {TODO: про spicy.feedback.backends.email}
 
-Sms рассылка
+Sms рассылка ИСПОЛЬЗУЕТСЯ ЛИ?!
 ------------
 {TODO: подключение Nexmo, про spicy.feedback.backends.sms}
 
-Рассылки в CMS систему
+Рассылки в CMS систему ИСПОЛЬЗУЕТСЯ ЛИ?!
 ----------------------
 {TODO: про SpicyCMR, со ссылкой; про spicy.feedback.backends.rest}
 
@@ -72,11 +73,11 @@ Sms рассылка
 
 Бэкенд рассылки уведомлений
 ---------------------------
+* FEEDBACK_BACKENDS (+ссылка на source code как пример бэкенда)
 {TODO пример кастомизации}
 
-Настройки модуля
-----------------
-* FEEDBACK_BACKENDS (+ссылка на source code как пример бэкенда)
+Дополнительные настройки модуля
+-------------------------------
 * USE_FEEDBACK_CAPTCHA
 * EMAIL_MAX_LENGTH
 * MESSAGES_PER_MINUTE
@@ -85,4 +86,3 @@ Sms рассылка
 * CREATE_NEW_ACCOUT
 * STATUS_TYPE_CHOICES
 * PATTERN_TEMPLATES_PATH
-
