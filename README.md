@@ -11,6 +11,8 @@ spicy.feedback
 
 Подключить spicy.feedback к вашему приложению
 ---------------------------------------------
+
+### Конфигурация приложения
 Добавьте spicy.feedback в список приложения ``settings.py``:
 ```
 INSTALLED_APPS = (
@@ -39,8 +41,38 @@ urlpatterns = patterns('',
     ...
 )
 ```
-
 После этого необходимо выполнить ``manage.py syncdb``, чтобы Django создала таблицы sicy.feedback в базе данных.
+
+### Добавление формы обратной связи на сайт
+
+* Создайте в админке шаблон обратной связи (на странице /admin/feedback/create/). Поля ``title`` и ``slug`` являются обязательными. 
+
+* Добавьте на страницу сайта html код формы:
+```
+<form action="{% url 'feedback:public:new' %}" method="post" id="feedbackForm">
+	{% csrf_token %}
+	<input type="hidden" name="pattern" value="default" id="pattern">
+	{% if request.user.is_authenticated %}
+		<input type="hidden" name="email" value="{{ request.user.email }}">
+	{% else %}
+		Введите ваш email: <input name="email" value="{{ request.user.email }}">
+	{% endif %}
+	<textarea name="message" placeholder="Ваш отзыв…" id="feedbackText" required></textarea>
+	<button type="button" form="feedbackForm" id="feedbackBtn">Оставить отзыв</button>	
+</form>
+```
+В этом примере ``<input name="pattern">`` имеет значение, которое вы указывали в поле ``slug`` при создании шаблона обратной связи. Поля ``email``, ``message`` и ``pattern`` являются обязательными. Вы можете дополнить форму обратной связи аргументами ``phone``, ``var1``, ``var2``, ``var3``, ``company_name`` и ``url``. Например, попросить пользователей указывать причину отзыва в ``var1``: 
+
+```
+<form action="{% url 'feedback:public:new' %}" method="post" id="feedbackForm">
+    ...
+    Введите причину отзыва: <input name="var1" placeholder="Причина отзыва... Благодарность? Критичный отзыв?">
+    ...
+</form>
+```
+
+Если вам не додстаточно этих дополнительных полей, вы можете [кастомизировать модель Feedback](../README.md#Своя-модель-отзыва-feedback).
+
 
 Шаблонные теги spicy.feedback
 -----------------------------
