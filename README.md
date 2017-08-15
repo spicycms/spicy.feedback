@@ -66,7 +66,7 @@ urlpatterns = patterns('',
 ```
 <form action="{% url 'feedback:public:new' %}" method="post" id="feedbackForm">
     ...
-    Введите причину отзыва: <input name="var1" placeholder="Причина отзыва... Благодарность? Критичный отзыв?">
+    Введите причину отзыва: <input name="var1" placeholder="Благодарность? Критичный отзыв? ...">
     ...
 </form>
 ```
