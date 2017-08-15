@@ -75,12 +75,12 @@ Pattern унаследован от [spicy.core.simplepages.abs.EditableTemplate
 ---------------------------
 Вы можете кастомизировать поведение spicy.feedback, с помощью настроек в ``settings.py``.
 
-### Модель отзыва Feedback
+### Своя модель отзыва Feedback
 * CUSTOM_FEEDBACK_FORM
 * USE_DEFAULT_FEEDBACK
 {TODO кастомная модель, ее подключение}
 
-### Бэкенд рассылки уведомлений
+### Свой бэкенд рассылки уведомлений
 * FEEDBACK_BACKENDS (+ссылка на source code как пример бэкенда)
 {TODO пример кастомизации}
 
