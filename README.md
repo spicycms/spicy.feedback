@@ -153,16 +153,44 @@ class CustomFeedbackForm(forms.ModelForm):
 ```
 Таким образом, модуль spicy.feedback будет использовать вашу модель для отзыва ``CustomFeedback`` совместно с формой  ``CustomFeedbackForm``.
 
-### Свой бэкенд рассылки уведомлений
-* FEEDBACK_BACKENDS (+ссылка на source code как пример бэкенда)
-{TODO пример кастомизации}
-
 ### Дополнительные настройки модуля
-* USE_FEEDBACK_CAPTCHA
-* EMAIL_MAX_LENGTH
-* MESSAGES_PER_MINUTE
-* FEEDBACK_PER_PAGE
-* SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT
+spicy.feedback имеет дополнительные опции, которые могут быть настроены из settings.py:
+
+* Включить капчу в форму обратной связи. Значение по умолчанию False, капча выключена
+```
+USE_FEEDBACK_CAPTCHA = True
+```
+
+* Указать максимальную длину email адресов менеджеров. Значение по умолчанию 3000 символов.
+```
+EMAIL_MAX_LENGTH = 5000
+```
+
+* spicy.feedback имеет команду менеджмента ``feedback_auto_response``, которая позволяет одновременно рассылать ответные сообщения сразу по нескольким отзывам. По умолчанию за один запуск команды рассылка происходит на 10 адресов. которым еще не были отправлены ответные сообщения. Вы можете менять это ограничение:
+```
+MESSAGES_PER_MINUTE = 50
+```
+
+* Ограничить количество выводимых в списке отзывов. Значение по умолчанию ``10``, вы можете изменить его:
+```
+FEEDBACK_PER_PAGE = 25
+```
+
+* Включить автоматическую рассылку ответных сообющений при создании отзыва. Значение по умолчанию ``True``, ответные сообщения отправляются сразу после оставленного отзыва
+```
+SEND_AUTO_RESPONSE_WITHOUT_TIMEOUT = False
+```
+
+* Для отзывов по умолчанию определены [14 статусов обработки](https://github.com/spicycms/spicy.feedback/blob/ca8e6e5741660d70125a7a00cea3c5591a714555/src/spicy/feedback/defaults.py#L20), вы можете переопределить их, добавить свои, изменить названия. Для этого укажите ``tuple()`` статусов в settings.py:
+```
+STATUS_TYPE_CHOICES = ((0, 'Status 1), (1, 'Status 2), ... )
+```
+
+* Переопределить путь до шаблонов обратной связи. По умолчанию шаблоны для sms и email рассылки хранятся в ``spicy.feedback/patterns/``, вы можете определить свой путь:
+```
+PATTERN_TEMPLATES_PATH = 'your/path/to/templates/'
+```
+
+### Refactoring
+Не используются следующие настройки:
 * CREATE_NEW_ACCOUT
-* STATUS_TYPE_CHOICES
-* PATTERN_TEMPLATES_PATH
