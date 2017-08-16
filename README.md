@@ -133,7 +133,7 @@ class CustomFeedback(BaseFeedbackAbstractModel):
 
 Обязательноу укажите, что ваша модель не является абстрактной, после чего выполните команду ``manage.py syncdb``, чтобы Django создала таблицу в БД для вашей модели отзыва.
 
-Чтобы вы могли сипользовать формы с новой моделью, необходимо также переопределить используемую по у молчанию [spicy.feedback.forms.FeedbackForm](https://github.com/spicycms/spicy.feedback/blob/master/src/spicy/feedback/forms.py#L15). Для этого укажите ваш класс для форму в ``settings.py`` и определите его в ``forms.py``:
+Чтобы вы могли ипользовать формы с дополнительными полями новой модели, необходимо также переопределить форму по у молчанию [spicy.feedback.forms.FeedbackForm](https://github.com/spicycms/spicy.feedback/blob/master/src/spicy/feedback/forms.py#L15). Для этого укажите ваш класс в ``settings.py`` и определите его в ``forms.py``:
 
 ```
 # settings.py
