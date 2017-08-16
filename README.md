@@ -96,21 +96,62 @@ Pattern унаследован от [spicy.core.simplepages.abs.EditableTemplate
 ### Sms рассылка
 spicy.feedback поддерживает рассылку sms уведомлений и ответных сообщений пользователям с помощью API Nexmo. 
 
-Для настройки  sms рассылки вам необходимо указать бэкенд ``spicy.feedback.backends.sms`` в ``settings.py``, получить ключ API и секретный ключ Nexmo. Ключи сохранить при редактировании шаблона обратной связи (/admin/feedback/patterns/1/extra/sms/). Для активации sms рассылки, установите галку ``Отправлять SMS``
+Для настройки sms рассылки вам необходимо указать бэкенд ``spicy.feedback.backends.sms`` в ``settings.py``, получить ключ API и секретный ключ Nexmo. Ключи сохранить при редактировании шаблона обратной связи (/admin/feedback/patterns/<pattern_id>/extra/sms/). Для активации sms рассылки, установите галку ``Отправлять SMS``
 
 Шаблон sms-сообщения находится в ``spicy.feedback/sms/report.txt``, вы можете использовать предоставляемый по умолчанию, или переопределить его. В контексте шаблона доступны переменные ``{{ site }}``, ``{{ feedback }}``.
 
-### Рассылки в CMS систему ИСПОЛЬЗУЕТСЯ ЛИ?!
-{TODO: про SpicyCMR, со ссылкой; про spicy.feedback.backends.rest}
+### Рассылка в CMS систему
+spicy.feedback позволяет создавать лиды в SpicyCRM, на основе оставленных отзывов, это реализуется посредством бэкенда  ``spicy.feedback.backends.rest``.
+
+Для того чтобы модуль spicy.feedback мог отправлять запросы на создания лидов в CRM систему, вам необходимо получить токен у админитратора CRM, и ввести его на странице настройки (/admin/feedback/patterns/<pattern_id>/extra/rest/), также указать URL до обработчика создания лидов, и включить галку ``Создавать лид через API``.
 
 Кастомизация spicy.feedback
 ---------------------------
 Вы можете кастомизировать поведение spicy.feedback, с помощью настроек в ``settings.py``.
 
 ### Своя модель отзыва Feedback
-* CUSTOM_FEEDBACK_FORM
-* USE_DEFAULT_FEEDBACK
-{TODO кастомная модель, ее подключение}
+По умолчанию в spicy.feedback используется модель [Feedback](https://github.com/spicycms/spicy.feedback/blob/master/src/spicy/feedback/models.py#L32), унаследованная от абстракной модели [BaseFeedbackAbstractModel](https://github.com/spicycms/spicy.feedback/blob/master/src/spicy/feedback/abs.py#L14). 
+
+В большинстве случаев, полей этих моделей достаточно для полноценной работы обратной связи. Но если вам необходимы и другие поля или методы, spicy.feedback позволяет использовать свою модель, с помощью настройки ``USE_DEFAULT_FEEDBACK``:
+```
+# settings.py
+
+USE_DEFAULT_FEEDBACK = False
+CUSTOM_FEEDBACK_MODEL = 'webapp.models.CustomFeedback'
+```
+
+После этого переопределите модель отзыва в ``models.py``, унаседовав ее от [BaseFeedbackAbstractModel](https://github.com/spicycms/spicy.feedback/blob/master/src/spicy/feedback/abs.py#L14):
+```
+from spicy.feedback.abs import BaseFeedbackAbstractModel
+
+class CustomFeedback(BaseFeedbackAbstractModel):
+    # your fields and methods
+    
+    class Meta(BaseFeedbackAbstractModel.Meta):
+    	abstract = False
+```
+
+Обязательноу укажите, что ваша модель не является абстрактной, после чего выполните команду ``manage.py syncdb``, чтобы Django создала таблицу в БД для вашей модели отзыва.
+
+Чтобы вы могли сипользовать формы с новой моделью, необходимо также переопределить используемую по у молчанию [spicy.feedback.forms.FeedbackForm](https://github.com/spicycms/spicy.feedback/blob/master/src/spicy/feedback/forms.py#L15). Для этого укажите ваш класс для форму в ``settings.py`` и определите его в ``forms.py``:
+
+```
+# settings.py
+CUSTOM_FEEDBACK_FORM = 'webapp.forms.CustomFeedbackForm'
+
+# forms.py
+from spicy.utils.models import get_custom_model_class
+from spicy.feedback import defaults as fb_defaults
+
+Feedback = get_custom_model_class(fb_defaults.CUSTOM_FEEDBACK_MODEL)
+
+class CustomFeedbackForm(forms.ModelForm):
+    # your code here
+    
+    class Meta:
+        model = Feedback
+```
+Таким образом, модуль spicy.feedback будет использовать вашу модель для отзыва ``CustomFeedback`` совместно с формой  ``CustomFeedbackForm``.
 
 ### Свой бэкенд рассылки уведомлений
 * FEEDBACK_BACKENDS (+ссылка на source code как пример бэкенда)
