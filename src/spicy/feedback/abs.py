@@ -26,9 +26,9 @@ class BaseFeedbackAbstractModel(DynamicBackendFeedback):
         _('Email'), max_length=255, blank=True, default='')
     phone = models.CharField(
         _('Phone'), max_length=20, blank=True, default='')
-    var1 = models.CharField(_('Var 1'), max_length=255, blank=True, default='')
-    var2 = models.CharField(_('Var 2'), max_length=255, blank=True, default='')
-    var3 = models.CharField(_('Var 3'), max_length=255, blank=True, default='')
+    var1 = models.TextField(_('Var 1'), blank=True, null=True)
+    var2 = models.TextField(_('Var 2'), blank=True, null=True)
+    var3 = models.TextField(_('Var 3'), blank=True, null=True)
     message = models.TextField(
         _('Message'),  max_length=defaults.EMAIL_MAX_LENGTH,
         blank=True, default='')
